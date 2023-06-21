@@ -1,0 +1,51 @@
+.modalOuter {
+    width: 100%;
+    background: rgba(54, 54, 54, 0.3);
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    z-index: 3;
+    @media screen and (max-height: 420px) {
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+}
+.modalWrapper {
+    background: white;
+    padding: 48px 96px;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    border-radius: 16px;
+    @media screen and (max-width: 680px) {
+        padding: 42px 16px;
+        margin: 0 16px;
+    }
+}
+
+.buttonClose {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 32px;
+    top: 32px;
+    @media screen and (max-width: 680px) {
+        width: 32px;
+        height: 32px;
+        right: 16px;
+        top: 16px;
+    }
+}
+.title {
+    font-weight: 700;
+    font-size: var(--fontsize-l);
+    line-height: 30px;
+    text-align: center;
+    margin-bottom: 32px;
+}

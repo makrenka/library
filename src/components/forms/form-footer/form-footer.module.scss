@@ -1,0 +1,46 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0 16px;
+}
+
+.description {
+    font-size: var(--fontsize-s);
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    color: #727272;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    gap: 0 15px;
+    font-weight: 600;
+    font-size: var(--fontsize-xs);
+    line-height: 24px;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    color: var(--color-black);
+    span {
+        line-height: 100%;
+    }
+    svg {
+        transition: color 0.2s linear;
+    }
+    &:hover svg {
+        color: var(--color-black);
+    }
+}
+
+@media (max-width: 420px) {
+    .wrapper {
+        flex-wrap: wrap;
+        text-align: left;
+        gap: 7px;
+    }
+    .description {
+        width: 100%;
+        font-size: 15px;
+        line-height: 20px;
+    }
+}

@@ -1,0 +1,58 @@
+.button {
+    height: 40px;
+    width: 166px;
+    border-radius: 20px;
+    border: none;
+    font-weight: 600;
+    font-size: var(--fontsize-xs);
+    line-height: 18px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.buttonReserve {
+    background: var(--primary-background);
+    color: #ffffff;
+    box-shadow: none;
+    transition: all 0.2s linear;
+}
+
+.buttonReserve:hover {
+    box-shadow: var(--box-shadow-button-hover);
+    border: 1px solid #ff740f;
+}
+
+.buttonReserve:active {
+    box-shadow: var(--box-shadow-button-active);
+}
+
+.buttonReserve:disabled {
+    background: #ebebeb;
+    box-shadow: none;
+    border: none;
+    cursor: default;
+}
+
+.buttonReserved {
+    background: #ffffff;
+    color: var(--color-black);
+    border: 1px solid #bfc4c9;
+    box-shadow: none;
+    transition: all 0.2s linear;
+}
+
+.buttonReserved:hover {
+    border: 1px solid #a7a7a7;
+    box-shadow: var(--box-shadow-button-hover);
+}
+
+.buttonReserved:active {
+    box-shadow: var(--box-shadow-button-active);
+}
+
+.buttonReserved:disabled {
+    background: #f9f9fa;
+    color: #a7a7a7;
+    cursor: default;
+    box-shadow: none;
+}

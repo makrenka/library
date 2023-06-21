@@ -1,0 +1,115 @@
+.burgerMenu {
+    display: none;
+}
+
+.burgerMenuNav {
+    display: flex;
+    padding: 32px 0 52px 32px;
+    position: absolute;
+    z-index: 2;
+    width: 500px;
+    max-height: 1090px;
+    background-color: #f9f9fa;
+    left: -600px;
+    top: calc(22px + 46px);
+    border-radius: 10px;
+    transition: all 0.4s linear;
+}
+
+.burgerMenuNavActive {
+    left: 0;
+    transition: all 0.4s linear;
+}
+
+.burgerMenuNavListUser {
+    display: none;
+}
+
+.burgerMenuLine {
+    transform: translateX(-32px);
+    width: 500px;
+    height: 1px;
+    margin: 0;
+    border: none;
+    background-color: var(--border-color);
+}
+
+.burgerMenuNavLink {
+    font-size: var(--fontsize-nav-l);
+    font-weight: 700;
+    line-height: 28px;
+    cursor: pointer;
+    border: none;
+    background-color: inherit;
+    text-align: left;
+    color: black;
+}
+
+.burgerMenuNavLink:hover {
+    border-bottom: 1px solid black;
+    margin-bottom: -1px;
+}
+
+.burgerMenuNavLinkActive {
+    background-color: #f83600;
+    background-image: var(--primary-background);
+    background-clip: inherit;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    border-bottom: 1px solid transparent;
+    border-image: var(--primary-background);
+    border-image-slice: 1;
+    margin-bottom: -1px;
+}
+
+@media (max-width: 1000px) {
+    .burgerMenu {
+        display: grid;
+        position: relative;
+    }
+}
+
+@media (max-width: 600px) {
+    .burgerMenuNav {
+        top: calc(22px + 46px - 13px);
+    }
+
+    .burgerMenuNavListUser {
+        display: grid;
+        row-gap: 22px;
+        grid-template-columns: 255px;
+        margin-bottom: 52px;
+    }
+}
+
+@media (max-width: 550px) {
+    .burgerMenuNav,
+    .burgerMenuLine {
+        width: calc(100vw - 48px);
+    }
+}
+
+@media (max-width: 500px) {
+    .burgerMenuNav,
+    .burgerMenuLine {
+        width: calc(100vw - 32px);
+    }
+}
+
+@media (max-width: 370px) {
+    .burgerMenuNav {
+        padding-left: 16px;
+    }
+
+    .burgerMenuLine {
+        transform: translateX(-16px);
+    }
+}
+
+@media (max-height: 1160px) {
+    .burgerMenuNav {
+        height: calc(100vh - 110px);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}

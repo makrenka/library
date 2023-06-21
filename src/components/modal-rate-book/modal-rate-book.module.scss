@@ -1,0 +1,42 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--color-black);
+}
+.title {
+    margin-top: 16px;
+    margin-bottom: 32px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+}
+
+.subtitle {
+    margin-bottom: 16px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.star {
+    width: 35px;
+    height: 35px;
+}
+
+.content textarea {
+    margin-top: 32px;
+    margin-bottom: 52px;
+    width: 100%;
+    min-height: 132px;
+    border: none;
+    background: #f9f9fa;
+    border-radius: 4px;
+    padding: 12px;
+    outline-color: transparent;
+}
+
+.button {
+    max-width: 410px;
+    width: 100%;
+}

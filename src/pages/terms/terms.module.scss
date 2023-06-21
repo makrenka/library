@@ -1,0 +1,40 @@
+.terms ol {
+    list-style: none;
+    counter-reset: li;
+}
+
+.terms li:before {
+    counter-increment: li;
+    content: counters(li, '.') '. ';
+    font-weight: 600;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: 0.1px;
+}
+
+.mainText {
+    padding-top: 32px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: justify;
+}
+
+.text {
+    padding-top: 16px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    padding-left: 30px;
+    text-align: justify;
+}
+
+@media (max-width: 500px) {
+    .text {
+        padding-left: 15px;
+    }
+}

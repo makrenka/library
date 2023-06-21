@@ -1,0 +1,88 @@
+.buttonReserv {
+    font-size: var(--fontsize-s);
+    width: 100%;
+    margin-top: 16px;
+}
+
+.calendarWrapper {
+    box-shadow: var(--box-shadow-button);
+    padding: 16px 24px 10px;
+    border-radius: 8px;
+    max-width: 256px;
+    margin: 0 auto 10px;
+}
+
+.calendarHeader {
+    display: flex;
+}
+
+.calendarContent {
+    margin: 5px 0;
+}
+
+.calendarDayNames {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-transform: capitalize;
+    color: #f83600;
+    font-weight: 500;
+    font-size: 12px;
+    justify-items: center;
+}
+
+.calendarDaysWrapper {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+.dayButton {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: #363636;
+    &:hover:not(:disabled) {
+        background: linear-gradient(231.58deg, #f83600 -53.35%, #f9d423 297.76%);
+        color: white;
+    }
+    &:disabled {
+        border: none;
+        background: none;
+    }
+    &.endWeek {
+        background: #feebea;
+    }
+
+    &.dayButtonToday {
+        color: #f83600;
+    }
+
+    &.dayButtonActive {
+        background: linear-gradient(231.58deg, #f83600 -53.35%, #f9d423 297.76%);
+        color: white;
+    }
+}
+
+.select {
+    border: none;
+    color: #a7a7a7;
+    outline-color: transparent;
+    text-transform: capitalize;
+    font-size: 16px;
+    line-height: 24px;
+    cursor: pointer;
+    margin-right: auto;
+}
+
+.arrow {
+    border: none;
+    cursor: pointer;
+    margin-left: 15px;
+    background: none;
+}
+
+.arrow:first-of-type {
+    transform: rotate(180deg);
+}

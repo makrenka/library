@@ -1,0 +1,44 @@
+.functionsItem {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    .title {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 125%;
+        letter-spacing: 0.1px;
+    }
+    .subtitle {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 150%;
+        letter-spacing: 0.1px;
+        color: var(--subtitle);
+    }
+    .contract {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 30px;
+        row-gap: 52px;
+        .button {
+            font-size: 16px;
+            line-height: 150%;
+            letter-spacing: 0.2px;
+            max-width: 256px;
+            width: 100%;
+            border-radius: 30px;
+            padding: 14px;
+            height: unset;
+            &:disabled {
+                border: unset;
+                background-color: #ebebeb;
+                color: var(--background-main);
+            }
+            &:hover {
+                scale: 1.01;
+                filter: invert(0.1);
+            }
+        }
+    }
+}

@@ -1,0 +1,125 @@
+.menu {
+    grid-area: menu;
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 32px;
+    position: relative;
+}
+
+.buttonSort {
+    background-repeat: no-repeat;
+    background-position: 16px 50%;
+    height: 38px;
+    background-color: var(--background-main);
+    box-shadow: none;
+    border-radius: 599px;
+    border: 1px solid #e3e3e3;
+    padding: 0 16px;
+    color: var(--subtitle);
+    cursor: pointer;
+    transition: box-shadow 0.2s linear;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 8px;
+}
+
+.buttonSort:hover {
+    box-shadow: var(--box-shadow-button-hover);
+}
+
+.buttonSort:active {
+    box-shadow: var(--box-shadow-button-active);
+}
+
+.buttonSortText {
+    text-align: start;
+}
+
+.searchSortBlock {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    column-gap: 16px;
+}
+
+.searchSortBlockNoGap {
+    column-gap: 0;
+}
+
+.display {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    justify-content: end;
+    column-gap: 16px;
+}
+
+.buttonDisplay {
+    height: 38px;
+    width: 38px;
+    border-radius: 50%;
+    border: 1px solid #e3e3e3;
+    background: var(--background-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.buttonDisplay:hover {
+    box-shadow: var(--box-shadow-button-hover);
+}
+
+.buttonDisplay:active {
+    box-shadow: var(--box-shadow-button-active);
+}
+
+.buttonDisplayActive {
+    border: none;
+    background: var(--primary-background);
+    box-shadow: var(--box-shadow-button);
+}
+
+.buttonHidden {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .menu {
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 620px) {
+    .buttonSort {
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        justify-content: center;
+        .buttonSortText {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: 370px) {
+    .menu {
+        grid-template-columns: repeat(2, 1fr);
+        margin-bottom: 20px;
+    }
+
+    .menuSearh {
+        grid-template-columns: 1fr;
+    }
+
+    .buttonSort {
+        width: 32px;
+        height: 32px;
+    }
+
+    .buttonDisplay {
+        height: 32px;
+        width: 32px;
+    }
+}

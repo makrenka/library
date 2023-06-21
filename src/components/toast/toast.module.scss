@@ -1,0 +1,92 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    padding: 24px 36px;
+    border-radius: 5px;
+    max-width: 1110px;
+    width: 100%;
+    margin: 0 auto;
+
+    &.success {
+        background: #ebf9f1;
+        border: 1.5px solid #00ca71;
+    }
+
+    &.error {
+        background: #feebea;
+        border: 1.5px solid #f42c4f;
+    }
+}
+
+.wrapper.warning {
+    background-color: #feebea;
+    border: 1.5px solid #f42c4f;
+}
+
+.icon {
+    flex: 1 0 auto;
+    width: 24px;
+    max-width: 24px;
+    height: 24px;
+    margin-right: 28px;
+
+    &.success {
+        fill: #00ca71;
+    }
+
+    &.error {
+        fill: #f42c4f;
+    }
+}
+
+.text {
+    margin-right: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: #363636;
+}
+
+.wrapper button {
+    width: 24px;
+    max-width: 24px;
+    height: 24px;
+    margin-left: auto;
+    margin-right: 0;
+    font-size: 0;
+    border: none;
+    background-color: transparent;
+    background-image: url('./assets/cross_icon.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    flex: 1 0 auto;
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        padding: 24px 19px;
+    }
+
+    .text {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .icon {
+        margin-right: 15px;
+    }
+
+    .wrapper button {
+        width: 12px;
+        max-width: 12px;
+        height: 12px;
+    }
+}
+
+@media (max-width: 420px) {
+    .wrapper {
+        align-items: flex-start;
+        padding: 14px 18px;
+    }
+}

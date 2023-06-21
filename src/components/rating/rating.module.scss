@@ -1,0 +1,21 @@
+.rating {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.starWrapper {
+    background: none;
+    border: none;
+    cursor: pointer;
+    &:not(:last-child) {
+        padding-right: 16px;
+    }
+}
+
+.starFilled {
+    fill: #ffbc1f;
+    &.star {
+        fill: none;
+    }
+}

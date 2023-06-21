@@ -1,0 +1,596 @@
+.bookPage {
+    display: grid;
+    margin-top: 80px;
+    margin-bottom: 62px;
+}
+
+.breadcrumbs {
+    height: 64px;
+    background-color: #f9f9fa;
+    position: absolute;
+    top: 132px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.breadcrumbsBlock {
+    height: 64px;
+    margin: 0 auto;
+    display: flex;
+    grid-template-columns: max-content max-content 1fr;
+    align-content: center;
+    column-gap: 12px;
+    align-items: center;
+    max-width: 1110px;
+}
+
+.breadcrumbsLink {
+    color: var(--subtitle);
+    display: inline-block;
+}
+
+.breadcrumbsSeparator {
+    padding: 0 12px;
+}
+
+.buttonBack {
+    height: 24px;
+    width: 24px;
+    border: none;
+    background-color: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.breadcrumbsTitle {
+    color: var(--subtitle);
+    display: grid;
+    align-items: center;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.bookDescription {
+    display: grid;
+    margin-top: 62px;
+    column-gap: 30px;
+    grid-template-rows: repeat(5, min-content);
+    grid-template-areas:
+        'bookImg bookName'
+        'bookImg bookAuthor'
+        'bookImg bookButton'
+        'bookImg subTitle'
+        'bookImg description';
+}
+
+.bookImgBlock {
+    grid-area: bookImg;
+}
+
+.bookName {
+    grid-area: bookName;
+    font-weight: 700;
+    font-size: var(--fontsize-xl);
+    line-height: 40px;
+}
+
+.bookAuthor {
+    grid-area: bookAuthor;
+    font-weight: 700;
+    font-size: var(--fontsize-m);
+    line-height: 28px;
+    color: var(--subtitle);
+    padding-top: 24px;
+}
+
+.bookButton {
+    grid-area: bookButton;
+    padding-top: 32px;
+}
+
+.subTitle {
+    grid-area: subTitle;
+    font-weight: 700;
+    font-size: var(--fontsize-m);
+    line-height: 28px;
+    padding-top: 62px;
+}
+
+.description {
+    grid-area: description;
+    font-weight: 400;
+    font-size: var(--fontsize-s);
+    line-height: 24px;
+    text-align: justify;
+    padding-top: 32px;
+}
+
+.line {
+    width: 350px;
+    height: 1px;
+    margin: 16px 0 18px;
+    border: none;
+    background-color: #ebebeb;
+}
+
+.ratingBlock {
+    margin-top: 62px;
+}
+
+.ratingTitle {
+    font-weight: 700;
+    font-size: var(--fontsize-m);
+    line-height: 28px;
+}
+
+.rating {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    column-gap: 24px;
+    grid-template-columns: repeat(2, max-content);
+}
+
+.ratingText {
+    font-weight: 700;
+    font-size: var(--fontsize-m);
+    line-height: 28px;
+}
+
+.noRatingText {
+    color: var(--color-black);
+}
+
+.ratingStores {
+    margin-top: 24px;
+    display: grid;
+    gap: 22px;
+    grid-template-columns: repeat(6, max-content);
+}
+
+.details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 146px;
+    row-gap: 16px;
+}
+
+.detailsBlock {
+    display: grid;
+    row-gap: 16px;
+}
+
+.detailsTitle {
+    font-weight: 700;
+    font-size: var(--fontsize-m);
+    line-height: 28px;
+    margin: 64px 0 0;
+}
+
+.feature {
+    display: grid;
+    grid-template-columns: 120px minmax(min-content, 1fr);
+    column-gap: 70px;
+}
+
+.reviews {
+    display: grid;
+    row-gap: 42px;
+}
+
+.reviewsTitle {
+    margin: 62px 0 0;
+    font-weight: 700;
+    font-size: var(--fontsize-m);
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+}
+
+.reviewsLength {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: var(--subtitle);
+    padding-left: 6px;
+}
+
+.buttonReview {
+    max-width: 350px;
+    width: 100%;
+    height: 52px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0.2px;
+}
+
+.featureValue {
+    font-size: var(--fontsize-s);
+    line-height: 24px;
+}
+
+.featureKey {
+    font-weight: 600;
+    font-size: var(--fontsize-s);
+    line-height: 24px;
+    color: var(--subtitle);
+}
+
+.buttonComment {
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+    margin-left: 24px;
+}
+
+.buttonImgComment {
+    margin: 0 auto;
+    transform: rotate(180deg);
+}
+
+.buttonImgCommentHide {
+    transform: rotate(0deg);
+}
+
+.swiperSlide,
+.swiperSlideImg {
+    width: 445px;
+    height: 594px;
+}
+
+.swiperSlideImg {
+    border: 1px solid var(--subtitle);
+    border-radius: 10px;
+}
+
+.swiperImgNone {
+    max-width: 445px;
+    height: 594px;
+    object-fit: none;
+    border: 1px solid var(--subtitle);
+    border-radius: 10px;
+}
+
+.swiperSlideSmall {
+    margin-top: 18px;
+    width: 445px;
+}
+
+.swiperSlideSmallImg {
+    width: 66px;
+    height: 86px;
+}
+
+.swiper-pagination {
+    display: block;
+}
+
+//Стили для кнопок
+.button {
+    height: 40px;
+    width: 166px;
+    border-radius: 20px;
+    border: none;
+    font-weight: 600;
+    font-size: var(--fontsize-xs);
+    line-height: 18px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.buttonReserve {
+    background: var(--primary-background);
+    color: var(--background-main);
+    box-shadow: none;
+    transition: all 0.2s linear;
+}
+
+.buttonReserve:hover {
+    box-shadow: var(--box-shadow-button-hover);
+    border: 1px solid #ff740f;
+}
+
+.buttonReserve:active {
+    box-shadow: var(--box-shadow-button-active);
+}
+
+.buttonReserve:disabled {
+    background: #ebebeb;
+    box-shadow: none;
+    border: none;
+    cursor: default;
+}
+
+.buttonReserved {
+    background: var(--background-main);
+    color: var(--color-black);
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+    transition: all 0.2s linear;
+}
+
+.buttonReserved:hover {
+    border: 1px solid var(--subtitle);
+    box-shadow: var(--box-shadow-button-hover);
+}
+
+.buttonReserved:active {
+    box-shadow: var(--box-shadow-button-active);
+}
+
+.buttonReserved:disabled {
+    background: #f9f9fa;
+    color: var(--subtitle);
+    cursor: default;
+    box-shadow: none;
+}
+
+@media (max-width: 1440px) {
+    .breadcrumbsBlock {
+        margin: 0 165px;
+    }
+}
+
+@media (max-width: 1300px) {
+    .breadcrumbsBlock {
+        margin: 0 64px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .subTitle {
+        padding-top: 48px;
+    }
+
+    .details {
+        column-gap: 80px;
+    }
+
+    .feature {
+        column-gap: 34px;
+    }
+
+    .swiperSlide,
+    .swiperSlideImg {
+        width: 272px;
+        height: 400px;
+    }
+
+    .swiperImgNone {
+        max-width: 272px;
+        height: 400px;
+    }
+
+    .swiperSlideSmall {
+        width: 272px;
+    }
+}
+
+@media (max-width: 900px) {
+    .bookDescription {
+        grid-template-columns: 200px 1fr;
+    }
+
+    .swiperSlide,
+    .swiperSlideImg {
+        width: 200px;
+        height: 294px;
+    }
+
+    .swiperImgNone {
+        max-width: 200px;
+        height: 294px;
+    }
+
+    .swiperSlideSmall {
+        width: 200px;
+    }
+}
+
+@media (max-width: 850px) {
+    .bookDescription {
+        grid-template-areas:
+            'bookImg bookName'
+            'bookImg bookAuthor'
+            'bookImg bookButton'
+            'subTitle subTitle'
+            'description description';
+    }
+}
+
+@media (max-width: 800px) {
+    .bookDescription {
+        grid-template-columns: 136px 1fr;
+    }
+
+    .bookName {
+        font-size: var(--fontsize-l);
+        line-height: 30px;
+    }
+
+    .details {
+        column-gap: 30px;
+    }
+
+    .featureKey {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .featureValue {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .swiperSlide {
+        width: 136px;
+        height: 240px;
+    }
+
+    .swiperSlideImg {
+        width: 136px;
+        height: 200px;
+    }
+
+    .swiperImgNone {
+        width: 136px;
+        height: 200px;
+    }
+
+    .swiperSlideSmall {
+        width: 200px;
+        display: none;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #f83600;
+    }
+}
+
+@media (max-width: 700px) {
+    .breadcrumbsBlock {
+        margin: 0 24px;
+    }
+
+    .bookAuthor {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 18px;
+        padding-top: 32px;
+    }
+
+    .line {
+        width: 300px;
+    }
+}
+
+@media (max-width: 650px) {
+    .details {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .breadcrumbs {
+        top: 118px;
+    }
+
+    .bookDescription {
+        grid-template-areas:
+            'bookImg bookName'
+            'bookImg bookAuthor'
+            'bookImg bookButton'
+            'subTitle subTitle'
+            'description description';
+    }
+}
+
+@media (max-width: 500px) {
+    .bookDescription {
+        grid-template-columns: minmax(288px, 1fr);
+        grid-template-rows: repeat(6, min-content);
+        grid-template-areas:
+            'bookImg'
+            'bookName'
+            'bookAuthor'
+            'bookButton'
+            'subTitle'
+            'description';
+    }
+
+    .bookImgBlock {
+        margin: 0 auto;
+    }
+
+    .swiperSlide {
+        width: 188px;
+        height: 300px;
+    }
+
+    .swiperSlideImg {
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiperImgNone {
+        width: 188px;
+        height: 260px;
+    }
+
+    .bookName {
+        margin-top: 16px;
+    }
+}
+
+@media (max-width: 400px) {
+    .bookDescription {
+        grid-template-columns: 1fr;
+    }
+
+    .bookName {
+        font-size: var(--fontsize-m);
+        line-height: 28px;
+    }
+
+    .bookAuthor {
+        font-weight: 400;
+        font-size: var(--fontsize-xs);
+        padding-top: 8px;
+    }
+
+    .subTitle {
+        padding-top: 42px;
+    }
+
+    .description {
+        padding-top: 16px;
+        font-size: var(--fontsize-xs);
+        line-height: 18px;
+    }
+
+    .feature {
+        grid-template-columns: 90px 1fr;
+    }
+
+    .featureKey {
+        font-weight: 500;
+        font-size: var(--fontsize-xs);
+        line-height: 16px;
+    }
+
+    .featureValue {
+        font-size: var(--fontsize-xs);
+        line-height: 16px;
+        -webkit-line-clamp: 3;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .buttonReview {
+        margin: 0 auto;
+        width: 280px;
+    }
+
+    .line {
+        width: 100%;
+    }
+
+    .button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 340px) {
+    .buttonReview {
+        width: 100%;
+    }
+}

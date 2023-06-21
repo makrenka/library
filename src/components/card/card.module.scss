@@ -1,0 +1,334 @@
+//стили карточек для вида окон
+.cardWindow {
+    display: grid;
+    box-shadow: var(--box-shadow-button);
+    border-radius: 10px;
+    height: 470px;
+    cursor: pointer;
+}
+
+.ratingWindow {
+    display: grid;
+    margin-top: 16px;
+}
+
+.cardImgWindow {
+    width: 174px;
+    height: 240px;
+    margin: 8px auto 0;
+    border: 1px solid var(--subtitle);
+    border-radius: 10px;
+    object-fit: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        max-height: 100%;
+    }
+}
+
+.titleBlockWindow {
+    margin: 16px 8px 0;
+    height: 54px;
+    display: grid;
+    align-items: center;
+}
+
+.cardTitleWindow {
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0.1px;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cardAuthorWindow {
+    margin: 0 8px;
+    color: var(--subtitle);
+    line-height: 18px;
+    display: flex;
+    letter-spacing: 0.1px;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cardButtonWindow {
+    display: grid;
+    margin-bottom: 16px;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+//стили карточек для вида списка
+.cardList {
+    display: grid;
+    box-shadow: var(--box-shadow-button);
+    border-radius: 12px;
+    padding: 24px 24px 24px 16px;
+    column-gap: 16px;
+    grid-template-columns: 120px 1fr 1fr;
+    grid-template-rows: max-content max-content 1fr;
+    align-content: start;
+    cursor: pointer;
+}
+
+.textNoRaring {
+    display: grid;
+    justify-content: center;
+    color: var(--subtitle);
+}
+
+.ratingList {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+    display: grid;
+    justify-content: start;
+    align-content: end;
+    padding-bottom: 20px;
+}
+
+.cardImgList {
+    width: 120px;
+    border: 1px solid var(--subtitle);
+    border-radius: 3px;
+    grid-column: 1 / 2;
+    grid-row: 1 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.titleBlockList {
+    grid-column: 2 / 4;
+    grid-row: 1 / 2;
+}
+
+.cardTitleList {
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 32px;
+    letter-spacing: 0.1px;
+    -webkit-line-clamp: 4;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cardAuthorList {
+    padding-top: 8px;
+    grid-column: 2 / 4;
+    grid-row: 2 / 3;
+    font-size: var(--fontsize-s);
+    line-height: 24px;
+    color: var(--subtitle);
+}
+
+.cardButtonList {
+    grid-column: 3 / 4;
+    grid-row: 3 / 4;
+    display: grid;
+    justify-content: end;
+    align-content: end;
+    padding-bottom: 12px;
+}
+
+//Стили для кнопок
+.button {
+    height: 40px;
+    width: 166px;
+    border-radius: 20px;
+    border: none;
+    font-weight: 600;
+    font-size: var(--fontsize-xs);
+    line-height: 18px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.buttonReserve {
+    background: var(--primary-background);
+    color: var(--background-main);
+    box-shadow: none;
+    transition: all 0.2s linear;
+}
+
+.buttonReserve:hover {
+    box-shadow: var(--box-shadow-button-hover);
+    border: 1px solid #ff740f;
+}
+
+.buttonReserve:active {
+    box-shadow: var(--box-shadow-button-active);
+}
+
+.buttonReserve:disabled {
+    background: #ebebeb;
+    box-shadow: none;
+    border: none;
+    cursor: default;
+}
+
+.buttonReserved {
+    background: var(--background-main);
+    color: var(--color-black);
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+    transition: all 0.2s linear;
+}
+
+.buttonReserved:hover {
+    border: 1px solid var(--subtitle);
+    box-shadow: var(--box-shadow-button-hover);
+}
+
+.buttonReserved:active {
+    box-shadow: var(--box-shadow-button-active);
+}
+
+.buttonReserved:disabled {
+    background: #f9f9fa;
+    color: var(--subtitle);
+    cursor: default;
+    box-shadow: none;
+}
+
+.backtime {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 125%;
+    letter-spacing: 0.1px;
+    text-transform: uppercase;
+    color: #ff5253;
+    align-self: center;
+    justify-self: flex-end;
+}
+
+@media (max-width: 800px) {
+    .cardList {
+        padding: 16px 24px 16px 16px;
+    }
+
+    .cardTitleList {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    .backtime {
+        margin-top: 16px;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 125%;
+        letter-spacing: 0.2px;
+    }
+}
+
+@media (max-width: 600px) {
+    .cardList {
+        grid-template-columns: 120px 1fr;
+    }
+
+    .cardImgList {
+        grid-row: 1/5;
+    }
+
+    .titleBlockList {
+        grid-column: 2 / 3;
+    }
+
+    .cardAuthorList {
+        grid-column: 2 / 3;
+    }
+
+    .ratingList {
+        grid-column: 2 / 3;
+        grid-row: 3 / 4;
+    }
+
+    .cardButtonList {
+        padding-top: 10px;
+        padding-bottom: 0;
+        grid-column: 2 / 3;
+        grid-row: 4 / 5;
+    }
+}
+
+@media (max-width: 450px) {
+    .cardWindow {
+        position: relative;
+        grid-template-rows: max-content max-content max-content max-content max-content;
+    }
+
+    .cardList {
+        padding: 16px 16px 16px 8px;
+    }
+
+    .cardAuthorWindow {
+        padding-top: 8px;
+    }
+
+    .cardTitleList {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 18px;
+        -webkit-line-clamp: 3;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .ratingList {
+        padding-top: 8px;
+    }
+
+    .cardButtonList {
+        padding: 0px;
+    }
+
+    .cardButtonWindow {
+        margin: 0;
+        position: absolute;
+        bottom: 16px;
+        left: calc(50% - 88px);
+    }
+}
+
+@media (max-width: 400px) {
+    .cardWindow {
+        width: 100%;
+    }
+
+    .cardList {
+        column-gap: 32px;
+        grid-template-columns: 100px 1fr;
+    }
+
+    .cardTitleList {
+        word-wrap: break-word;
+    }
+}
+
+@media (max-width: 350px) {
+    .cardAuthorList {
+        font-size: var(--fontsize-xs);
+        line-height: 18px;
+    }
+
+    .ratingList {
+        padding-bottom: 0;
+        padding-top: 4px;
+
+        .star {
+            height: 16px;
+        }
+    }
+
+    .cardButtonList {
+        padding-top: 18px;
+    }
+}

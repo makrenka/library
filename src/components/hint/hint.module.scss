@@ -1,0 +1,24 @@
+.hint {
+    font-weight: 500;
+    font-size: var(--fontsize-xs);
+    line-height: 16px;
+    letter-spacing: 0.2px;
+    a {
+        transition: color 0.2s linear;
+    }
+}
+
+.ghost {
+    color: var(--subtitle);
+    a:hover {
+        color: var(--color-black);
+    }
+}
+
+.error {
+    color: var(--color-negative);
+}
+
+.dark {
+    color: var(--color-black);
+}

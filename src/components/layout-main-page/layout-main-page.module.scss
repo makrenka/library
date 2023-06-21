@@ -1,0 +1,28 @@
+.layoutMainPage {
+    width: 100%;
+    margin: 62px auto;
+    display: grid;
+    grid-template-columns: 255px 1fr;
+    grid-template-areas:
+        'navigation menu'
+        'navigation content';
+    column-gap: 29px;
+}
+
+.navigation {
+    display: block;
+}
+
+@media (max-width: 1000px) {
+    .layoutMainPage {
+        margin-top: 30px;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            'menu'
+            'content';
+    }
+
+    .navigation {
+        display: none;
+    }
+}

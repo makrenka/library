@@ -1,0 +1,39 @@
+.link {
+    display: flex;
+    align-items: center;
+    gap: 0 15px;
+    font-weight: 600;
+    font-size: var(--fontsize-xs);
+    height: 24px;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    &.dark {
+        color: var(--color-black);
+    }
+    &.light {
+        color: var(--color-grey);
+    }
+    span {
+        line-height: 100%;
+    }
+    svg.left {
+        transform: rotate(180deg);
+    }
+    svg {
+        color: var(--border-color);
+        transition: color 0.2s linear;
+    }
+    &:hover svg {
+        color: var(--color-black);
+    }
+    &:active {
+        background-color: #f83600;
+        background-image: var(--primary-background);
+        background-clip: inherit;
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+    }
+    &:active svg path {
+        stroke: url(#gradient);
+    }
+}
