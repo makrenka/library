@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { MenuViewEnum } from '../../constants/menu-view';
 import { NAV_MENU_ALL } from '../../constants/nav-menu-list';
-import { bookListRequest } from '../../store/books';
+import { bookListRequestNull, bookListRequestScroll } from '../../store/books';
 import { getBookCategories, getBookList } from '../../store/books/selectors';
 import { BookListItem } from '../../store/books/types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -13,12 +13,15 @@ import { Card } from '../card';
 
 import styles from './content.module.scss';
 
+
 type ContentProps = {
     menuView: string;
 };
 
 export const Content = ({ menuView }: ContentProps) => {
     const [data, setData] = useState<BookListItem[] | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
     const [activeCategory, setActiveCategory] = useState('');
     const dispatch = useAppDispatch();
     const { category } = useParams();
@@ -26,9 +29,49 @@ export const Content = ({ menuView }: ContentProps) => {
     const bookCategories = useAppSelector(getBookCategories);
     const { filter, isSortedDesc } = useAppSelector(searchSelector);
 
+    const TOTAL_PAGES = 46;
+
+    const observer = useRef(
+        new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && currentPage <= TOTAL_PAGES) {
+                    setCurrentPage((currentPage) => currentPage + 1);
+                };
+            }
+        )
+    );
+
     useEffect(() => {
-        dispatch(bookListRequest());
+        dispatch(bookListRequestNull());
     }, [dispatch]);
+
+    useEffect(() => {
+        const payload = `?pagination[page]=${currentPage}&pagination[pageSize]=12`;
+        dispatch(bookListRequestScroll(payload));
+    }, [dispatch, currentPage]);
+
+    useEffect(() => {
+        if (!lastElement && currentPage === 1) {
+            dispatch(bookListRequestNull());
+            const payload = `?pagination[page]=${currentPage}&pagination[pageSize]=12`;
+            dispatch(bookListRequestScroll(payload));
+        };
+    }, [dispatch, currentPage, lastElement]);
+
+    useEffect(() => {
+        const currentElement = lastElement;
+        const currentObserver = observer.current;
+
+        if (currentElement) {
+            currentObserver.observe(currentElement);
+        };
+
+        return () => {
+            if (currentElement) {
+                currentObserver.unobserve(currentElement);
+            };
+        };
+    }, [lastElement]);
 
     const listClassName = classNames(
         menuView === MenuViewEnum.window ? styles.viewWindow : styles.viewList,
@@ -88,7 +131,9 @@ export const Content = ({ menuView }: ContentProps) => {
                         data-test-id='cards-list'
                     >
                         {data?.map((book) => (
-                            <Card data={book} key={book.id} menuView={menuView} />
+                            <div key={book.id} ref={setLastElement}>
+                                <Card data={book} menuView={menuView} />
+                            </div>
                         ))}
                     </ul>
                 ))}

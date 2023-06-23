@@ -73,6 +73,20 @@ export const booksSlice = createSlice({
             state.bookList.isSuccess = true;
             state.bookList.data = action.payload;
         },
+        bookListRequestScroll: (state, action: PayloadAction<string>) => {
+            state.bookList.isLoading = true;
+        },
+        bookListRequestScrollSuccess: (state, action: PayloadAction<BookListItem[]>) => {
+            state.bookList.isLoading = false;
+            state.bookList.isError = false;
+            state.bookList.isSuccess = true;
+            state.bookList.data = state.bookList.data
+                ? [...state.bookList.data, ...action.payload]
+                : action.payload;
+        },
+        bookListRequestNull: (state) => {
+            state.bookList.data = null;
+        },
         bookListRequestFailure: (state) => {
             state.bookList.isLoading = false;
             state.bookList.isError = true;
@@ -227,7 +241,10 @@ export const booksSlice = createSlice({
 
 export const {
     bookListRequest,
+    bookListRequestScroll,
     bookListRequestSuccess,
+    bookListRequestScrollSuccess,
+    bookListRequestNull,
     bookListRequestFailure,
     bookRequest,
     bookRequestSuccess,
