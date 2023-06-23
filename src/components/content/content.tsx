@@ -46,15 +46,13 @@ export const Content = ({ menuView }: ContentProps) => {
     }, [dispatch]);
 
     useEffect(() => {
-        const payload = `?pagination[page]=${currentPage}&pagination[pageSize]=12`;
-        dispatch(bookListRequestScroll(payload));
+        dispatch(bookListRequestScroll(currentPage));
     }, [dispatch, currentPage]);
 
     useEffect(() => {
         if (!lastElement && currentPage === 1) {
             dispatch(bookListRequestNull());
-            const payload = `?pagination[page]=${currentPage}&pagination[pageSize]=12`;
-            dispatch(bookListRequestScroll(payload));
+            dispatch(bookListRequestScroll(currentPage));
         };
     }, [dispatch, currentPage, lastElement]);
 

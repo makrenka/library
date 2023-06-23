@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { PayloadAction } from '@reduxjs/toolkit';
+import { AnyAction, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
 
 import { axiosInstance } from '../../api/axios';
@@ -57,11 +57,11 @@ function* bookListRequestWorker() {
     }
 }
 
-function* bookListRequestScrollWorker({ payload }: PayloadAction<string>) {
+function* bookListRequestScrollWorker({ payload }: PayloadAction<number>) {
     try {
         const response: AxiosResponse<BookListItem[]> = yield call(
             axiosInstance.get,
-            `${BOOKS_URL.list}${payload}`,
+            `${BOOKS_URL.list}?pagination[page]=${payload}&pagination[pageSize]=12`,
         );
 
         yield put(bookListRequestScrollSuccess(response.data));

@@ -73,7 +73,7 @@ export const booksSlice = createSlice({
             state.bookList.isSuccess = true;
             state.bookList.data = action.payload;
         },
-        bookListRequestScroll: (state, action: PayloadAction<string>) => {
+        bookListRequestScroll: (state, action: PayloadAction<number>) => {
             state.bookList.isLoading = true;
         },
         bookListRequestScrollSuccess: (state, action: PayloadAction<BookListItem[]>) => {
