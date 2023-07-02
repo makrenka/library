@@ -13,9 +13,10 @@ import styles from './search.module.scss';
 type SearchProps = {
     isSearhView: boolean;
     setSearhView: (onChangeText: boolean) => void;
+    isSortView: boolean;
 };
 
-export const Search = ({ isSearhView, setSearhView }: SearchProps) => {
+export const Search = ({ isSearhView, setSearhView, isSortView }: SearchProps) => {
     const [value, setValue] = useState('');
     const dispatch = useAppDispatch();
 
@@ -27,7 +28,10 @@ export const Search = ({ isSearhView, setSearhView }: SearchProps) => {
     return (
         <div className={styles.search}>
             <Button
-                classButton={classNames(styles.searchButton, !isSearhView && styles.buttonHidden)}
+                classButton={classNames(
+                    styles.searchButton,
+                    (!isSearhView || !isSortView) && styles.buttonHidden
+                )}
                 onClick={() => setSearhView(!isSearhView)}
                 dataTestId='button-search-open'
             >

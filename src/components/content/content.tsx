@@ -16,9 +16,10 @@ import styles from './content.module.scss';
 
 type ContentProps = {
     menuView: string;
+    checkboxChecked: boolean;
 };
 
-export const Content = ({ menuView }: ContentProps) => {
+export const Content = ({ menuView, checkboxChecked }: ContentProps) => {
     const [data, setData] = useState<BookListItem[] | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
@@ -27,7 +28,11 @@ export const Content = ({ menuView }: ContentProps) => {
     const { category } = useParams();
     const bookList = useAppSelector(getBookList);
     const bookCategories = useAppSelector(getBookCategories);
-    const { filter, isSortedDesc } = useAppSelector(searchSelector);
+    const {
+        filter,
+        isSortedDesc,
+        isSortingByRating,
+    } = useAppSelector(searchSelector);
 
     const TOTAL_PAGES = 46;
 
@@ -99,9 +104,17 @@ export const Content = ({ menuView }: ContentProps) => {
                 isSortedDesc ? b.rating - a.rating : a.rating - b.rating,
             );
 
-            setData(sortedByRating);
-        }
-    }, [category, filter, bookList, isSortedDesc, activeCategory]);
+            const sortedByAlphabet = [...searchResult].sort((a, b) =>
+                isSortedDesc ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)
+            );
+
+            if (isSortingByRating) {
+                setData(sortedByRating);
+            } else {
+                setData(sortedByAlphabet);
+            };
+        };
+    }, [category, filter, bookList, isSortedDesc, activeCategory, isSortingByRating]);
 
     return (
         <main data-test-id='content'>
@@ -128,11 +141,13 @@ export const Content = ({ menuView }: ContentProps) => {
                         )}
                         data-test-id='cards-list'
                     >
-                        {data?.map((book) => (
-                            <div key={book.id} ref={setLastElement}>
-                                <Card data={book} menuView={menuView} />
-                            </div>
-                        ))}
+                        {data?.filter((book) => checkboxChecked
+                            ? book.booking === null
+                            : book).map((book) => (
+                                <div key={book.id} ref={setLastElement}>
+                                    <Card data={book} menuView={menuView} />
+                                </div>
+                            ))}
                     </ul>
                 ))}
         </main>
