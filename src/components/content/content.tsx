@@ -34,7 +34,7 @@ export const Content = ({ menuView, checkboxChecked }: ContentProps) => {
         isSortingByRating,
     } = useAppSelector(searchSelector);
 
-    const TOTAL_PAGES = 46;
+    const TOTAL_PAGES = 12;
 
     const observer = useRef(
         new IntersectionObserver(
