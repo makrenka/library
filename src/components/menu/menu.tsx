@@ -19,9 +19,10 @@ export type MenyProps = {
     menuView: MenuViewEnum;
     setMenuView: (onChangeText: MenuViewEnum) => void;
     onCheckbox: () => void;
+    setCurrentPage: (onChangeText: number) => void;
 };
 
-export const Menu = ({ menuView, setMenuView, onCheckbox }: MenyProps) => {
+export const Menu = ({ menuView, setMenuView, onCheckbox, setCurrentPage }: MenyProps) => {
     const [isSearhView, setSearhView] = useState(true);
     const [isSortView, setIsSortView] = useState(true);
     const [checkbox, setCheckbox] = useState(false);
@@ -29,18 +30,20 @@ export const Menu = ({ menuView, setMenuView, onCheckbox }: MenyProps) => {
     const bookList = useAppSelector(getBookList);
 
     return (
-        <div className={classNames(
-            styles.menu,
-            !isSearhView && styles.menuSearh,
-            isSortingShow && styles.menuAdapt
-        )}>
+        <div
+            className={classNames(
+                styles.menu,
+                !isSearhView && styles.menuSearh,
+                isSortingShow && styles.menuAdapt,
+            )}
+        >
             {bookList && (
                 <React.Fragment>
                     <div
                         className={classNames(
                             styles.searchSortBlock,
                             !isSearhView && styles.searchSortBlockNoGap,
-                            isSortingShow && styles.searchSortBlockAdapt
+                            isSortingShow && styles.searchSortBlockAdapt,
                         )}
                     >
                         <Search
@@ -54,23 +57,21 @@ export const Menu = ({ menuView, setMenuView, onCheckbox }: MenyProps) => {
                             isSearhView={isSearhView}
                             isSortingShow={isSortingShow}
                             setIsSortingShow={setIsSortingShow}
+                            setCurrentPage={setCurrentPage}
                         />
                     </div>
-                    {(isSearhView && isSortView) && (
+                    {isSearhView && isSortView && (
                         <div className={styles.display}>
                             <div className={styles.hideBooking}>
                                 <input
-                                    type="checkbox"
+                                    type='checkbox'
                                     id='hidebooking'
                                     className={styles.hideBookingInput}
                                     checked={checkbox}
                                     onChange={() => setCheckbox(!checkbox)}
                                     onClick={() => onCheckbox()}
                                 />
-                                <label
-                                    htmlFor="hidebooking"
-                                    className={styles.hideBookingLabel}
-                                >
+                                <label htmlFor='hidebooking' className={styles.hideBookingLabel}>
                                     Скрыть бронь
                                 </label>
                             </div>

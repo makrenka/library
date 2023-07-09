@@ -31,6 +31,9 @@ import {
     bookListRequestFailure,
     bookListRequestScroll,
     bookListRequestScrollSuccess,
+    bookListRequestSortingAlphabetAsc,
+    bookListRequestSortingAlphabetAscSuccess,
+    bookListRequestSortingAlphabetDesc,
     bookListRequestSuccess,
     bookRequest,
     bookRequestFailure,
@@ -65,6 +68,34 @@ function* bookListRequestScrollWorker({ payload }: PayloadAction<number>) {
         );
 
         yield put(bookListRequestScrollSuccess(response.data));
+    } catch {
+        yield put(bookListRequestFailure());
+        yield put(setToast({ type: TOAST.error, text: ERROR.book }));
+    }
+}
+
+function* bookListRequestSortingAlphabetAscWorker({ payload }: PayloadAction<number>) {
+    try {
+        const response: AxiosResponse<BookListItem[]> = yield call(
+            axiosInstance.get,
+            `${BOOKS_URL.list}?sort=title:asc&pagination[page]=${payload}&pagination[pageSize]=12`,
+        );
+
+        yield put(bookListRequestSortingAlphabetAscSuccess(response.data));
+    } catch {
+        yield put(bookListRequestFailure());
+        yield put(setToast({ type: TOAST.error, text: ERROR.book }));
+    }
+}
+
+function* bookListRequestSortingAlphabetDescWorker({ payload }: PayloadAction<number>) {
+    try {
+        const response: AxiosResponse<BookListItem[]> = yield call(
+            axiosInstance.get,
+            `${BOOKS_URL.list}?sort=title:desc&pagination[page]=${payload}&pagination[pageSize]=12`,
+        );
+
+        yield put(bookListRequestSortingAlphabetAscSuccess(response.data));
     } catch {
         yield put(bookListRequestFailure());
         yield put(setToast({ type: TOAST.error, text: ERROR.book }));
@@ -282,6 +313,14 @@ export function* watchBookListRequest() {
 
 export function* watchBookListRequestScroll() {
     yield takeLatest(bookListRequestScroll, bookListRequestScrollWorker)
+}
+
+export function* watchbookListRequestSortingAlphabetAsc() {
+    yield takeLatest(bookListRequestSortingAlphabetAsc, bookListRequestSortingAlphabetAscWorker)
+}
+
+export function* watchbookListRequestSortingAlphabetDesc() {
+    yield takeLatest(bookListRequestSortingAlphabetDesc, bookListRequestSortingAlphabetDescWorker)
 }
 
 export function* watchBookRequest() {

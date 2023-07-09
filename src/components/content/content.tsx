@@ -4,7 +4,12 @@ import classNames from 'classnames';
 
 import { MenuViewEnum } from '../../constants/menu-view';
 import { NAV_MENU_ALL } from '../../constants/nav-menu-list';
-import { bookListRequestNull, bookListRequestScroll } from '../../store/books';
+import {
+    bookListRequestNull,
+    bookListRequestScroll,
+    bookListRequestSortingAlphabetAsc,
+    bookListRequestSortingAlphabetDesc,
+} from '../../store/books';
 import { getBookCategories, getBookList } from '../../store/books/selectors';
 import { BookListItem } from '../../store/books/types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -13,37 +18,36 @@ import { Card } from '../card';
 
 import styles from './content.module.scss';
 
-
 type ContentProps = {
     menuView: string;
     checkboxChecked: boolean;
+    setCurrentPage: (onChangeText: number) => void;
+    currentPage: number;
 };
 
-export const Content = ({ menuView, checkboxChecked }: ContentProps) => {
+export const Content = ({
+    menuView,
+    checkboxChecked,
+    currentPage,
+    setCurrentPage,
+}: ContentProps) => {
     const [data, setData] = useState<BookListItem[] | null>(null);
-    const [currentPage, setCurrentPage] = useState(1);
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
     const [activeCategory, setActiveCategory] = useState('');
     const dispatch = useAppDispatch();
     const { category } = useParams();
     const bookList = useAppSelector(getBookList);
     const bookCategories = useAppSelector(getBookCategories);
-    const {
-        filter,
-        isSortedDesc,
-        isSortingByRating,
-    } = useAppSelector(searchSelector);
+    const { filter, isSortedDesc, isSortingByRating } = useAppSelector(searchSelector);
 
     const TOTAL_PAGES = 12;
 
     const observer = useRef(
-        new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting && currentPage <= TOTAL_PAGES) {
-                    setCurrentPage((currentPage) => currentPage + 1);
-                };
+        new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && currentPage <= TOTAL_PAGES) {
+                setCurrentPage(currentPage + 1);
             }
-        )
+        }),
     );
 
     useEffect(() => {
@@ -51,15 +55,37 @@ export const Content = ({ menuView, checkboxChecked }: ContentProps) => {
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(bookListRequestScroll(currentPage));
-    }, [dispatch, currentPage]);
+        if (isSortingByRating) {
+            dispatch(bookListRequestScroll(currentPage));
+        }
+    }, [dispatch, isSortingByRating, currentPage]);
 
     useEffect(() => {
-        if (!lastElement && currentPage === 1) {
+        if (isSortingByRating && currentPage === 1) {
             dispatch(bookListRequestNull());
             dispatch(bookListRequestScroll(currentPage));
-        };
-    }, [dispatch, currentPage, lastElement]);
+        }
+    }, [isSortingByRating, currentPage, dispatch]);
+
+    useEffect(() => {
+        if (!isSortingByRating && isSortedDesc && currentPage !== 1) {
+            dispatch(bookListRequestSortingAlphabetAsc(currentPage));
+        } else if (!isSortingByRating && !isSortedDesc && currentPage !== 1) {
+            dispatch(bookListRequestSortingAlphabetDesc(currentPage));
+        }
+    }, [dispatch, isSortingByRating, currentPage, isSortedDesc]);
+    console.log(bookList);
+
+    useEffect(() => {
+        if (!isSortingByRating && isSortedDesc && currentPage === 1) {
+            dispatch(bookListRequestNull());
+            dispatch(bookListRequestSortingAlphabetAsc(currentPage));
+        } else if (!isSortingByRating && !isSortedDesc && currentPage === 1) {
+            dispatch(bookListRequestNull());
+            dispatch(bookListRequestSortingAlphabetDesc(currentPage));
+        }
+    }, [dispatch, isSortingByRating, currentPage, isSortedDesc]);
+    console.log(bookList);
 
     useEffect(() => {
         const currentElement = lastElement;
@@ -67,12 +93,12 @@ export const Content = ({ menuView, checkboxChecked }: ContentProps) => {
 
         if (currentElement) {
             currentObserver.observe(currentElement);
-        };
+        }
 
         return () => {
             if (currentElement) {
                 currentObserver.unobserve(currentElement);
-            };
+            }
         };
     }, [lastElement]);
 
@@ -104,17 +130,22 @@ export const Content = ({ menuView, checkboxChecked }: ContentProps) => {
                 isSortedDesc ? b.rating - a.rating : a.rating - b.rating,
             );
 
-            const sortedByAlphabet = [...searchResult].sort((a, b) =>
-                isSortedDesc ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)
-            );
-
             if (isSortingByRating) {
                 setData(sortedByRating);
             } else {
-                setData(sortedByAlphabet);
-            };
-        };
-    }, [category, filter, bookList, isSortedDesc, activeCategory, isSortingByRating]);
+                setData(bookList);
+            }
+        }
+    }, [
+        category,
+        filter,
+        bookList,
+        isSortedDesc,
+        activeCategory,
+        isSortingByRating,
+        dispatch,
+        currentPage,
+    ]);
 
     return (
         <main data-test-id='content'>
@@ -141,9 +172,9 @@ export const Content = ({ menuView, checkboxChecked }: ContentProps) => {
                         )}
                         data-test-id='cards-list'
                     >
-                        {data?.filter((book) => checkboxChecked
-                            ? book.booking === null
-                            : book).map((book) => (
+                        {data
+                            ?.filter((book) => (checkboxChecked ? book.booking === null : book))
+                            .map((book) => (
                                 <div key={book.id} ref={setLastElement}>
                                     <Card data={book} menuView={menuView} />
                                 </div>

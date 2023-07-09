@@ -13,6 +13,8 @@ import {
     watchBookingUpdateRequest,
     watchBookListRequest,
     watchBookListRequestScroll,
+    watchbookListRequestSortingAlphabetAsc,
+    watchbookListRequestSortingAlphabetDesc,
     watchBookRequest,
     watchBookReviewRequest,
     watchBookReviewUpdate,
@@ -23,6 +25,8 @@ export function* rootSaga() {
     yield all([
         fork(watchBookListRequest),
         fork(watchBookListRequestScroll),
+        fork(watchbookListRequestSortingAlphabetAsc),
+        fork(watchbookListRequestSortingAlphabetDesc),
         fork(watchBookRequest),
         fork(watchUserRequest),
         fork(watchBookCategoriesRequest),
