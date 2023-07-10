@@ -21,7 +21,7 @@ import styles from './content.module.scss';
 type ContentProps = {
     menuView: string;
     checkboxChecked: boolean;
-    setCurrentPage: (onChangeText: number) => void;
+    setCurrentPage: any;
     currentPage: number;
 };
 
@@ -45,14 +45,10 @@ export const Content = ({
     const observer = useRef(
         new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && currentPage <= TOTAL_PAGES) {
-                setCurrentPage(currentPage + 1);
+                setCurrentPage((currentPage: number) => currentPage + 1);
             }
         }),
     );
-
-    useEffect(() => {
-        dispatch(bookListRequestNull());
-    }, [dispatch]);
 
     useEffect(() => {
         if (isSortingByRating) {
@@ -61,20 +57,12 @@ export const Content = ({
     }, [dispatch, isSortingByRating, currentPage]);
 
     useEffect(() => {
-        if (isSortingByRating && currentPage === 1) {
-            dispatch(bookListRequestNull());
-            dispatch(bookListRequestScroll(currentPage));
-        }
-    }, [isSortingByRating, currentPage, dispatch]);
-
-    useEffect(() => {
         if (!isSortingByRating && isSortedDesc && currentPage !== 1) {
             dispatch(bookListRequestSortingAlphabetAsc(currentPage));
         } else if (!isSortingByRating && !isSortedDesc && currentPage !== 1) {
             dispatch(bookListRequestSortingAlphabetDesc(currentPage));
         }
     }, [dispatch, isSortingByRating, currentPage, isSortedDesc]);
-    console.log(bookList);
 
     useEffect(() => {
         if (!isSortingByRating && isSortedDesc && currentPage === 1) {
@@ -85,7 +73,6 @@ export const Content = ({
             dispatch(bookListRequestSortingAlphabetDesc(currentPage));
         }
     }, [dispatch, isSortingByRating, currentPage, isSortedDesc]);
-    console.log(bookList);
 
     useEffect(() => {
         const currentElement = lastElement;

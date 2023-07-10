@@ -40,12 +40,12 @@ export const Sorting = ({
 
     const handleSortRatingDecr = () => {
         dispatch(setSortMethodRatingDecr());
-        setCurrentPage(1);
+        // setCurrentPage(1);
     };
 
     const handleSortRatingIncr = () => {
         dispatch(setSortMethodRatingIncr());
-        setCurrentPage(1);
+        // setCurrentPage(1);
     };
 
     const handleSortAlphDecr = () => {
