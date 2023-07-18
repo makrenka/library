@@ -51,6 +51,12 @@ export const Content = ({
     );
 
     useEffect(() => {
+        if (isSortingByRating && currentPage === 1) {
+            dispatch(bookListRequestNull());
+        }
+    }, [dispatch, isSortingByRating, currentPage]);
+
+    useEffect(() => {
         if (isSortingByRating) {
             dispatch(bookListRequestScroll(currentPage));
         }

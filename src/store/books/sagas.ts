@@ -29,6 +29,7 @@ import {
     bookingUpdateRequest,
     bookListRequest,
     bookListRequestFailure,
+    bookListRequestNull,
     bookListRequestScroll,
     bookListRequestScrollSuccess,
     bookListRequestSortingAlphabetAsc,
@@ -45,6 +46,8 @@ import {
     bookReviewUpdateRequest,
     bookReviewUpdateSuccess,
 } from '.';
+import { useAppSelector } from '../hooks';
+import { searchSelector } from '../search/selectors';
 
 function* bookListRequestWorker() {
     try {
@@ -172,15 +175,22 @@ function* bookingRequestWorker({ payload }: PayloadAction<{ dateOrder: string; b
             dateOrder,
             book: bookUpdateData,
         };
+        const {isSortingByRating, isSortedDesc} = yield select(searchSelector);
 
         yield put(setToast({ type: TOAST.success, text: MESSAGES.bookingSuccess }));
         yield put(addBookingUpdateUser(userBookingUpdate));
 
         if (booking?.isOnBookInfoPage) {
             yield put(bookRequest(book.data.id));
-        } else {
-            yield put(bookListRequest());
-            // TODO менять стейт?
+        } else if (isSortingByRating) {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestScroll(1));
+        } else if (!isSortingByRating && isSortedDesc) {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestSortingAlphabetAsc(1));
+        } else if (!isSortingByRating && !isSortedDesc) {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestSortingAlphabetDesc(1));
         }
     } catch {
         yield put(bookingRequestFailure(ERROR.bookingError));
@@ -208,6 +218,7 @@ function* bookingUpdateRequestWorker({
                 },
             },
         );
+        const {isSortingByRating, isSortedDesc} = yield select(searchSelector);
 
         yield put(
             bookingRequestSuccess({
@@ -219,8 +230,15 @@ function* bookingUpdateRequestWorker({
 
         if (booking?.isOnBookInfoPage) {
             yield put(bookRequest(book.data.id));
-        } else {
-            yield put(bookListRequest());
+        } else if (isSortingByRating) {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestScroll(1));
+        } else if (!isSortingByRating && isSortedDesc) {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestSortingAlphabetAsc(1));
+        } else if (!isSortingByRating && !isSortedDesc) {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestSortingAlphabetDesc(1));
         }
     } catch {
         yield put(bookingRequestFailure(ERROR.editError));
@@ -236,6 +254,7 @@ function* bookingDeleteRequestWorker({ payload }: PayloadAction<string>) {
             axiosInstance.delete,
             `${BOOKS_URL.booking}/${payload}`,
         );
+        const {isSortingByRating, isSortedDesc} = yield select(searchSelector);
 
         yield put(
             bookingRequestSuccess({
@@ -248,8 +267,15 @@ function* bookingDeleteRequestWorker({ payload }: PayloadAction<string>) {
 
         if (booking?.isOnBookInfoPage) {
             yield put(bookRequest(book.data.id));
-        } else {
-            yield put(bookListRequest());
+        } else if (isSortingByRating) {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestScroll(1));
+        } else if (!isSortingByRating && isSortedDesc) {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestSortingAlphabetAsc(1));
+        } else if (!isSortingByRating && !isSortedDesc) {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestSortingAlphabetDesc(1));
         }
     } catch {
         yield put(bookingRequestFailure(ERROR.bookingDelete));
