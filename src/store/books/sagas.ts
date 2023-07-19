@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { PayloadAction } from '@reduxjs/toolkit';
+import { AnyAction, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
 
 import { axiosInstance } from '../../api/axios';
@@ -29,6 +29,8 @@ import {
     bookingUpdateRequest,
     bookListRequest,
     bookListRequestFailure,
+    bookListRequestScroll,
+    bookListRequestScrollSuccess,
     bookListRequestSuccess,
     bookRequest,
     bookRequestFailure,
@@ -49,6 +51,20 @@ function* bookListRequestWorker() {
         );
 
         yield put(bookListRequestSuccess(response.data));
+    } catch {
+        yield put(bookListRequestFailure());
+        yield put(setToast({ type: TOAST.error, text: ERROR.book }));
+    }
+}
+
+function* bookListRequestScrollWorker({ payload }: PayloadAction<number>) {
+    try {
+        const response: AxiosResponse<BookListItem[]> = yield call(
+            axiosInstance.get,
+            `${BOOKS_URL.list}?pagination[page]=${payload}&pagination[pageSize]=12`,
+        );
+
+        yield put(bookListRequestScrollSuccess(response.data));
     } catch {
         yield put(bookListRequestFailure());
         yield put(setToast({ type: TOAST.error, text: ERROR.book }));
@@ -262,6 +278,10 @@ function* bookReviewUpdateWorker({ payload }: PayloadAction<UpdateCommentPayload
 
 export function* watchBookListRequest() {
     yield takeLatest(bookListRequest, bookListRequestWorker);
+}
+
+export function* watchBookListRequestScroll() {
+    yield takeLatest(bookListRequestScroll, bookListRequestScrollWorker)
 }
 
 export function* watchBookRequest() {

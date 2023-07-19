@@ -3,7 +3,7 @@ export const BASE_URL = `${HOST}/api`;
 export const BASE_AUTH_URL = `${BASE_URL}/auth`;
 
 export const BOOKS_URL = {
-    list: `${BASE_URL}/books?pagination[page]=1&pagination[pageSize]=12`,
+    list: `${BASE_URL}/books`,
     item: `${BASE_URL}/books`,
     categories: `${BASE_URL}/categories`,
     booking: `${BASE_URL}/bookings`,
