@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import classNames from 'classnames';
 
 import { useClickOutside } from '../../hooks/use-click-outside';
@@ -25,6 +25,7 @@ type SortProps = {
     isSortingShow: boolean;
     setIsSortingShow: (onChangeText: boolean) => void;
     setCurrentPage: (onChangeText: number) => void;
+    setIsSorting: (onChangeText: boolean) => void;
 };
 
 export const Sorting = ({
@@ -34,28 +35,31 @@ export const Sorting = ({
     isSortingShow,
     setIsSortingShow,
     setCurrentPage,
+    setIsSorting,
 }: SortProps) => {
     const { ref, isShow, setIsShow } = useClickOutside(false);
     const dispatch = useAppDispatch();
 
     const handleSortRatingDecr = () => {
         dispatch(setSortMethodRatingDecr());
-        // setCurrentPage(1);
+        setIsSorting(true);
     };
 
     const handleSortRatingIncr = () => {
         dispatch(setSortMethodRatingIncr());
-        // setCurrentPage(1);
+        setIsSorting(true);
     };
 
     const handleSortAlphDecr = () => {
         dispatch(setSortMethodAlphDecr());
         setCurrentPage(1);
+        setIsSorting(true);
     };
 
     const handleSortAlphIncr = () => {
         dispatch(setSortMethodAlphIncr());
         setCurrentPage(1);
+        setIsSorting(true);
     };
 
     const handleSortView = () => {

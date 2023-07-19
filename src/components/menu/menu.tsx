@@ -3,17 +3,22 @@ import classNames from 'classnames';
 
 import { MenuViewEnum } from '../../constants/menu-view';
 import { getBookList } from '../../store/books/selectors';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Button } from '../button';
 import { Search } from '../search';
+import { Sorting } from '../sorting';
+import { searchSelector } from '../../store/search/selectors';
+import { SORTING_FILTERS } from '../../constants/sorting-filters';
+import { bookListRequestNull, bookListRequestScroll } from '../../store/books';
 
 import displayList from './assets/icon-line.svg';
 import displayListActive from './assets/icon-line-active.svg';
 import displayWindow from './assets/icon-square.svg';
 import displayWindowActive from './assets/icon-square-active.svg';
+import iconClose from './assets/icon-close.svg';
 
 import styles from './menu.module.scss';
-import { Sorting } from '../sorting';
+import { setSortMethodRatingDecr } from '../../store/search';
 
 export type MenyProps = {
     menuView: MenuViewEnum;
@@ -27,7 +32,17 @@ export const Menu = ({ menuView, setMenuView, onCheckbox, setCurrentPage }: Meny
     const [isSortView, setIsSortView] = useState(true);
     const [checkbox, setCheckbox] = useState(false);
     const [isSortingShow, setIsSortingShow] = useState(false);
+    const [isSorting, setIsSorting] = useState(false);
     const bookList = useAppSelector(getBookList);
+    const { isSortedDesc, isSortingByRating } = useAppSelector(searchSelector);
+    const dispatch = useAppDispatch();
+
+    const resetSortingFilter = () => {
+        setIsSorting(false);
+        dispatch(setSortMethodRatingDecr());
+        dispatch(bookListRequestNull());
+        dispatch(bookListRequestScroll(1));
+    };
 
     return (
         <div
@@ -35,6 +50,7 @@ export const Menu = ({ menuView, setMenuView, onCheckbox, setCurrentPage }: Meny
                 styles.menu,
                 !isSearhView && styles.menuSearh,
                 isSortingShow && styles.menuAdapt,
+                isSorting && styles.menuWithSortingFilter,
             )}
         >
             {bookList && (
@@ -58,6 +74,7 @@ export const Menu = ({ menuView, setMenuView, onCheckbox, setCurrentPage }: Meny
                             isSortingShow={isSortingShow}
                             setIsSortingShow={setIsSortingShow}
                             setCurrentPage={setCurrentPage}
+                            setIsSorting={setIsSorting}
                         />
                     </div>
                     {isSearhView && isSortView && (
@@ -117,6 +134,31 @@ export const Menu = ({ menuView, setMenuView, onCheckbox, setCurrentPage }: Meny
                     )}
                 </React.Fragment>
             )}
+            <div
+                className={classNames(
+                    styles.sortingFilter,
+                    isSorting && styles.sortingFilterActive,
+                )}
+            >
+                <span className={styles.sortingFilterText}>
+                    {isSortingByRating && !isSortedDesc
+                        ? SORTING_FILTERS.downRating
+                        : isSortingByRating && isSortedDesc
+                        ? SORTING_FILTERS.upRating
+                        : !isSortingByRating && !isSortedDesc
+                        ? SORTING_FILTERS.upAlphabet
+                        : !isSortingByRating && isSortedDesc
+                        ? SORTING_FILTERS.downAlphabet
+                        : null}
+                </span>
+                <button
+                    type='button'
+                    onClick={resetSortingFilter}
+                    className={styles.sortingFilterBtn}
+                >
+                    <img src={iconClose} alt='icon-close' />
+                </button>
+            </div>
         </div>
     );
 };
