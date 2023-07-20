@@ -3,9 +3,7 @@ import classNames from 'classnames';
 
 import { MenuViewEnum } from '../../constants/menu-view';
 import { getBookList } from '../../store/books/selectors';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setSortMethod } from '../../store/search';
-import { searchSelector } from '../../store/search/selectors';
+import { useAppSelector } from '../../store/hooks';
 import { Button } from '../button';
 import { Search } from '../search';
 
@@ -13,51 +11,69 @@ import displayList from './assets/icon-line.svg';
 import displayListActive from './assets/icon-line-active.svg';
 import displayWindow from './assets/icon-square.svg';
 import displayWindowActive from './assets/icon-square-active.svg';
-import sortAsc from './assets/sort-asc.svg';
-import sortDesc from './assets/sort-desc.svg';
 
 import styles from './menu.module.scss';
+import { Sorting } from '../sorting';
 
 export type MenyProps = {
     menuView: MenuViewEnum;
     setMenuView: (onChangeText: MenuViewEnum) => void;
+    onCheckbox: () => void;
 };
 
-export const Menu = ({ menuView, setMenuView }: MenyProps) => {
+export const Menu = ({ menuView, setMenuView, onCheckbox }: MenyProps) => {
     const [isSearhView, setSearhView] = useState(true);
-    const { isSortedDesc } = useAppSelector(searchSelector);
+    const [isSortView, setIsSortView] = useState(true);
+    const [checkbox, setCheckbox] = useState(false);
+    const [isSortingShow, setIsSortingShow] = useState(false);
     const bookList = useAppSelector(getBookList);
-    const dispatch = useAppDispatch();
-
-    const handleSort = () => {
-        dispatch(setSortMethod());
-    };
 
     return (
-        <div className={classNames(styles.menu, !isSearhView && styles.menuSearh)}>
+        <div className={classNames(
+            styles.menu,
+            !isSearhView && styles.menuSearh,
+            isSortingShow && styles.menuAdapt
+        )}>
             {bookList && (
                 <React.Fragment>
                     <div
                         className={classNames(
                             styles.searchSortBlock,
                             !isSearhView && styles.searchSortBlockNoGap,
+                            isSortingShow && styles.searchSortBlockAdapt
                         )}
                     >
-                        <Search isSearhView={isSearhView} setSearhView={setSearhView} />
-                        <Button
-                            classButton={classNames(
-                                styles.buttonSort,
-                                !isSearhView && styles.buttonHidden,
-                            )}
-                            onClick={handleSort}
-                            dataTestId='sort-rating-button'
-                        >
-                            <img src={isSortedDesc ? sortDesc : sortAsc} alt='icon-sort' />
-                            <span className={styles.buttonSortText}>По рейтингу</span>
-                        </Button>
+                        <Search
+                            isSearhView={isSearhView}
+                            setSearhView={setSearhView}
+                            isSortView={isSortView}
+                        />
+                        <Sorting
+                            isSortView={isSortView}
+                            setIsSortView={setIsSortView}
+                            isSearhView={isSearhView}
+                            isSortingShow={isSortingShow}
+                            setIsSortingShow={setIsSortingShow}
+                        />
                     </div>
-                    {isSearhView && (
+                    {(isSearhView && isSortView) && (
                         <div className={styles.display}>
+                            <div className={styles.hideBooking}>
+                                <input
+                                    type="checkbox"
+                                    id='hidebooking'
+                                    className={styles.hideBookingInput}
+                                    checked={checkbox}
+                                    onChange={() => setCheckbox(!checkbox)}
+                                    onClick={() => onCheckbox()}
+                                />
+                                <label
+                                    htmlFor="hidebooking"
+                                    className={styles.hideBookingLabel}
+                                >
+                                    Скрыть бронь
+                                </label>
+                            </div>
                             <Button
                                 classButton={classNames(
                                     styles.buttonDisplay,

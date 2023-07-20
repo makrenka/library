@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { Content } from '../../components/content';
 import { Menu } from '../../components/menu';
@@ -8,11 +8,16 @@ import styles from './main-page.module.scss';
 
 export const MainPage = () => {
     const [menuView, setMenuView] = useState(MenuViewEnum.window);
+    const [checkboxChecked, setCheckboxChecked] = useState(false);
+
+    const onCheckbox = () => {
+        setCheckboxChecked(!checkboxChecked);
+    };
 
     return (
         <section className={styles.mainPage} data-test-id='main-page'>
-            <Menu menuView={menuView} setMenuView={setMenuView} />
-            <Content menuView={menuView} />
+            <Menu menuView={menuView} setMenuView={setMenuView} onCheckbox={onCheckbox} />
+            <Content menuView={menuView} checkboxChecked={checkboxChecked} />
         </section>
     );
 };
