@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import classNames from "classnames";
+import { useEffect } from 'react';
+import classNames from 'classnames';
 
-import { useClickOutside } from "../../hooks/use-click-outside";
-import { Button } from "../button";
-import { useAppDispatch } from "../../store/hooks";
+import { useClickOutside } from '../../hooks/use-click-outside';
+import { Button } from '../button';
+import { useAppDispatch } from '../../store/hooks';
 import {
     setSortMethodAlphDecr,
     setSortMethodAlphIncr,
     setSortMethodRatingDecr,
-    setSortMethodRatingIncr
-} from "../../store/search";
+    setSortMethodRatingIncr,
+} from '../../store/search';
 
 import sortAsc from './assets/sort-asc.svg';
 import sortDesc from './assets/sort-desc.svg';
@@ -24,26 +24,42 @@ type SortProps = {
     isSearhView: boolean;
     isSortingShow: boolean;
     setIsSortingShow: (onChangeText: boolean) => void;
-}
+    setCurrentPage: (onChangeText: number) => void;
+    setIsSorting: (onChangeText: boolean) => void;
+};
 
-export const Sorting = ({ isSortView, setIsSortView, isSearhView, isSortingShow, setIsSortingShow }: SortProps) => {
+export const Sorting = ({
+    isSortView,
+    setIsSortView,
+    isSearhView,
+    isSortingShow,
+    setIsSortingShow,
+    setCurrentPage,
+    setIsSorting,
+}: SortProps) => {
     const { ref, isShow, setIsShow } = useClickOutside(false);
     const dispatch = useAppDispatch();
 
     const handleSortRatingDecr = () => {
         dispatch(setSortMethodRatingDecr());
+        setIsSorting(true);
     };
 
     const handleSortRatingIncr = () => {
         dispatch(setSortMethodRatingIncr());
+        setIsSorting(true);
     };
 
     const handleSortAlphDecr = () => {
         dispatch(setSortMethodAlphDecr());
+        setCurrentPage(1);
+        setIsSorting(true);
     };
 
     const handleSortAlphIncr = () => {
         dispatch(setSortMethodAlphIncr());
+        setCurrentPage(1);
+        setIsSorting(true);
     };
 
     const handleSortView = () => {
@@ -56,42 +72,29 @@ export const Sorting = ({ isSortView, setIsSortView, isSearhView, isSortingShow,
         if (!isShow) {
             setIsSortView(true);
             setIsSortingShow(false);
-        };
+        }
     }, [isShow, setIsSortView, setIsSortingShow]);
 
     return (
-        <div
-            className={classNames(styles.sortBlock, isShow && styles.sortBlockActive)}
-            ref={ref}
-        >
+        <div className={classNames(styles.sortBlock, isShow && styles.sortBlockActive)} ref={ref}>
             <Button
-                classButton={classNames(
-                    styles.buttonSort,
-                    isShow && styles.buttonSortActive
-                )}
+                classButton={classNames(styles.buttonSort, isShow && styles.buttonSortActive)}
                 onClick={() => setIsShow(!isShow)}
                 dataTestId='sort-rating-button'
             >
                 <span className={styles.buttonSortText}>Сортировка</span>
                 <img
-                    className={classNames(
-                        styles.sortArrow,
-                        isShow && styles.sortArrowActive
-                    )}
+                    className={classNames(styles.sortArrow, isShow && styles.sortArrowActive)}
                     src={sortArrow}
                     alt='sort-arrow'
                 />
-                <img
-                    className={styles.iconClose}
-                    src={iconClose}
-                    alt="icon-close"
-                />
+                <img className={styles.iconClose} src={iconClose} alt='icon-close' />
             </Button>
             <Button
                 classButton={classNames(
                     styles.buttonSortAdapt,
                     !isSearhView && styles.buttonHidden,
-                    isShow && styles.buttonSortAdaptUnactive
+                    isShow && styles.buttonSortAdaptUnactive,
                 )}
                 onClick={handleSortView}
             />
@@ -100,35 +103,23 @@ export const Sorting = ({ isSortView, setIsSortView, isSearhView, isSortingShow,
                 className={classNames(styles.listSort, isShow && styles.listSortActive)}
                 onClick={() => setIsShow(!isShow)}
             >
-                <li
-                    className={styles.sortItem}
-                    onClick={handleSortRatingDecr}
-                >
+                <li className={styles.sortItem} onClick={handleSortRatingDecr}>
                     По рейтингу
-                    <img src={sortDesc} alt="icon-sort" />
+                    <img src={sortDesc} alt='icon-sort' />
                 </li>
-                <li
-                    className={styles.sortItem}
-                    onClick={handleSortRatingIncr}
-                >
+                <li className={styles.sortItem} onClick={handleSortRatingIncr}>
                     По рейтингу
-                    <img src={sortAsc} alt="icon-sort" />
+                    <img src={sortAsc} alt='icon-sort' />
                 </li>
-                <li
-                    className={styles.sortItem}
-                    onClick={handleSortAlphDecr}
-                >
+                <li className={styles.sortItem} onClick={handleSortAlphDecr}>
                     По алфавиту
-                    <img src={sortDesc} alt="icon-sort" />
+                    <img src={sortDesc} alt='icon-sort' />
                 </li>
-                <li
-                    className={styles.sortItem}
-                    onClick={handleSortAlphIncr}
-                >
+                <li className={styles.sortItem} onClick={handleSortAlphIncr}>
                     По алфавиту
-                    <img src={sortAsc} alt="icon-sort" />
+                    <img src={sortAsc} alt='icon-sort' />
                 </li>
             </ul>
         </div>
-    )
-}
+    );
+};
