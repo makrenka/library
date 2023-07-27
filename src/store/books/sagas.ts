@@ -36,6 +36,8 @@ import {
     bookListRequestSortingAlphabetAscSuccess,
     bookListRequestSortingAlphabetDesc,
     bookListRequestSuccess,
+    bookListRequestBooked,
+    bookListRequestBookedSuccess,
     bookRequest,
     bookRequestFailure,
     bookRequestSuccess,
@@ -99,6 +101,20 @@ function* bookListRequestSortingAlphabetDescWorker({ payload }: PayloadAction<nu
         );
 
         yield put(bookListRequestSortingAlphabetAscSuccess(response.data));
+    } catch {
+        yield put(bookListRequestFailure());
+        yield put(setToast({ type: TOAST.error, text: ERROR.book }));
+    }
+}
+
+function* bookListRequestBookedWorker() {
+    try {
+        const response: AxiosResponse<BookListItem[]> = yield call(
+            axiosInstance.get,
+            `${BOOKS_URL.list}?filters[booking][id][$notNull]=true`,
+        );
+
+        yield put(bookListRequestBookedSuccess(response.data));
     } catch {
         yield put(bookListRequestFailure());
         yield put(setToast({ type: TOAST.error, text: ERROR.book }));
@@ -347,6 +363,10 @@ export function* watchbookListRequestSortingAlphabetAsc() {
 
 export function* watchbookListRequestSortingAlphabetDesc() {
     yield takeLatest(bookListRequestSortingAlphabetDesc, bookListRequestSortingAlphabetDescWorker)
+}
+
+export function* watchbookListRequestBooked() {
+    yield takeLatest(bookListRequestBooked, bookListRequestBookedWorker);
 }
 
 export function* watchBookRequest() {

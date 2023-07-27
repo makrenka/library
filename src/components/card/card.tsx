@@ -1,5 +1,5 @@
 import { SyntheticEvent } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { MenuViewEnum } from '../../constants/menu-view';
@@ -33,7 +33,7 @@ type BookType = {
 
 export const Card = (props: BookType) => {
     const {
-        data: { rating, title, authors, id, issueYear, image },
+        data: { rating, title, authors, id, issueYear, image, booking },
         data: bookData,
         menuView,
         isProfileCard,
@@ -47,6 +47,7 @@ export const Card = (props: BookType) => {
     const dispatch = useAppDispatch();
 
     const { category } = useParams();
+    const { pathname } = useLocation();
 
     const { filter } = useAppSelector(searchSelector);
 
@@ -81,57 +82,106 @@ export const Card = (props: BookType) => {
         dispatch(bookingDeleteRequest(bookingId || 0));
     };
 
-    return (
-        <Link to={linkPath} key={id} onClick={resetSearchValue}>
-            <li className={classNameCard('card')} data-test-id='card'>
-                <div className={classNameCard('cardImg')}>
-                    <img src={image?.url ? image.url : IconPlugImg} alt={title} />
-                </div>
-                <div className={classNameCard('rating')}>
-                    {rating || rating === 0 ? (
-                        <Rating rating={rating} classNameStar={styles.star} />
-                    ) : (
-                        <span className={styles.textNoRaring}>Ещё нет оценок</span>
-                    )}
-                </div>
-                <div className={classNameCard('titleBlock')}>
-                    <p className={classNameCard('cardTitle')}>{handleHighlight(title)}</p>
-                </div>
-                <span className={classNameCard('cardAuthor')}>
-                    {authors && authors.length > 0 && authors.join(', ')}, {issueYear}
-                </span>
-                {isProfileCard ? (
-                    isHistory ? (
-                        <div className={classNameCard('cardButton')}>
-                            <Button
-                                dataTestId='history-review-button'
-                                view={isCommented ? 'secondary' : 'primary'}
-                                onClick={handleOpenTakeReviewModal}
-                            >
-                                {isCommented ? 'Изменить оценку' : 'Оставить отзыв'}
-                            </Button>
-                        </div>
-                    ) : (
-                        <span className={styles.backtime}>
-                            Возврат {formatDate(deliveryDate?.toString() || '')}
-                        </span>
-                    )
-                ) : isBooking ? (
+    const renderCardMain = (
+        <li className={classNameCard('card')} data-test-id='card'>
+            <div className={classNameCard('cardImg')}>
+                <img src={image?.url ? image.url : IconPlugImg} alt={title} />
+            </div>
+            <div className={classNameCard('rating')}>
+                {rating || rating === 0 ? (
+                    <Rating rating={rating} classNameStar={styles.star} />
+                ) : (
+                    <span className={styles.textNoRaring}>Ещё нет оценок</span>
+                )}
+            </div>
+            <div className={classNameCard('titleBlock')}>
+                <p className={classNameCard('cardTitle')}>{handleHighlight(title)}</p>
+            </div>
+            <span className={classNameCard('cardAuthor')}>
+                {authors && authors.length > 0 && authors.join(', ')}, {issueYear}
+            </span>
+            {isProfileCard ? (
+                isHistory ? (
                     <div className={classNameCard('cardButton')}>
                         <Button
-                            dataTestId='cancel-booking-button'
-                            view='primary'
-                            onClick={handleCancelBooking}
+                            dataTestId='history-review-button'
+                            view={isCommented ? 'secondary' : 'primary'}
+                            onClick={handleOpenTakeReviewModal}
                         >
-                            Отменить бронь
+                            {isCommented ? 'Изменить оценку' : 'Оставить отзыв'}
                         </Button>
                     </div>
                 ) : (
-                    <div className={classNameCard('cardButton')}>
-                        <BookingButton bookData={bookData} />
-                    </div>
-                )}
-            </li>
+                    <span className={styles.backtime}>
+                        Возврат {formatDate(deliveryDate?.toString() || '')}
+                    </span>
+                )
+            ) : isBooking ? (
+                <div className={classNameCard('cardButton')}>
+                    <Button
+                        dataTestId='cancel-booking-button'
+                        view='primary'
+                        onClick={handleCancelBooking}
+                    >
+                        Отменить бронь
+                    </Button>
+                </div>
+            ) : (
+                <div className={classNameCard('cardButton')}>
+                    <BookingButton bookData={bookData} />
+                </div>
+            )}
+        </li>
+    );
+
+    const renderCardAdminBooks = (
+        <li className={classNameCard('card')} data-test-id='card'>
+            <div className={classNameCard('cardImg')}>
+                <img src={image?.url ? image.url : IconPlugImg} alt={title} />
+            </div>
+            <div className={classNameCard('titleBlock')}>
+                <p className={classNameCard('cardTitle')}>{handleHighlight(title)}</p>
+            </div>
+            <div className={styles.cardDescription}>
+                <p className={styles.cardUser}>
+                    Пользователь:{' '}
+                    <span>{`${handleHighlight(booking.customerLastName)} ${handleHighlight(
+                        booking.customerFirstName,
+                    )}`}</span>
+                </p>
+                <p className={styles.cardDateStatus}>
+                    Дата:{' '}
+                    <span>
+                        {handleHighlight(
+                            booking.dateOrder.slice(0, 10).split('-').reverse().join('-'),
+                        )}
+                    </span>
+                </p>
+                <p className={styles.cardDateStatus}>
+                    Статус: <span>{handleHighlight(booking ? 'Забронирована' : 'Выдана')}</span>
+                </p>
+            </div>
+            {booking ? (
+                <div className={classNameCard('cardButton')}>
+                    <Button
+                        dataTestId='cancel-booking-button'
+                        view='primary'
+                        onClick={handleCancelBooking}
+                    >
+                        ВЫДАТЬ
+                    </Button>
+                </div>
+            ) : (
+                <div className={classNameCard('cardButton')}>
+                    <BookingButton bookData={bookData} />
+                </div>
+            )}
+        </li>
+    );
+
+    return (
+        <Link to={linkPath} key={id} onClick={resetSearchValue}>
+            {!pathname.includes('admin') ? renderCardMain : renderCardAdminBooks}
         </Link>
     );
 };

@@ -8,10 +8,14 @@ import styles from './admin-menu.module.scss';
 import sortDesc from './assets/sort-desc.svg';
 import sortAsc from './assets/sort-asc.svg';
 
-export const AdminMenu = () => {
+export type AdminMenuProps = {
+    setIsSortedDesc: (onChangeText: boolean) => void;
+    isSortedDesc: boolean;
+};
+
+export const AdminMenu = ({ setIsSortedDesc, isSortedDesc }: AdminMenuProps) => {
     const [isSearhView, setSearhView] = useState(true);
     const [isSortView, setIsSortView] = useState(true);
-    const [isSortedDesc, setIsSortedDesc] = useState(true);
 
     return (
         <div className={styles.adminMenu}>

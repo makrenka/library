@@ -44,7 +44,7 @@ export type BooksType = {
     };
 };
 
-export type BookListItem = {
+export type  BookListItem = {
     issueYear: string;
     rating: number;
     title: string;
@@ -59,6 +59,8 @@ export type BookListItem = {
         order: boolean;
         dateOrder: string;
         customerId: number;
+        customerFirstName: string;
+        customerLastName: string;
     };
     delivery: {
         id: number;

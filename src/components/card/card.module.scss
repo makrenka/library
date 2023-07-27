@@ -137,6 +137,46 @@
     padding-bottom: 12px;
 }
 
+//Стили карточек для админки Books
+.cardDescription {
+    margin-top: 32px;
+    grid-row: 2/4;
+}
+
+.cardUser {
+    color: var(--grey-black-40, #A7A7A7);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    margin-bottom: 12px;
+
+    span {
+        background: var(--button-hover, linear-gradient(181deg, #F83600 0%, #F9D423 100%));
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+.cardDateStatus {
+    color: var(--grey-black-40, #A7A7A7);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    margin-bottom: 8px;
+
+    span {
+        color: var(--main-dark, #363636);
+    }
+}
+
+.cardDateStatus:last-child {
+    margin-bottom: 0;
+}
 //Стили для кнопок
 .button {
     height: 40px;

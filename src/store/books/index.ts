@@ -109,6 +109,15 @@ export const booksSlice = createSlice({
                 ? [...state.bookList.data, ...action.payload]
                 : action.payload;
         },
+        bookListRequestBooked: (state) => {
+            state.bookList.isLoading = true;
+        },
+        bookListRequestBookedSuccess: (state, action: PayloadAction<BookListItem[]>) => {
+            state.bookList.isLoading = false;
+            state.bookList.isError = false;
+            state.bookList.isSuccess = true;
+            state.bookList.data = action.payload;
+        },
         bookListRequestFailure: (state) => {
             state.bookList.isLoading = false;
             state.bookList.isError = true;
@@ -271,6 +280,8 @@ export const {
     bookListRequestSortingAlphabetAscSuccess,
     bookListRequestSortingAlphabetDesc,
     bookListRequestSortingAlphabetDescSuccess,
+    bookListRequestBooked,
+    bookListRequestBookedSuccess,
     bookListRequestFailure,
     bookRequest,
     bookRequestSuccess,

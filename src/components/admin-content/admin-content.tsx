@@ -1,0 +1,51 @@
+import { useEffect, useState } from 'react';
+
+import { getBookList } from '../../store/books/selectors';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { bookListRequestBooked, bookListRequestNull } from '../../store/books';
+
+import styles from './admin-content.module.scss';
+import { BookListItem } from '../../store/books/types';
+import { Card } from '../card';
+
+export type AdminContentProps = {
+    isSortedDesc: boolean;
+};
+
+export const AdminContent = ({ isSortedDesc }: AdminContentProps) => {
+    const [data, setData] = useState<BookListItem[] | null>(null);
+    const bookList = useAppSelector(getBookList);
+    const dispatch = useAppDispatch();
+    console.log(data);
+
+    useEffect(() => {
+        dispatch(bookListRequestNull());
+        dispatch(bookListRequestBooked());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (bookList) {
+            const data = [...bookList];
+            const sortedByAlphabet = data.sort((a, b) =>
+                isSortedDesc ? b.title.localeCompare(a.title) : a.title.localeCompare(b.title),
+            );
+            setData(sortedByAlphabet);
+        }
+    }, [bookList, isSortedDesc]);
+
+    return (
+        <main className={styles.adminContent}>
+            {data?.length ? (
+                <ul className={styles.adminContentList}>
+                    {data.map((book) => (
+                        <div key={book.id}>
+                            <Card data={book} />
+                        </div>
+                    ))}
+                </ul>
+            ) : (
+                <div className={styles.emptyDataText}>По запросу ничего не найдено</div>
+            )}
+        </main>
+    );
+};
