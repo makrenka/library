@@ -4,7 +4,12 @@ import classNames from 'classnames';
 
 import { MenuViewEnum } from '../../constants/menu-view';
 import { NAV_MENU_ALL, NAV_MENU_MAIN } from '../../constants/nav-menu-list';
-import { bookingDeleteRequest, toggleBookReviewModal } from '../../store/books';
+import {
+    bookingDeleteRequest,
+    deliveryRequest,
+    toggleBookReviewModal,
+    toggleDeliveryModal,
+} from '../../store/books';
 import { BookListItem } from '../../store/books/types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { searchbookList } from '../../store/search';
@@ -18,6 +23,7 @@ import { Rating } from '../rating';
 import IconPlugImg from './assets/icon-plug-img.svg';
 
 import styles from './card.module.scss';
+import { authSelector } from '../../store/auth/selectors';
 
 type BookType = {
     data: BookListItem;
@@ -48,6 +54,10 @@ export const Card = (props: BookType) => {
 
     const { category } = useParams();
     const { pathname } = useLocation();
+    const userIdReserved = bookData?.delivery?.recipientId;
+    const {
+        auth: { userData },
+    } = useAppSelector(authSelector);
 
     const { filter } = useAppSelector(searchSelector);
 
@@ -80,6 +90,20 @@ export const Card = (props: BookType) => {
     const handleCancelBooking = (e: SyntheticEvent<EventTarget>) => {
         e.preventDefault();
         dispatch(bookingDeleteRequest(bookingId || 0));
+    };
+
+    const handleOpenDeliveryModal = (e: SyntheticEvent, isDeliveryEdit: boolean) => {
+        e.preventDefault();
+        dispatch(
+            toggleDeliveryModal({
+                showModal: true,
+                bookId: bookData?.id || '',
+                isDeliveryEdit,
+                dateHandedFrom: bookData?.delivery?.dateHandedFrom,
+                dateHandedTo: bookData?.delivery?.dateHandedTo,
+                isDelivery: true,
+            }),
+        );
     };
 
     const renderCardMain = (
@@ -145,15 +169,15 @@ export const Card = (props: BookType) => {
             <div className={styles.cardDescription}>
                 <p className={styles.cardUser}>
                     Пользователь:{' '}
-                    <span>{`${handleHighlight(booking.customerLastName)} ${handleHighlight(
-                        booking.customerFirstName,
+                    <span>{`${handleHighlight(booking?.customerLastName)} ${handleHighlight(
+                        booking?.customerFirstName,
                     )}`}</span>
                 </p>
                 <p className={styles.cardDateStatus}>
                     Дата:{' '}
                     <span>
                         {handleHighlight(
-                            booking.dateOrder.slice(0, 10).split('-').reverse().join('-'),
+                            booking?.dateOrder.slice(0, 10).split('-').reverse().join('-'),
                         )}
                     </span>
                 </p>
@@ -164,9 +188,8 @@ export const Card = (props: BookType) => {
             {booking ? (
                 <div className={classNameCard('cardButton')}>
                     <Button
-                        dataTestId='cancel-booking-button'
                         view='primary'
-                        onClick={handleCancelBooking}
+                        onClick={(e) => handleOpenDeliveryModal(e, userIdReserved === userData?.id)}
                     >
                         ВЫДАТЬ
                     </Button>

@@ -45,13 +45,13 @@ export const BookingButton = ({
             : styles.buttonReserved,
     );
 
-    const handleOpenBookingModal = (e: SyntheticEvent, isEdit: boolean) => {
+    const handleOpenBookingModal = (e: SyntheticEvent, isBookingEdit: boolean) => {
         e.preventDefault();
         dispatch(
             toggleBookingModal({
                 showModal: true,
                 bookId: bookData?.id || '',
-                isEdit,
+                isBookingEdit,
                 bookingId: bookData?.booking?.id || null,
                 bookingDate: bookData?.booking?.dateOrder,
                 isOnBookInfoPage,

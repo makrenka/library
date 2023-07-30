@@ -43,6 +43,7 @@ export type UserBooking = {
     dateOrder: string | Date | null;
     book: ShortBookData | null;
 };
+
 export type ShortBookData = {
     id: number;
     title: string;

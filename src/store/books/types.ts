@@ -27,10 +27,24 @@ export type BooksType = {
         isOpenBookingModal: boolean;
         data: BookingResponseSuccess | null;
         bookId: null | string | number;
-        isEdit: boolean;
+        isBookingEdit: boolean;
         bookingDate: null | string;
         message: string | null;
         isOnBookInfoPage?: boolean;
+    };
+    delivery: {
+        id: string | null | number;
+        isLoading: boolean;
+        isSuccess: boolean;
+        isError: boolean;
+        data: BookingResponseSuccess | null;
+        bookId: null | string | number;
+        isDeliveryEdit: boolean;
+        dateHandedFrom: null | string;
+        dateHandedTo: null | string;
+        message: string | null;
+        isOnBookInfoPage?: boolean;
+        isDelivery: boolean;
     };
     bookReview: {
         bookId: string | null | number;
@@ -65,8 +79,8 @@ export type  BookListItem = {
     delivery: {
         id: number;
         handed: boolean;
-        dateHandedFrom: string;
         dateHandedTo: string;
+        dateHandedFrom: string;
         recipientId: number;
     };
     histories: [
@@ -129,15 +143,34 @@ export type BookCategoriesItem = {
 export type BookingModalPayload = {
     showModal: boolean;
     bookId: string | null | number;
-    isEdit?: boolean;
+    isBookingEdit?: boolean;
     bookingId?: string | null | number;
     bookingDate?: string | null;
     isOnBookInfoPage?: boolean;
 };
 
+export type DeliveryModalPayload = {
+    showModal: boolean;
+    bookId: string | null | number;
+    isDeliveryEdit?: boolean;
+    dateHandedFrom?: string | null;
+    dateHandedTo?: string | null;
+    isDelivery: boolean;
+};
+
 export type BookCategoriesDataType = BookCategoriesItem[];
 
 export type BookingResponseSuccess = {
+    id: number | string;
+    attributes: {
+        order: true;
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
+        dateOrder: string;
+    };
+};
+export type DeliveryResponseSuccess = {
     id: number | string;
     attributes: {
         order: true;
@@ -161,4 +194,10 @@ export type BookRateSuccess = {
         updatedAt: string;
         publishedAt: string;
     };
+};
+
+export type DeliveryPayload = {
+    dateHandedFrom: string | null; 
+    dateHandedTo: string | null;
+    bookId: string | number | null;
 };

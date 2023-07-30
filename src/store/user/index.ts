@@ -5,6 +5,7 @@ import {
     UpdateUserActionType,
     UploadAvatarActionType,
     UserBooking,
+    UserDelivery,
     UserStateType,
 } from './types';
 
@@ -76,6 +77,9 @@ export const userSlice = createSlice({
         addBookingUpdateUser: (state, action: PayloadAction<UserBooking>) => {
             state.data.booking = action.payload;
         },
+        addDeliveryUpdateUser: (state, action: PayloadAction<UserDelivery>) => {
+            state.data.delivery = action.payload;
+        },
     },
 });
 
@@ -91,4 +95,5 @@ export const {
     uploadAvatarSuccess,
     deleteBookingUpdateUser,
     addBookingUpdateUser,
+    addDeliveryUpdateUser,
 } = userSlice.actions;

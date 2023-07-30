@@ -8,6 +8,7 @@ export const BOOKS_URL = {
     categories: `${BASE_URL}/categories`,
     booking: `${BASE_URL}/bookings`,
     comment: `${BASE_URL}/comments`,
+    delivery: `${BASE_URL}/delivery`,
 };
 
 export const AUTH_URL = {

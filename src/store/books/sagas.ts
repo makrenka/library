@@ -12,8 +12,8 @@ import { ERROR } from '../../constants/errors';
 import { TOAST } from '../../constants/toast';
 import { MESSAGES } from '../../constants/toast-messages';
 import { authenticationSelector } from '../auth/selectors';
-import { addBookingUpdateUser, deleteBookingUpdateUser } from '../user';
-import { Comment, UserBooking } from '../user/types';
+import { addBookingUpdateUser, addDeliveryUpdateUser, deleteBookingUpdateUser } from '../user';
+import { Comment, UserBooking, UserDelivery } from '../user/types';
 import { setToast } from '../view';
 
 import { booksSelector } from './selectors';
@@ -47,6 +47,9 @@ import {
     bookReviewUpdateFailure,
     bookReviewUpdateRequest,
     bookReviewUpdateSuccess,
+    deliveryRequestSuccess,
+    deliveryRequestFailure,
+    deliveryRequest,
 } from '.';
 import { useAppSelector } from '../hooks';
 import { searchSelector } from '../search/selectors';
@@ -211,6 +214,58 @@ function* bookingRequestWorker({ payload }: PayloadAction<{ dateOrder: string; b
     } catch {
         yield put(bookingRequestFailure(ERROR.bookingError));
         yield put(setToast({ type: TOAST.error, text: ERROR.bookingError }));
+    }
+}
+
+function* deliveryRequestWorker({ payload }: PayloadAction<{ 
+    dateHandedFrom: string; 
+    dateHandedTo: string; 
+    bookId: number
+ }>) {
+    const {
+        delivery,
+        book,
+        bookList: { data: bookListData },
+    } = yield select(booksSelector);
+
+    try {
+        const { userData } = yield select(authenticationSelector);
+        const { data }: AxiosResponse = yield call(axiosInstance.post, BOOKS_URL.delivery, {
+            data: {
+                handed: true,
+                dateHandedFrom: payload.dateHandedFrom,
+                dateHandedTo: payload.dateHandedTo,
+                book: payload.bookId,
+                recipient: userData.id,
+            },
+        });
+
+        yield put(
+            deliveryRequestSuccess({
+                data,
+                message: MESSAGES.deliverySuccess,
+            }),
+        );
+
+        const { id } = data;
+        const { handed, dateHandedFrom, dateHandedTo } = data.attributes;
+        const bookUpdateData = bookListData.find(
+            ({ id: itemId }: BookListItem) => itemId === payload.bookId,
+        );
+        const userDeliveryUpdate: UserDelivery = {
+            id,
+            handed,
+            dateHandedFrom,
+            dateHandedTo,
+            book: bookUpdateData,
+        };
+
+        yield put(setToast({ type: TOAST.success, text: MESSAGES.deliverySuccess }));
+        yield put(addDeliveryUpdateUser(userDeliveryUpdate));
+
+    } catch {
+        yield put(deliveryRequestFailure(ERROR.deliveryError));
+        yield put(setToast({ type: TOAST.error, text: ERROR.deliveryError }));
     }
 }
 
@@ -387,6 +442,10 @@ export function* watchBookingUpdateRequest() {
 
 export function* watchBookingDeleteRequest() {
     yield takeLatest(bookingDeleteRequest, bookingDeleteRequestWorker);
+}
+
+export function* watchDeliveryRequest() {
+    yield takeLatest(deliveryRequest, deliveryRequestWorker);
 }
 
 export function* watchBookReviewRequest() {

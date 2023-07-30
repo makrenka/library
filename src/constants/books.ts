@@ -5,3 +5,11 @@ export const BOOKING = {
     buttonUpdate: 'Забронировать',
     buttonCancel: 'Отменить бронь',
 };
+
+export const DELIVERY = {
+    titleCreate: 'Дата возврата',
+    titleUpdate: 'Дата продления',
+    buttonCreate: 'ВЫДАТЬ',
+    buttonUpdate: 'ПРОДЛИТЬ',
+    buttonCancel: 'ОТМЕТКА О ВОЗВРАТЕ',
+};
