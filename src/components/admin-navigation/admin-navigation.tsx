@@ -6,11 +6,20 @@ import { ROUTES } from '../../constants/routes';
 
 import styles from './admin-navigation.module.scss';
 
-export const AdminNavigation = () => {
+type AdminNavigationProps = {
+    setIsBookedChecked: (onChangeText: boolean) => void;
+};
+
+export const AdminNavigation = ({ setIsBookedChecked }: AdminNavigationProps) => {
     const { pathname } = useLocation();
     const [booked, setBooked] = useState(true);
     const [issued, setIssued] = useState(true);
     const [allUsers, setAllUsers] = useState(true);
+
+    const handleBookedChecked = () => {
+        setBooked(!booked);
+        setIsBookedChecked(!booked);
+    };
 
     return (
         <nav className={styles.adminNav}>
@@ -35,7 +44,7 @@ export const AdminNavigation = () => {
                             id='isbooking'
                             className={styles.filtersItemInput}
                             checked={booked}
-                            onChange={() => setBooked(!booked)}
+                            onChange={handleBookedChecked}
                         />
                         <label htmlFor='isbooking' className={styles.filtersItemLabel}>
                             Забронирована

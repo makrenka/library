@@ -37,7 +37,7 @@ export type BooksType = {
         isLoading: boolean;
         isSuccess: boolean;
         isError: boolean;
-        data: BookingResponseSuccess | null;
+        data: DeliveryResponseSuccess | null;
         bookId: null | string | number;
         isDeliveryEdit: boolean;
         dateHandedFrom: null | string;
@@ -173,11 +173,12 @@ export type BookingResponseSuccess = {
 export type DeliveryResponseSuccess = {
     id: number | string;
     attributes: {
-        order: true;
+        handed: true;
+        dateHandedTo: string;
+        dateHandedFrom: string;
         createdAt: string;
         updatedAt: string;
         publishedAt: string;
-        dateOrder: string;
     };
 };
 

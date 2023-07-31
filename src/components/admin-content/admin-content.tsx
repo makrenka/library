@@ -3,20 +3,20 @@ import { useEffect, useState } from 'react';
 import { getBookList } from '../../store/books/selectors';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { bookListRequestBooked, bookListRequestNull } from '../../store/books';
-
-import styles from './admin-content.module.scss';
 import { BookListItem } from '../../store/books/types';
 import { Card } from '../card';
 
+import styles from './admin-content.module.scss';
+
 export type AdminContentProps = {
     isSortedDesc: boolean;
+    isBookedChecked: boolean;
 };
 
-export const AdminContent = ({ isSortedDesc }: AdminContentProps) => {
+export const AdminContent = ({ isSortedDesc, isBookedChecked }: AdminContentProps) => {
     const [data, setData] = useState<BookListItem[] | null>(null);
     const bookList = useAppSelector(getBookList);
     const dispatch = useAppDispatch();
-    console.log(data);
 
     useEffect(() => {
         dispatch(bookListRequestNull());
@@ -35,7 +35,7 @@ export const AdminContent = ({ isSortedDesc }: AdminContentProps) => {
 
     return (
         <main className={styles.adminContent}>
-            {data?.length ? (
+            {data?.length && isBookedChecked ? (
                 <ul className={styles.adminContentList}>
                     {data.map((book) => (
                         <div key={book.id}>
