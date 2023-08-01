@@ -17,6 +17,33 @@ export type ResponseUser = {
     history: UserHistory;
 };
 
+export type ResponseUsersList = {
+    id: number;
+    username: string;
+    email: string;
+    confirmed: boolean;
+    blocked: boolean;
+    createdAt: string;
+    updatedAt: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    role: {
+        id: number;
+        name: string;
+        description: string;
+        type: string;
+        };
+        avatar: string;
+        delivery: {
+            id: number;
+            handed: boolean;
+            dateHandedFrom: string;
+            dateHandedTo: string;
+        };
+        historyCount: number;
+};
+
 export type UserHistory = {
     id: number;
     books: ShortBookData[];
@@ -82,6 +109,9 @@ export type UserStateType = {
     isUpdateLoading: boolean;
     isUpdateError: boolean;
     data: ResponseUser;
+    usersList: {
+        data: ResponseUsersList;
+    }
 };
 
 export type UpdateUserActionType = {

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import {
     ResponseUser,
+    ResponseUsersList,
     UpdateUserActionType,
     UploadAvatarActionType,
     UserBooking,
@@ -17,6 +18,9 @@ export const initialState: UserStateType = {
     isUpdateError: false,
     isError: false,
     data: {} as ResponseUser,
+    usersList: {
+        data: {} as ResponseUsersList,
+    },
 };
 
 const initialBooking = {
@@ -30,6 +34,20 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+        usersListRequest: (state) => {
+            state.isLoading = true;
+        },
+        usersListRequestSuccess: (state, action: PayloadAction<ResponseUsersList>) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.usersList.data = action.payload;
+        },
+        usersListRequestError: (state) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+        },
         userRequest: (state, action: PayloadAction<string>) => {
             state.isLoading = true;
         },
@@ -84,6 +102,9 @@ export const userSlice = createSlice({
 });
 
 export const {
+    usersListRequest,
+    usersListRequestSuccess,
+    usersListRequestError,
     userRequest,
     userRequestSuccess,
     userRequestError,

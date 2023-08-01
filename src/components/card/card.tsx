@@ -204,7 +204,7 @@ export const Card = (props: BookType) => {
 
     return (
         <Link to={linkPath} key={id} onClick={resetSearchValue}>
-            {!pathname.includes('admin') ? renderCardMain : renderCardAdminBooks}
+            {!pathname.includes('admin/books') ? renderCardMain : renderCardAdminBooks}
         </Link>
     );
 };
