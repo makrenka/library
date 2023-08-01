@@ -11,9 +11,10 @@ import styles from './admin-content.module.scss';
 export type AdminContentProps = {
     isSortedDesc: boolean;
     isBookedChecked: boolean;
+    isDeliveriedChecked: boolean;
 };
 
-export const AdminContent = ({ isSortedDesc, isBookedChecked }: AdminContentProps) => {
+export const AdminContent = ({ isSortedDesc, isBookedChecked, isDeliveriedChecked }: AdminContentProps) => {
     const [data, setData] = useState<BookListItem[] | null>(null);
     const bookList = useAppSelector(getBookList);
     const dispatch = useAppDispatch();
@@ -35,7 +36,7 @@ export const AdminContent = ({ isSortedDesc, isBookedChecked }: AdminContentProp
 
     return (
         <main className={styles.adminContent}>
-            {data?.length && isBookedChecked ? (
+            {data?.length && isBookedChecked && isDeliveriedChecked ? (
                 <ul className={styles.adminContentList}>
                     {data.map((book) => (
                         <div key={book.id}>
@@ -43,9 +44,32 @@ export const AdminContent = ({ isSortedDesc, isBookedChecked }: AdminContentProp
                         </div>
                     ))}
                 </ul>
-            ) : (
-                <div className={styles.emptyDataText}>По запросу ничего не найдено</div>
-            )}
+            ) : data?.length && !isBookedChecked && isDeliveriedChecked ?
+                (
+                    <ul className={styles.adminContentList}>
+                        {data
+                            .filter((book) => book.booking == null)
+                            .map((book) => (
+                                <div key={book.id}>
+                                    <Card data={book} />
+                                </div>
+                            ))}
+                    </ul>
+                ) : data?.length && isBookedChecked && !isDeliveriedChecked ?
+                    (
+                        <ul className={styles.adminContentList}>
+                            {data
+                                .filter((book) => book.delivery == null)
+                                .map((book) => (
+                                    <div key={book.id}>
+                                        <Card data={book} />
+                                    </div>
+                                ))}
+                        </ul>
+                    ) :
+                    (
+                        <div className={styles.emptyDataText}>По запросу ничего не найдено</div>
+                    )}
         </main>
     );
 };

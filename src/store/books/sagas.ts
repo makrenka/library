@@ -114,7 +114,7 @@ function* bookListRequestBookedWorker() {
     try {
         const response: AxiosResponse<BookListItem[]> = yield call(
             axiosInstance.get,
-            `${BOOKS_URL.list}?filters[booking][id][$notNull]=true`,
+            `${BOOKS_URL.list}?filters[booking][id][$notNull]=true?filters[delivery][id][$notNull]=true`,
         );
 
         yield put(bookListRequestBookedSuccess(response.data));
@@ -194,7 +194,7 @@ function* bookingRequestWorker({ payload }: PayloadAction<{ dateOrder: string; b
             dateOrder,
             book: bookUpdateData,
         };
-        const {isSortingByRating, isSortedDesc} = yield select(searchSelector);
+        const { isSortingByRating, isSortedDesc } = yield select(searchSelector);
 
         yield put(setToast({ type: TOAST.success, text: MESSAGES.bookingSuccess }));
         yield put(addBookingUpdateUser(userBookingUpdate));
@@ -217,11 +217,11 @@ function* bookingRequestWorker({ payload }: PayloadAction<{ dateOrder: string; b
     }
 }
 
-function* deliveryRequestWorker({ payload }: PayloadAction<{ 
-    dateHandedFrom: string; 
-    dateHandedTo: string; 
+function* deliveryRequestWorker({ payload }: PayloadAction<{
+    dateHandedFrom: string;
+    dateHandedTo: string;
     bookId: number
- }>) {
+}>) {
     const {
         delivery,
         book,
@@ -289,7 +289,7 @@ function* bookingUpdateRequestWorker({
                 },
             },
         );
-        const {isSortingByRating, isSortedDesc} = yield select(searchSelector);
+        const { isSortingByRating, isSortedDesc } = yield select(searchSelector);
 
         yield put(
             bookingRequestSuccess({
@@ -325,7 +325,7 @@ function* bookingDeleteRequestWorker({ payload }: PayloadAction<string>) {
             axiosInstance.delete,
             `${BOOKS_URL.booking}/${payload}`,
         );
-        const {isSortingByRating, isSortedDesc} = yield select(searchSelector);
+        const { isSortingByRating, isSortedDesc } = yield select(searchSelector);
 
         yield put(
             bookingRequestSuccess({

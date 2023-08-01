@@ -15,11 +15,12 @@ export const Admin = ({ contentView }: AdminProps) => {
 
     const outletContext = useOutletContext();
     const isBookedChecked = outletContext instanceof Array && outletContext[0];
+    const isDeliveriedChecked = outletContext instanceof Array && outletContext[1];
 
     return (
         <section className={styles.adminBooks}>
             <AdminMenu isSortedDesc={isSortedDesc} setIsSortedDesc={setIsSortedDesc} />
-            <AdminContent isSortedDesc={isSortedDesc} isBookedChecked={isBookedChecked} />
+            <AdminContent isSortedDesc={isSortedDesc} isBookedChecked={isBookedChecked} isDeliveriedChecked={isDeliveriedChecked} />
         </section>
     );
 };

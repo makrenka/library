@@ -8,18 +8,24 @@ import styles from './admin-navigation.module.scss';
 
 type AdminNavigationProps = {
     setIsBookedChecked: (onChangeText: boolean) => void;
+    setIsDeliveriedChecked: (onChangeText: boolean) => void;
 };
 
-export const AdminNavigation = ({ setIsBookedChecked }: AdminNavigationProps) => {
+export const AdminNavigation = ({ setIsBookedChecked, setIsDeliveriedChecked }: AdminNavigationProps) => {
     const { pathname } = useLocation();
     const [booked, setBooked] = useState(true);
-    const [issued, setIssued] = useState(true);
+    const [deliveried, setDeliveried] = useState(true);
     const [allUsers, setAllUsers] = useState(true);
 
     const handleBookedChecked = () => {
         setBooked(!booked);
         setIsBookedChecked(!booked);
     };
+
+    const handleDeliveriedChecked = () => {
+        setDeliveried(!deliveried);
+        setIsDeliveriedChecked(!deliveried);
+    }
 
     return (
         <nav className={styles.adminNav}>
@@ -55,8 +61,8 @@ export const AdminNavigation = ({ setIsBookedChecked }: AdminNavigationProps) =>
                             type='checkbox'
                             id='isdelivery'
                             className={styles.filtersItemInput}
-                            checked={issued}
-                            onChange={() => setIssued(!issued)}
+                            checked={deliveried}
+                            onChange={handleDeliveriedChecked}
                         />
                         <label htmlFor='isdelivery' className={styles.filtersItemLabel}>
                             Выдана
