@@ -19,7 +19,7 @@ export const initialState: UserStateType = {
     isError: false,
     data: {} as ResponseUser,
     usersList: {
-        data: {} as ResponseUsersList,
+        data: null,
     },
 };
 
@@ -37,7 +37,7 @@ export const userSlice = createSlice({
         usersListRequest: (state) => {
             state.isLoading = true;
         },
-        usersListRequestSuccess: (state, action: PayloadAction<ResponseUsersList>) => {
+        usersListRequestSuccess: (state, action: PayloadAction<ResponseUsersList[]>) => {
             state.isLoading = false;
             state.isError = false;
             state.isSuccess = true;

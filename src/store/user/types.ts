@@ -110,7 +110,7 @@ export type UserStateType = {
     isUpdateError: boolean;
     data: ResponseUser;
     usersList: {
-        data: ResponseUsersList;
+        data: null | ResponseUsersList[];
     }
 };
 

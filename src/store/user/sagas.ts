@@ -33,7 +33,7 @@ import {
 
 function* usersListRequestWorker() {
     try {
-        const { data }: AxiosResponse<ResponseUsersList> = yield call(
+        const { data }: AxiosResponse<ResponseUsersList[]> = yield call(
             axiosInstance.get,
             USERS_URL.user,
         );

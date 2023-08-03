@@ -51,7 +51,6 @@ import {
     deliveryRequestFailure,
     deliveryRequest,
 } from '.';
-import { useAppSelector } from '../hooks';
 import { searchSelector } from '../search/selectors';
 
 function* bookListRequestWorker() {
