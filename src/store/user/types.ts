@@ -33,15 +33,15 @@ export type ResponseUsersList = {
         name: string;
         description: string;
         type: string;
-        };
-        avatar: string;
-        delivery: {
-            id: number;
-            handed: boolean;
-            dateHandedFrom: string;
-            dateHandedTo: string;
-        };
-        historyCount: number;
+    };
+    avatar: string;
+    delivery: {
+        id: number;
+        handed: boolean;
+        dateHandedFrom: string;
+        dateHandedTo: string;
+    };
+    historyCount: number;
 };
 
 export type UserHistory = {

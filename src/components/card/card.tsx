@@ -24,6 +24,7 @@ import IconPlugImg from './assets/icon-plug-img.svg';
 
 import styles from './card.module.scss';
 import { authSelector } from '../../store/auth/selectors';
+import { ResponseUsersList } from '../../store/user/types';
 
 type BookType = {
     data: BookListItem;
@@ -35,6 +36,7 @@ type BookType = {
     isBooking?: boolean;
     bookingId?: number;
     isCommented?: boolean;
+    dataUsers: ResponseUsersList;
 };
 
 export const Card = (props: BookType) => {
@@ -49,6 +51,7 @@ export const Card = (props: BookType) => {
         isBooking,
         bookingId,
         isCommented,
+        dataUsers
     } = props;
     const dispatch = useAppDispatch();
 
@@ -201,6 +204,50 @@ export const Card = (props: BookType) => {
             )}
         </li>
     );
+
+    const renderCardAdminUsers = (
+        <li className={classNameCard('card')} data-test-id='card'>
+            <div className={classNameCard('cardImg')}>
+                <img src={image?.url ? image.url : IconPlugImg} alt={title} />
+            </div>
+            <div className={classNameCard('titleBlock')}>
+                <p className={classNameCard('cardTitle')}>{handleHighlight(title)}</p>
+            </div>
+            <div className={styles.cardDescription}>
+                <p className={styles.cardUser}>
+                    Пользователь:{' '}
+                    <span>{`${handleHighlight(booking?.customerLastName)} ${handleHighlight(
+                        booking?.customerFirstName,
+                    )}`}</span>
+                </p>
+                <p className={styles.cardDateStatus}>
+                    Дата:{' '}
+                    <span>
+                        {handleHighlight(
+                            booking?.dateOrder.slice(0, 10).split('-').reverse().join('-'),
+                        )}
+                    </span>
+                </p>
+                <p className={styles.cardDateStatus}>
+                    Статус: <span>{handleHighlight(booking ? 'Забронирована' : 'Выдана')}</span>
+                </p>
+            </div>
+            {booking ? (
+                <div className={classNameCard('cardButton')}>
+                    <Button
+                        view='primary'
+                        onClick={(e) => handleOpenDeliveryModal(e, userIdReserved === userData?.id)}
+                    >
+                        ВЫДАТЬ
+                    </Button>
+                </div>
+            ) : (
+                <div className={classNameCard('cardButton')}>
+                    <BookingButton bookData={bookData} />
+                </div>
+            )}
+        </li>
+    )
 
     return (
         <Link to={linkPath} key={id} onClick={resetSearchValue}>

@@ -20,7 +20,12 @@ export const Admin = ({ contentView }: AdminProps) => {
     return (
         <section className={styles.adminBooks}>
             <AdminMenu isSortedDesc={isSortedDesc} setIsSortedDesc={setIsSortedDesc} />
-            <AdminContent isSortedDesc={isSortedDesc} isBookedChecked={isBookedChecked} isDeliveriedChecked={isDeliveriedChecked} />
+            <AdminContent
+                isSortedDesc={isSortedDesc}
+                isBookedChecked={isBookedChecked}
+                isDeliveriedChecked={isDeliveriedChecked}
+                contentView={contentView}
+            />
         </section>
     );
 };
