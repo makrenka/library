@@ -16,6 +16,9 @@ export const Admin = ({ contentView }: AdminProps) => {
     const outletContext = useOutletContext();
     const isBookedChecked = outletContext instanceof Array && outletContext[0];
     const isDeliveriedChecked = outletContext instanceof Array && outletContext[1];
+    const isBookHoldersChecked = outletContext instanceof Array && outletContext[2];
+    const isBlockedUsersChecked = outletContext instanceof Array && outletContext[3];
+    const isAllUsersChecked = outletContext instanceof Array && outletContext[4];
 
     return (
         <section className={styles.adminBooks}>
@@ -25,6 +28,9 @@ export const Admin = ({ contentView }: AdminProps) => {
                 isBookedChecked={isBookedChecked}
                 isDeliveriedChecked={isDeliveriedChecked}
                 contentView={contentView}
+                isBookHoldersChecked={isBookHoldersChecked}
+                isBlockedUsersChecked={isBlockedUsersChecked}
+                isAllUsersChecked={isAllUsersChecked}
             />
         </section>
     );
