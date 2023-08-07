@@ -217,9 +217,9 @@ function* bookingRequestWorker({ payload }: PayloadAction<{ dateOrder: string; b
 }
 
 function* deliveryRequestWorker({ payload }: PayloadAction<{
-    dateHandedFrom: string;
-    dateHandedTo: string;
-    bookId: number
+    deliveryDateFrom: string;
+    deliveryDateTo: string;
+    bookIdDelivery: number
 }>) {
     const {
         delivery,
@@ -232,9 +232,9 @@ function* deliveryRequestWorker({ payload }: PayloadAction<{
         const { data }: AxiosResponse = yield call(axiosInstance.post, BOOKS_URL.delivery, {
             data: {
                 handed: true,
-                dateHandedFrom: payload.dateHandedFrom,
-                dateHandedTo: payload.dateHandedTo,
-                book: payload.bookId,
+                dateHandedFrom: payload.deliveryDateFrom,
+                dateHandedTo: payload.deliveryDateTo,
+                book: payload.bookIdDelivery,
                 recipient: userData.id,
             },
         });
@@ -249,7 +249,7 @@ function* deliveryRequestWorker({ payload }: PayloadAction<{
         const { id } = data;
         const { handed, dateHandedFrom, dateHandedTo } = data.attributes;
         const bookUpdateData = bookListData.find(
-            ({ id: itemId }: BookListItem) => itemId === payload.bookId,
+            ({ id: itemId }: BookListItem) => itemId === payload.bookIdDelivery,
         );
         const userDeliveryUpdate: UserDelivery = {
             id,
@@ -261,6 +261,13 @@ function* deliveryRequestWorker({ payload }: PayloadAction<{
 
         yield put(setToast({ type: TOAST.success, text: MESSAGES.deliverySuccess }));
         yield put(addDeliveryUpdateUser(userDeliveryUpdate));
+
+        if(delivery?.isOnBookInfoPage) {
+            yield put(bookRequest(book.data.id));
+        } else {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestBooked());
+        }
 
     } catch {
         yield put(deliveryRequestFailure(ERROR.deliveryError));

@@ -38,7 +38,7 @@ export type BooksType = {
         isSuccess: boolean;
         isError: boolean;
         data: DeliveryResponseSuccess | null;
-        bookId: null | string | number;
+        bookIdDelivery: null | string | number;
         isDeliveryEdit: boolean;
         dateHandedFrom: null | string;
         dateHandedTo: null | string;
@@ -151,7 +151,7 @@ export type BookingModalPayload = {
 
 export type DeliveryModalPayload = {
     showModal: boolean;
-    bookId: string | null | number;
+    bookIdDelivery: string | null | number;
     isDeliveryEdit?: boolean;
     dateHandedFrom?: string | null;
     dateHandedTo?: string | null;
@@ -198,7 +198,7 @@ export type BookRateSuccess = {
 };
 
 export type DeliveryPayload = {
-    dateHandedFrom: string | null; 
-    dateHandedTo: string | null;
-    bookId: string | number | null;
+    deliveryDateFrom: string | Date; 
+    deliveryDateTo: string | Date;
+    bookIdDelivery: string | number | null;
 };

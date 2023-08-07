@@ -96,7 +96,7 @@ export const Card = (props: BookType) => {
         dispatch(
             toggleDeliveryModal({
                 showModal: true,
-                bookId: bookData?.id || '',
+                bookIdDelivery: bookData?.id || '',
                 isDeliveryEdit,
                 dateHandedFrom: bookData?.delivery?.dateHandedFrom,
                 dateHandedTo: bookData?.delivery?.dateHandedTo,

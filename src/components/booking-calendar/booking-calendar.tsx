@@ -1,6 +1,5 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import startOfDay from 'date-fns/startOfDay';
 
 import { BOOKING, DELIVERY } from '../../constants/books';
 import { useCalendar } from '../../hooks/use-calendar';
@@ -32,9 +31,9 @@ export const BookingCalendar = () => {
             bookingDate,
             isOpenBookingModal,
         },
-        delivery: { dateHandedFrom, dateHandedTo, isDeliveryEdit, isDelivery },
+        delivery: { dateHandedFrom, dateHandedTo, isDeliveryEdit, isDelivery, bookIdDelivery },
     } = useAppSelector(booksSelector);
-    const today = new Date();
+    const today = useMemo(() => new Date(), []);
     const {
         state,
         functions: { setSelectedMonthByIndex, onClickArrow },
@@ -43,18 +42,23 @@ export const BookingCalendar = () => {
     const [dateOrder, setDateOrder] = useState<string | Date>('');
     const [deliveryDateFrom, setDeliveryDateFrom] = useState<string | Date>('');
     const [deliveryDateTo, setDeliveryDateTo] = useState<string | Date>('');
+    const [deliveryDisabledDays, setDeliveryDisabledDays] = useState<object[] | null>(null);
+    console.log(deliveryDisabledDays);
 
     const dayClassName = (dayNumberInWeek: number, date: Date) =>
         classNames(styles.dayButton, {
             [styles.dayButtonToday]: checkDateIsEqual(date, today),
-            [styles.dayButtonActive]: dateOrder === date.toISOString(),
+            [styles.dayButtonActive]:
+                dateOrder === date.toISOString() || deliveryDateTo === date.toISOString(),
             [styles.endWeek]: dayNumberInWeek === 1 || dayNumberInWeek === 7,
         });
 
     const closeHandler = () => {
         setDateOrder('');
         dispatch(toggleBookingModal({ showModal: false, bookId: null }));
-        dispatch(toggleDeliveryModal({ showModal: false, bookId: null, isDelivery: false }));
+        dispatch(
+            toggleDeliveryModal({ showModal: false, bookIdDelivery: null, isDelivery: false }),
+        );
     };
 
     useEffect(() => {
@@ -81,6 +85,20 @@ export const BookingCalendar = () => {
         state.selectedYear,
         isOpenBookingModal,
     ]);
+
+    const deliveryDates = (date: Date) => {
+        setDeliveryDateFrom(today.toISOString());
+        setDeliveryDateTo(date.toISOString());
+    };
+
+    useEffect(() => {
+        const deliveryDisabledDays = state.calendarDays.filter(
+            (item) => item.date.toISOString() < today.toISOString(),
+        );
+        if (isOpenBookingModal) {
+            setDeliveryDisabledDays(deliveryDisabledDays);
+        }
+    }, [isOpenBookingModal, state.calendarDays, today]);
 
     const renderBoocking = (
         <Modal
@@ -241,7 +259,7 @@ export const BookingCalendar = () => {
                                 key={`${date}`}
                                 classButton={dayClassName(dayNumberInWeek, date)}
                                 isDisabled={checkIsBlockedDate(state.calendarDays[index])}
-                                onClick={() => setDateOrder(date.toISOString())}
+                                onClick={() => deliveryDates(date)}
                                 dataTestId='day-button'
                             >
                                 {dayNumber}
@@ -275,13 +293,13 @@ export const BookingCalendar = () => {
             ) : (
                 <Button
                     classButton={styles.buttonReserv}
-                    // onClick={() => dispatch(bookingRequest({ dateOrder, bookId }))}
                     onClick={() =>
-                        dispatch(deliveryRequest({ dateHandedFrom, dateHandedTo, bookId }))
+                        dispatch(
+                            deliveryRequest({ deliveryDateFrom, deliveryDateTo, bookIdDelivery }),
+                        )
                     }
-                    // isLoading={isLoading}
                     view='primary'
-                    isDisabled={!dateOrder || isLoading}
+                    isDisabled={!deliveryDateTo || isLoading}
                 >
                     {DELIVERY.buttonCreate}
                 </Button>

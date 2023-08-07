@@ -57,7 +57,7 @@ export const initialState: BooksType = {
         isSuccess: false,
         isError: false,
         data: null,
-        bookId: null,
+        bookIdDelivery: null,
         isDeliveryEdit: false,
         dateHandedFrom: null,
         dateHandedTo: null,
@@ -213,9 +213,9 @@ export const booksSlice = createSlice({
         },
         toggleDeliveryModal: (state, { payload }: PayloadAction<DeliveryModalPayload>) => {
             state.booking.isOpenBookingModal = payload.showModal;
-            state.delivery.bookId = payload.bookId;
+            state.delivery.bookIdDelivery = payload.bookIdDelivery;
             state.delivery.isDeliveryEdit = payload.isDeliveryEdit || false;
-            state.delivery.id = payload.bookId || null;
+            state.delivery.id = payload.bookIdDelivery || null;
             state.delivery.dateHandedFrom = payload.dateHandedFrom || null;
             state.delivery.dateHandedTo = payload.dateHandedTo || null;
             state.delivery.isDelivery = payload.isDelivery;
