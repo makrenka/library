@@ -50,6 +50,7 @@ import {
     deliveryRequestSuccess,
     deliveryRequestFailure,
     deliveryRequest,
+    bookListRequestDeliveried,
 } from '.';
 import { searchSelector } from '../search/selectors';
 
@@ -113,7 +114,21 @@ function* bookListRequestBookedWorker() {
     try {
         const response: AxiosResponse<BookListItem[]> = yield call(
             axiosInstance.get,
-            `${BOOKS_URL.list}?filters[booking][id][$notNull]=true?filters[delivery][id][$notNull]=true`,
+            `${BOOKS_URL.list}?filters[booking][order]=true`,
+        );
+
+        yield put(bookListRequestBookedSuccess(response.data));
+    } catch {
+        yield put(bookListRequestFailure());
+        yield put(setToast({ type: TOAST.error, text: ERROR.book }));
+    }
+}
+
+function* bookListRequestDeliveriedWorker() {
+    try {
+        const response: AxiosResponse<BookListItem[]> = yield call(
+            axiosInstance.get,
+            `${BOOKS_URL.list}?filters[delivery][handed]=true`,
         );
 
         yield put(bookListRequestBookedSuccess(response.data));
@@ -267,6 +282,7 @@ function* deliveryRequestWorker({ payload }: PayloadAction<{
         } else {
             yield put(bookListRequestNull());
             yield put(bookListRequestBooked());
+            yield put(bookListRequestDeliveried());
         }
 
     } catch {
@@ -428,6 +444,10 @@ export function* watchbookListRequestSortingAlphabetDesc() {
 
 export function* watchbookListRequestBooked() {
     yield takeLatest(bookListRequestBooked, bookListRequestBookedWorker);
+}
+
+export function* watchbookListRequestDeliveried() {
+    yield takeLatest(bookListRequestDeliveried, bookListRequestDeliveriedWorker);
 }
 
 export function* watchBookRequest() {

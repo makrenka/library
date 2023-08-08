@@ -133,7 +133,20 @@ export const booksSlice = createSlice({
             state.bookList.isLoading = false;
             state.bookList.isError = false;
             state.bookList.isSuccess = true;
-            state.bookList.data = action.payload;
+            state.bookList.data = state.bookList.data
+                ? [...state.bookList.data, ...action.payload]
+                : action.payload;
+        },
+        bookListRequestDeliveried: (state) => {
+            state.bookList.isLoading = true;
+        },
+        bookListRequestDeliveriedSuccess: (state, action: PayloadAction<BookListItem[]>) => {
+            state.bookList.isLoading = false;
+            state.bookList.isError = false;
+            state.bookList.isSuccess = true;
+            state.bookList.data = state.bookList.data
+                ? [...state.bookList.data, ...action.payload]
+                : action.payload;
         },
         bookListRequestFailure: (state) => {
             state.bookList.isLoading = false;
@@ -231,6 +244,7 @@ export const booksSlice = createSlice({
             state.delivery.isLoading = false;
             state.delivery.isSuccess = true;
             state.delivery.message = payload.message;
+            state.booking.isOpenBookingModal = false;
         },
         deliveryRequestFailure: (state, action: PayloadAction<string | null>) => {
             state.delivery.isLoading = false;
@@ -238,6 +252,7 @@ export const booksSlice = createSlice({
             state.delivery.isSuccess = false;
             state.delivery.data = null;
             state.delivery.message = action.payload;
+            state.booking.isOpenBookingModal = false;
         },
         bookingReset: (state) => {
             state.booking.id = null;
@@ -327,6 +342,8 @@ export const {
     bookListRequestSortingAlphabetDescSuccess,
     bookListRequestBooked,
     bookListRequestBookedSuccess,
+    bookListRequestDeliveried,
+    bookListRequestDeliveriedSuccess,
     bookListRequestFailure,
     bookRequest,
     bookRequestSuccess,

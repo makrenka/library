@@ -1,7 +1,8 @@
 import { createDate } from './create-date';
 
-// доступные даты: сегодня + завтра / если пятница = пт + пн / если выходные = пн
-export const checkIsBlockedDate = (date: ReturnType<typeof createDate>) => {
+// Бронирование: доступные даты: сегодня + завтра / если пятница = пт + пн / если выходные = пн
+// Выдача: доступные даты: сегодня + две недели / выходные недоступны
+export const checkIsBlockedDate = (date: ReturnType<typeof createDate>, days: number) => {
     const todayDate = createDate();
     // const zoneOffset = 10800000;
     const dayMs = 86400000;
@@ -19,15 +20,15 @@ export const checkIsBlockedDate = (date: ReturnType<typeof createDate>) => {
     const isTodaySunday =
         todayDate.dayNumberInWeek === 1 && date.timestamp > todayDate.timestamp + dayMs;
 
-    const isTomorrow =
+    const isBookingDeliveryTime =
         todayDate.dayNumberInWeek !== 7 &&
         todayDate.dayNumberInWeek !== 1 &&
-        todayDate.timestamp + dayMs < date.timestamp &&
+        todayDate.timestamp + dayMs * days < date.timestamp &&
         (todayDate.dayNumberInWeek === 6 ? date.dayNumberInWeek !== 2 : true);
 
     return (
         isLessThanToday ||
-        isTomorrow ||
+        isBookingDeliveryTime ||
         isTodayFriday ||
         isTodaySunday ||
         isTodaySaturday ||

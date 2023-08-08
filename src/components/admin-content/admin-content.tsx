@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 
 import { getBookList } from '../../store/books/selectors';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { bookListRequestBooked, bookListRequestNull } from '../../store/books';
+import {
+    bookListRequestBooked,
+    bookListRequestDeliveried,
+    bookListRequestNull,
+} from '../../store/books';
 import { BookListItem } from '../../store/books/types';
 import { Card } from '../card';
 
@@ -40,6 +44,7 @@ export const AdminContent = ({
     useEffect(() => {
         dispatch(bookListRequestNull());
         dispatch(bookListRequestBooked());
+        dispatch(bookListRequestDeliveried());
     }, [dispatch]);
 
     useEffect(() => {
@@ -71,7 +76,7 @@ export const AdminContent = ({
     return (
         <main className={styles.adminContent}>
             {contentView === 'books' ? (
-                dataBook?.length && isBookedChecked && isDeliveriedChecked ? (
+                dataBook && isBookedChecked && isDeliveriedChecked ? (
                     <ul className={styles.adminContentList}>
                         {dataBook.map((book) => (
                             <div key={book.id}>
@@ -79,20 +84,28 @@ export const AdminContent = ({
                             </div>
                         ))}
                     </ul>
-                ) : dataBook?.length && !isBookedChecked && isDeliveriedChecked ? (
+                ) : !isBookedChecked &&
+                  isDeliveriedChecked &&
+                  dataBook?.filter((book) => book.delivery).length === 0 ? (
+                    <div className={styles.emptyDataText}>Нет выданных книг</div>
+                ) : dataBook && !isBookedChecked && isDeliveriedChecked ? (
                     <ul className={styles.adminContentList}>
                         {dataBook
-                            .filter((book) => book.booking == null)
+                            .filter((book) => book.delivery)
                             .map((book) => (
                                 <div key={book.id}>
                                     <Card data={book} />
                                 </div>
                             ))}
                     </ul>
-                ) : dataBook?.length && isBookedChecked && !isDeliveriedChecked ? (
+                ) : isBookedChecked &&
+                  !isDeliveriedChecked &&
+                  dataBook?.filter((book) => book.booking).length === 0 ? (
+                    <div className={styles.emptyDataText}>Нет забронированных книг</div>
+                ) : dataBook && isBookedChecked && !isDeliveriedChecked ? (
                     <ul className={styles.adminContentList}>
                         {dataBook
-                            .filter((book) => book.delivery == null)
+                            .filter((book) => book.booking)
                             .map((book) => (
                                 <div key={book.id}>
                                     <Card data={book} />
@@ -116,7 +129,7 @@ export const AdminContent = ({
             ) : dataUsers && isBookHoldersChecked && !isBlockedUsersChecked ? (
                 <ul className={styles.adminContentList}>
                     {(dataUsers as ResponseUsersList[])
-                        .filter((user) => user.delivery.handed)
+                        .filter((user) => user.delivery.handed && !user.blocked)
                         .map((user) => (
                             <div key={user.id}>
                                 <AdminCardUser dataUsers={user} />

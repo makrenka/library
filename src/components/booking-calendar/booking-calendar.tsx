@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import classNames from 'classnames';
 
 import { BOOKING, DELIVERY } from '../../constants/books';
@@ -33,7 +33,7 @@ export const BookingCalendar = () => {
         },
         delivery: { dateHandedFrom, dateHandedTo, isDeliveryEdit, isDelivery, bookIdDelivery },
     } = useAppSelector(booksSelector);
-    const today = useMemo(() => new Date(), []);
+    const today = new Date();
     const {
         state,
         functions: { setSelectedMonthByIndex, onClickArrow },
@@ -42,8 +42,6 @@ export const BookingCalendar = () => {
     const [dateOrder, setDateOrder] = useState<string | Date>('');
     const [deliveryDateFrom, setDeliveryDateFrom] = useState<string | Date>('');
     const [deliveryDateTo, setDeliveryDateTo] = useState<string | Date>('');
-    const [deliveryDisabledDays, setDeliveryDisabledDays] = useState<object[] | null>(null);
-    console.log(deliveryDisabledDays);
 
     const dayClassName = (dayNumberInWeek: number, date: Date) =>
         classNames(styles.dayButton, {
@@ -90,15 +88,6 @@ export const BookingCalendar = () => {
         setDeliveryDateFrom(today.toISOString());
         setDeliveryDateTo(date.toISOString());
     };
-
-    useEffect(() => {
-        const deliveryDisabledDays = state.calendarDays.filter(
-            (item) => item.date.toISOString() < today.toISOString(),
-        );
-        if (isOpenBookingModal) {
-            setDeliveryDisabledDays(deliveryDisabledDays);
-        }
-    }, [isOpenBookingModal, state.calendarDays, today]);
 
     const renderBoocking = (
         <Modal
@@ -155,7 +144,7 @@ export const BookingCalendar = () => {
                             <Button
                                 key={`${date}`}
                                 classButton={dayClassName(dayNumberInWeek, date)}
-                                isDisabled={checkIsBlockedDate(state.calendarDays[index])}
+                                isDisabled={checkIsBlockedDate(state.calendarDays[index], 1)}
                                 onClick={() => setDateOrder(date.toISOString())}
                                 dataTestId='day-button'
                             >
@@ -258,7 +247,7 @@ export const BookingCalendar = () => {
                             <Button
                                 key={`${date}`}
                                 classButton={dayClassName(dayNumberInWeek, date)}
-                                isDisabled={checkIsBlockedDate(state.calendarDays[index])}
+                                isDisabled={checkIsBlockedDate(state.calendarDays[index], 14)}
                                 onClick={() => deliveryDates(date)}
                                 dataTestId='day-button'
                             >

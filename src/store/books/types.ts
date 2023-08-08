@@ -82,6 +82,8 @@ export type  BookListItem = {
         dateHandedTo: string;
         dateHandedFrom: string;
         recipientId: number;
+        recipientFirstName: string;
+        recipientLastName: string;
     };
     histories: [
         {

@@ -38,7 +38,7 @@ type BookType = {
 
 export const Card = (props: BookType) => {
     const {
-        data: { rating, title, authors, id, issueYear, image, booking },
+        data: { rating, title, authors, id, issueYear, image, booking, delivery },
         data: bookData,
         menuView,
         isProfileCard,
@@ -168,11 +168,19 @@ export const Card = (props: BookType) => {
             <div className={styles.cardDescription}>
                 <p className={styles.cardUser}>
                     Пользователь:{' '}
-                    <span>{`${booking?.customerLastName} ${booking?.customerFirstName}`}</span>
+                    <span>
+                        {booking
+                            ? `${booking?.customerLastName} ${booking?.customerFirstName}`
+                            : `${delivery?.recipientLastName} ${delivery?.recipientFirstName}`}
+                    </span>
                 </p>
                 <p className={styles.cardDateStatus}>
                     Дата:{' '}
-                    <span>{booking?.dateOrder.slice(0, 10).split('-').reverse().join('-')}</span>
+                    <span>
+                        {booking
+                            ? booking?.dateOrder.slice(0, 10).split('-').reverse().join('-')
+                            : delivery?.dateHandedFrom.slice(0, 10).split('-').reverse().join('-')}
+                    </span>
                 </p>
                 <p className={styles.cardDateStatus}>
                     Статус: <span>{booking ? 'Забронирована' : 'Выдана'}</span>
