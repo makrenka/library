@@ -138,9 +138,23 @@
 }
 
 //Стили карточек для админки Books
+.cardAdminList {
+    display: grid;
+    box-shadow: var(--box-shadow-button);
+    border-radius: 12px;
+    padding: 16px;
+    column-gap: 16px;
+    grid-template-columns: 120px 1fr 1fr;
+    grid-template-rows: max-content max-content 1fr;
+    align-content: start;
+    cursor: pointer;
+    margin-bottom: 16px;
+}
+
 .cardDescription {
     margin-top: 32px;
     grid-row: 2/4;
+    grid-column: 2/4;
 }
 
 .cardUser {
@@ -177,6 +191,21 @@
 .cardDateStatus:last-child {
     margin-bottom: 0;
 }
+
+.cardButtonAdminList {
+    grid-column: 3 / 4;
+    grid-row: 3 / 4;
+    display: grid;
+    justify-content: end;
+    align-content: end;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+}
+
+.notVisible {
+    visibility: hidden;
+}
+
 //Стили для кнопок
 .button {
     height: 40px;

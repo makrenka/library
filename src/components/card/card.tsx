@@ -158,7 +158,7 @@ export const Card = (props: BookType) => {
     );
 
     const renderCardAdminBooks = (
-        <li className={classNameCard('card')} data-test-id='card'>
+        <li className={classNameCard('cardAdmin')} data-test-id='card'>
             <div className={classNameCard('cardImg')}>
                 <img src={image?.url ? image.url : IconPlugImg} alt={title} />
             </div>
@@ -175,31 +175,48 @@ export const Card = (props: BookType) => {
                     </span>
                 </p>
                 <p className={styles.cardDateStatus}>
-                    Дата:{' '}
+                    {booking ? 'Дата: ' : 'Срок: '}
                     <span>
                         {booking
-                            ? booking?.dateOrder.slice(0, 10).split('-').reverse().join('-')
-                            : delivery?.dateHandedFrom.slice(0, 10).split('-').reverse().join('-')}
+                            ? booking?.dateOrder.slice(0, 10).split('-').reverse().join('.')
+                            : `${delivery?.dateHandedFrom.slice(0, 10).split('-').reverse().join('.')}-${delivery?.dateHandedTo.slice(0, 10).split('-').reverse().join('.')}`}
                     </span>
                 </p>
                 <p className={styles.cardDateStatus}>
                     Статус: <span>{booking ? 'Забронирована' : 'Выдана'}</span>
                 </p>
             </div>
-            {booking ? (
-                <div className={classNameCard('cardButton')}>
-                    <Button
-                        view='primary'
-                        onClick={(e) => handleOpenDeliveryModal(e, userIdReserved === userData?.id)}
-                    >
-                        ВЫДАТЬ
-                    </Button>
-                </div>
-            ) : (
-                <div className={classNameCard('cardButton')}>
-                    <BookingButton bookData={bookData} />
-                </div>
-            )}
+            <div className={classNameCard('cardButtonAdmin')}>
+                {
+                    booking ?
+                        (
+                            <>
+                                <div className={styles.notVisible}> </div>
+                                <Button
+                                    view='primary'
+                                    onClick={(e) => handleOpenDeliveryModal(e, userIdReserved === userData?.id)}
+                                >
+                                    {booking ? 'ВЫДАТЬ' : 'ПРОДЛИТЬ'}
+                                </Button>
+                            </>
+                        )
+                        : (
+                            <>
+                                <Button
+                                    view='secondary'
+                                >
+                                    отметка о Возврате
+                                </Button>
+                                <Button
+                                    view='primary'
+                                    onClick={(e) => handleOpenDeliveryModal(e, userIdReserved === userData?.id)}
+                                >
+                                    {booking ? 'ВЫДАТЬ' : 'ПРОДЛИТЬ'}
+                                </Button>
+                            </>
+                        )
+                }
+            </div>
         </li>
     );
 
