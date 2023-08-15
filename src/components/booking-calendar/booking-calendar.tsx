@@ -8,12 +8,13 @@ import {
     bookingRequest,
     bookingUpdateRequest,
     deliveryRequest,
+    deliveryUpdateRequest,
     toggleBookingModal,
     toggleDeliveryModal,
 } from '../../store/books';
 import { booksSelector } from '../../store/books/selectors';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { checkDateIsEqual, checkIsBlockedDate } from '../../utils/date';
+import { checkDateIsEqual, checkIsBlockedDate, createDate } from '../../utils/date';
 import { Button } from '../button';
 import { Modal } from '../modal';
 import arrow from '../navigation/assets/arrow-bottom-black.svg';
@@ -31,9 +32,18 @@ export const BookingCalendar = () => {
             bookingDate,
             isOpenBookingModal,
         },
-        delivery: { dateHandedFrom, dateHandedTo, isDeliveryEdit, isDelivery, bookIdDelivery },
+        delivery: {
+            dateHandedFrom,
+            dateHandedTo,
+            isDeliveryEdit,
+            isDelivery,
+            bookIdDelivery,
+            id: deliveryId,
+        },
     } = useAppSelector(booksSelector);
+
     const today = new Date();
+
     const {
         state,
         functions: { setSelectedMonthByIndex, onClickArrow },
@@ -263,17 +273,24 @@ export const BookingCalendar = () => {
                     <Button
                         classButton={styles.buttonReserv}
                         onClick={() =>
-                            dispatch(bookingUpdateRequest({ dateOrder, bookId, bookingId }))
+                            dispatch(
+                                deliveryUpdateRequest({
+                                    deliveryDateFrom,
+                                    deliveryDateTo,
+                                    bookIdDelivery,
+                                    deliveryId,
+                                }),
+                            )
                         }
                         view='primary'
-                        isDisabled={isLoading || dateOrder === bookingDate}
+                        isDisabled={!deliveryDateTo || isLoading}
                     >
                         {DELIVERY.buttonUpdate}
                     </Button>
                     <Button
                         classButton={styles.buttonReserv}
                         view='secondary'
-                        onClick={() => dispatch(bookingDeleteRequest(bookingId))}
+                        onClick={closeHandler}
                         isDisabled={isLoading}
                     >
                         {DELIVERY.buttonCancel}

@@ -17,6 +17,7 @@ import {
     DeliveryModalPayload,
     DeliveryPayload,
     DeliveryResponseSuccess,
+    DeliveryUpdatePayload,
 } from './types';
 
 export const initialState: BooksType = {
@@ -228,12 +229,18 @@ export const booksSlice = createSlice({
             state.booking.isOpenBookingModal = payload.showModal;
             state.delivery.bookIdDelivery = payload.bookIdDelivery;
             state.delivery.isDeliveryEdit = payload.isDeliveryEdit || false;
-            state.delivery.id = payload.bookIdDelivery || null;
+            state.delivery.id = payload.deliveryId || null;
             state.delivery.dateHandedFrom = payload.dateHandedFrom || null;
             state.delivery.dateHandedTo = payload.dateHandedTo || null;
             state.delivery.isDelivery = payload.isDelivery;
         },
         deliveryRequest: (state, { payload }: PayloadAction<DeliveryPayload>) => {
+            state.delivery.isLoading = true;
+        },
+        deliveryDeleteRequest: (state, action: PayloadAction<BooksType['delivery']['id']>) => {
+            state.delivery.isLoading = true;
+        },
+        deliveryUpdateRequest: (state, { payload }: PayloadAction<DeliveryUpdatePayload>) => {
             state.delivery.isLoading = true;
         },
         deliveryRequestSuccess: (
@@ -363,6 +370,8 @@ export const {
     deliveryRequest,
     deliveryRequestSuccess,
     deliveryRequestFailure,
+    deliveryUpdateRequest,
+    deliveryDeleteRequest,
     bookReviewRequestSuccess,
     bookReviewRequestFailure,
     bookReviewRequest,

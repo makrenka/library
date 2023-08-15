@@ -12,6 +12,7 @@ import IconCalendar from './assets/icon-calendar.svg';
 import IconWarning from './assets/icon-warning.svg';
 
 import styles from './admin-card-user.module.scss';
+import { BUTTON_TEXT } from '../../constants/button';
 
 type CardUserType = {
     dataUsers: ResponseUsersList;
@@ -49,6 +50,8 @@ export const AdminCardUser = (props: CardUserType) => {
                 <p className={styles.cardDescriptionText}>
                     Логин: <span>{username}</span>
                 </p>
+            </div>
+            <div className={styles.cardDescriptionCounterWrapper}>
                 <div className={styles.cardDescriptionCounter}>
                     <img src={IconBook} alt='icon book' className={styles.counterImg} />
                     <p className={styles.counterText}>
@@ -61,16 +64,16 @@ export const AdminCardUser = (props: CardUserType) => {
                     <span>{createdAt.slice(0, 10).split('-').reverse().join('-')}</span>
                 </p>
                 <p className={styles.cardDescriptionText}>
-                    Номер телефона: <span>{phone}</span>
+                    Номер телефона: <span>{phone.slice(0, 19)}</span>
                 </p>
             </div>
             {blocked ? (
                 <div className={styles.cardButton}>
-                    <Button view='primary'>РАЗБЛОКИРОВАТЬ</Button>
+                    <Button view='primary'>{BUTTON_TEXT.UNBLOCK}</Button>
                 </div>
             ) : (
                 <div className={styles.cardButton}>
-                    <Button view='secondary'>ЗАБЛОКИРОВАТЬ</Button>
+                    <Button view='secondary'>{BUTTON_TEXT.BLOCK}</Button>
                 </div>
             )}
             <div

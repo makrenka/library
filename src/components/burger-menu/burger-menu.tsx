@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import Cookies from 'js-cookie';
 
@@ -9,6 +9,7 @@ import { setAuthenticated } from '../../store/auth';
 import { useAppDispatch } from '../../store/hooks';
 import { ButtonMenuBurger } from '../button-menu-burger';
 import { Navigation } from '../navigation';
+import { AdminBurgerNavigation } from '../admin-navigation';
 
 import styles from './burger-menu.module.scss';
 
@@ -25,6 +26,8 @@ export const BurgerMenu = () => {
         dispatch(setAuthenticated(false));
         navigate(ROUTES.auth, { replace: true });
     };
+
+    const { pathname } = useLocation();
 
     useEffect(() => {
         const checkIfClickedOutside = (e: MouseEvent) => {
@@ -56,7 +59,7 @@ export const BurgerMenu = () => {
         }
     });
 
-    return (
+    const renderMenuMain = (
         <div className={styles.burgerMenu}>
             <ButtonMenuBurger isButtonState={isButtonState} setButtonState={setButtonState} />
             <div
@@ -108,4 +111,56 @@ export const BurgerMenu = () => {
             </div>
         </div>
     );
+
+    const renderMenuAdmin = (
+        <div className={styles.burgerMenu}>
+            <ButtonMenuBurger isButtonState={isButtonState} setButtonState={setButtonState} />
+            <div
+                className={classNames(
+                    styles.burgerMenuNav,
+                    isButtonState && styles.burgerMenuNavActive,
+                )}
+                ref={dropDownRef}
+                data-test-id='burger-navigation'
+            >
+                <AdminBurgerNavigation>
+                    <div
+                        className={classNames(
+                            styles.burgerMenuNavListUser,
+                            isButtonState && styles.burgerMenuNavListUserTop,
+                            pathname.includes('admin') && styles.burgerMenuNavListUserAdmin,
+                        )}
+                    >
+                        <hr className={styles.burgerMenuLine} />
+                        <NavLink
+                            to={`/${NAV_MENU_MAIN.profile.path}`}
+                            onClick={() => {
+                                setButtonState(false);
+                            }}
+                            className={({ isActive }) =>
+                                isActive
+                                    ? classNames(
+                                          styles.burgerMenuNavLink,
+                                          styles.burgerMenuNavLinkActive,
+                                      )
+                                    : styles.burgerMenuNavLink
+                            }
+                        >
+                            {NAV_MENU_MAIN.profile.name}
+                        </NavLink>
+                        <button
+                            type='button'
+                            onClick={logout}
+                            className={styles.burgerMenuNavLink}
+                            data-test-id='exit-button'
+                        >
+                            {NAV_MENU_MAIN.exit.name}
+                        </button>
+                    </div>
+                </AdminBurgerNavigation>
+            </div>
+        </div>
+    );
+
+    return !pathname.includes('admin') ? renderMenuMain : renderMenuAdmin;
 };

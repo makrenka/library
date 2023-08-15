@@ -12,7 +12,7 @@ import { ERROR } from '../../constants/errors';
 import { TOAST } from '../../constants/toast';
 import { MESSAGES } from '../../constants/toast-messages';
 import { authenticationSelector } from '../auth/selectors';
-import { addBookingUpdateUser, addDeliveryUpdateUser, deleteBookingUpdateUser } from '../user';
+import { addBookingUpdateUser, addDeliveryUpdateUser, deleteBookingUpdateUser, deleteDeliveryUpdateUser } from '../user';
 import { Comment, UserBooking, UserDelivery } from '../user/types';
 import { setToast } from '../view';
 
@@ -51,6 +51,8 @@ import {
     deliveryRequestFailure,
     deliveryRequest,
     bookListRequestDeliveried,
+    deliveryDeleteRequest,
+    deliveryUpdateRequest,
 } from '.';
 import { searchSelector } from '../search/selectors';
 
@@ -376,6 +378,85 @@ function* bookingDeleteRequestWorker({ payload }: PayloadAction<string>) {
     }
 }
 
+function* deliveryUpdateRequestWorker({
+    payload,
+}: PayloadAction<{ 
+    deliveryDateFrom: string; 
+    deliveryDateTo: string; 
+    bookIdDelivery: string | number | null;
+    deliveryId: string | number;
+ }>) {
+    const { delivery, book } = yield select(booksSelector);
+
+    try {
+        const { userData } = yield select(authenticationSelector);
+
+        const response: AxiosResponse = yield call(
+            axiosInstance.put,
+            `${BOOKS_URL.delivery}/continue/${payload.deliveryId}`,
+            {
+                data: {
+                    handed: true,
+                    dateHandedFrom: payload.deliveryDateFrom,
+                    dateHandedTo: payload.deliveryDateTo,
+                    book: payload.bookIdDelivery,
+                    recipient: userData.id,
+                },
+            },
+        );
+
+        yield put(
+            deliveryRequestSuccess({
+                data: response.data,
+                message: MESSAGES.editSuccess,
+            }),
+        );
+        yield put(setToast({ type: TOAST.success, text: MESSAGES.editSuccess }));
+
+        if(delivery?.isOnBookInfoPage) {
+            yield put(bookRequest(book.data.id));
+        } else {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestBooked());
+            yield put(bookListRequestDeliveried());
+        }
+    } catch {
+        yield put(deliveryRequestFailure(ERROR.editError));
+        yield put(setToast({ type: TOAST.error, text: ERROR.editError }));
+    }
+}
+
+function* deliveryDeleteRequestWorker({ payload }: PayloadAction<string>) {
+    const { delivery, book } = yield select(booksSelector);
+
+    try {
+        const response: AxiosResponse = yield call(
+            axiosInstance.delete,
+            `${BOOKS_URL.delivery}/${payload}`,
+        );
+
+        yield put(
+            deliveryRequestSuccess({
+                data: response.data,
+                message: MESSAGES.deliveryDelete,
+            }),
+        );
+        yield put(setToast({ type: TOAST.success, text: MESSAGES.deliveryDelete }));
+        yield put(deleteDeliveryUpdateUser());
+
+        if(delivery?.isOnBookInfoPage) {
+            yield put(bookRequest(book.data.id));
+        } else {
+            yield put(bookListRequestNull());
+            yield put(bookListRequestBooked());
+            yield put(bookListRequestDeliveried());
+        }
+    } catch {
+        yield put(deliveryRequestFailure(ERROR.deliveryDelete));
+        yield put(setToast({ type: TOAST.error, text: ERROR.deliveryDelete }));
+    }
+}
+
 function* bookReviewRequestWorker({ payload }: PayloadAction<DefaultValuesType>) {
     try {
         const response: AxiosResponse = yield call(axiosInstance.post, BOOKS_URL.comment, {
@@ -472,6 +553,14 @@ export function* watchBookingDeleteRequest() {
 
 export function* watchDeliveryRequest() {
     yield takeLatest(deliveryRequest, deliveryRequestWorker);
+}
+
+export function* watchdeliveryUpdateRequest() {
+    yield takeLatest(deliveryUpdateRequest, deliveryUpdateRequestWorker);
+}
+
+export function* watchDeliveryDeleteRequest() {
+    yield takeLatest(deliveryDeleteRequest, deliveryDeleteRequestWorker);
 }
 
 export function* watchBookReviewRequest() {

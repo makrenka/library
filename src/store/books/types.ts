@@ -154,6 +154,7 @@ export type BookingModalPayload = {
 export type DeliveryModalPayload = {
     showModal: boolean;
     bookIdDelivery: string | null | number;
+    deliveryId?: string | null | number;
     isDeliveryEdit?: boolean;
     dateHandedFrom?: string | null;
     dateHandedTo?: string | null;
@@ -172,6 +173,7 @@ export type BookingResponseSuccess = {
         dateOrder: string;
     };
 };
+
 export type DeliveryResponseSuccess = {
     id: number | string;
     attributes: {
@@ -204,3 +206,5 @@ export type DeliveryPayload = {
     deliveryDateTo: string | Date;
     bookIdDelivery: string | number | null;
 };
+
+export type DeliveryUpdatePayload = DeliveryPayload & {deliveryId: string | number | null};

@@ -9,6 +9,7 @@ export const ROUTES = {
     terms: '/terms',
     contract: '/contract',
     bookDetail: '/books/:category/:bookId',
+    admin: '/admin',
     adminBooks: '/admin/books',
     adminUsers: '/admin/users',
 };

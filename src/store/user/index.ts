@@ -30,6 +30,14 @@ const initialBooking = {
     order: null,
 };
 
+const initialDelivery = {
+    id: null,
+    handed: null,
+    dateHandedFrom: null,
+    dateHandedTo: null,
+    book: null,
+};
+
 export const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -95,6 +103,9 @@ export const userSlice = createSlice({
         addBookingUpdateUser: (state, action: PayloadAction<UserBooking>) => {
             state.data.booking = action.payload;
         },
+        deleteDeliveryUpdateUser: (state) => {
+            state.data.booking = initialBooking as UserBooking;
+        },
         addDeliveryUpdateUser: (state, action: PayloadAction<UserDelivery>) => {
             state.data.delivery = action.payload;
         },
@@ -115,6 +126,7 @@ export const {
     uploadAvatarRequest,
     uploadAvatarSuccess,
     deleteBookingUpdateUser,
+    deleteDeliveryUpdateUser,
     addBookingUpdateUser,
     addDeliveryUpdateUser,
 } = userSlice.actions;

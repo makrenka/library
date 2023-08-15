@@ -4,3 +4,12 @@
     display: grid;
     grid-template-columns: 285px 1fr;
 }
+@media (max-Width: 1000px) {
+    .layoutAdminPage {
+        grid-template-columns: 1fr;
+
+        .adminNavigation {
+            display: none;
+        }
+    }
+}
