@@ -1,11 +1,11 @@
 import { Fragment, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { AUTH_STATUS } from '../../../constants/auth-statuses';
 import { ROUTES } from '../../../constants/routes';
 import { authRequest, resetAuthError, setAuthenticated } from '../../../store/auth';
-import { authenticationSelector, authSelector } from '../../../store/auth/selectors';
+import { authenticationSelector } from '../../../store/auth/selectors';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { Button } from '../../button';
 import { CustomInput } from '../../inputs/custom-input';
@@ -14,6 +14,7 @@ import { Loader } from '../../loader/loader';
 import { StatusInfo } from '../../status-info';
 import { FormTitle } from '../form-title';
 import { getUserSelector } from '../../../store/user/selectors';
+import { authenticatedUserRequest } from '../../../store/user';
 
 import styles from './admin-auth-form.module.scss';
 
@@ -27,7 +28,6 @@ export const AdminAuthForm = () => {
     const navigate = useNavigate();
     const { errorMessage, isError, isLoading } = useAppSelector(authenticationSelector);
     const { data } = useAppSelector(getUserSelector);
-    console.log(data);
 
     const methods = useForm<AuthFormInputs>({
         mode: 'onBlur',
@@ -51,10 +51,11 @@ export const AdminAuthForm = () => {
     );
 
     useEffect(() => {
+        dispatch(authenticatedUserRequest());
         if (data.role.type === 'admin') {
             navigate(ROUTES.adminBooks, { replace: true });
         }
-    }, [data, navigate]);
+    }, [data, navigate, dispatch]);
 
     if (isError) {
         return (

@@ -12,9 +12,7 @@ export const AdminProtectedRoute = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { userData } = useAppSelector(authenticationSelector);
-    const { isAuthenticated } = useAppSelector(authSelector);
     const { data } = useAppSelector(getUserSelector);
-    console.log(data);
 
     useEffect(() => {
         const token = Cookies.get('token');
@@ -31,8 +29,8 @@ export const AdminProtectedRoute = () => {
         }
     }, [navigate, dispatch, userData]);
 
-    if (!isAuthenticated) {
-        return null;
+    if (data.role.type !== 'admin') {
+        navigate(ROUTES.admin, { replace: true });
     }
 
     return <Outlet />;

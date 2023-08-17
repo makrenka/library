@@ -47,7 +47,6 @@ export const AdminContent = ({
     const bookList = useAppSelector(getBookList);
     const usersList = useAppSelector(getUsersListSelector);
     const dispatch = useAppDispatch();
-    console.log(dataUsers);
 
     const burgerIsBookedChecked = useContext(BookedCheckedContext).isBookedChecked;
     const burgerIsDeliveriedChecked = useContext(DeliveriedCheckedContext).isDeliveriedChecked;
