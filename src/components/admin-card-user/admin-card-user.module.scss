@@ -223,4 +223,19 @@
         grid-row: 4;
         margin-top: 0;
     }
+        .returnSign {
+            width: 54px;
+            height: 54px;
+            background-size: contain;
+    
+            img {
+                width: 16px;
+                height: 16px;
+            }
+    
+            .dateHandedTo {
+                font-size: 14px;
+                line-height: 18px;
+            }
+        }
 }

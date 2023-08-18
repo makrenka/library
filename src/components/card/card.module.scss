@@ -453,6 +453,10 @@
     align-items: center;
     grid-row: 4;
 }
+.deliveryReturnBtn {
+    order: 2;
+    margin-top: 12px;
+}
 }
 
 @media (max-width: 350px) {

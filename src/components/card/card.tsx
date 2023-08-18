@@ -217,20 +217,24 @@ export const Card = (props: BookType) => {
                     </>
                 ) : (
                     <>
-                        <Button
-                            view='secondary'
-                            onClick={() => dispatch(deliveryDeleteRequest(delivery.id))}
-                        >
-                            {DELIVERY.buttonReturn}
-                        </Button>
-                        <Button
-                            view='primary'
-                            onClick={(e) =>
-                                handleOpenDeliveryModal(e, userIdReserved === userData?.id)
-                            }
-                        >
-                            {booking ? DELIVERY.buttonCreate : DELIVERY.buttonUpdate}
-                        </Button>
+                        <div className={styles.deliveryReturnBtn}>
+                            <Button
+                                view='secondary'
+                                onClick={() => dispatch(deliveryDeleteRequest(delivery.id))}
+                            >
+                                {DELIVERY.buttonReturn}
+                            </Button>
+                        </div>
+                        <div className={styles.deliveryUpdateBtn}>
+                            <Button
+                                view='primary'
+                                onClick={(e) =>
+                                    handleOpenDeliveryModal(e, userIdReserved === userData?.id)
+                                }
+                            >
+                                {booking ? DELIVERY.buttonCreate : DELIVERY.buttonUpdate}
+                            </Button>
+                        </div>
                     </>
                 )}
             </div>

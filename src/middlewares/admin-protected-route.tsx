@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 import { ROUTES } from '../constants/routes';
 import { authSuccess, setAuthenticated } from '../store/auth';
-import { authenticationSelector, authSelector } from '../store/auth/selectors';
+import { authenticationSelector } from '../store/auth/selectors';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { getUserSelector } from '../store/user/selectors';
 
