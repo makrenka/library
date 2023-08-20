@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { ReactNode, useContext, useState } from 'react';
+import { ReactNode, useContext } from 'react';
 import classNames from 'classnames';
 
 import { ROUTES } from '../../constants/routes';
@@ -10,6 +10,7 @@ import {
     BookedCheckedContext,
     DeliveriedCheckedContext,
 } from '../layout/layout';
+import { BUTTON_FILTERS } from '../../constants/button';
 
 import styles from './admin-navigation.module.scss';
 
@@ -19,48 +20,36 @@ type AdminBurgerNavigationProps = {
 
 export const AdminBurgerNavigation = ({ children }: AdminBurgerNavigationProps) => {
     const { pathname } = useLocation();
-    const [booked, setBooked] = useState(true);
-    const [deliveried, setDeliveried] = useState(true);
-    const [allUsers, setAllUsers] = useState(true);
-    const [bookHolders, setBookHolders] = useState(false);
-    const [blockedUsers, setBlockedUsers] = useState(false);
 
-    const { setIsBookedChecked } = useContext(BookedCheckedContext);
-    const { setIsDeliveriedChecked } = useContext(DeliveriedCheckedContext);
-    const { setIsAllUsersChecked } = useContext(AllUsersCheckedContext);
-    const { setIsBookHoldersChecked } = useContext(BookHoldersCheckedContext);
-    const { setIsBlockedUsersChecked } = useContext(BlockedUsersCheckedContext);
+    const { isBookedChecked, setIsBookedChecked } = useContext(BookedCheckedContext);
+    const { isDeliveriedChecked, setIsDeliveriedChecked } = useContext(DeliveriedCheckedContext);
+    const { isAllUsersChecked, setIsAllUsersChecked } = useContext(AllUsersCheckedContext);
+    const { isBookHoldersChecked, setIsBookHoldersChecked } = useContext(BookHoldersCheckedContext);
+    const { isBlockedUsersChecked, setIsBlockedUsersChecked } = useContext(
+        BlockedUsersCheckedContext,
+    );
 
     const handleBookedChecked = () => {
-        setBooked(!booked);
-        setIsBookedChecked?.(!booked);
+        setIsBookedChecked?.(!isBookedChecked);
     };
 
     const handleDeliveriedChecked = () => {
-        setDeliveried(!deliveried);
-        setIsDeliveriedChecked?.(!deliveried);
+        setIsDeliveriedChecked?.(!isDeliveriedChecked);
     };
 
     const handleAllUsersChecked = () => {
-        setAllUsers(!allUsers);
-        setIsAllUsersChecked?.(!allUsers);
-        setBookHolders(false);
+        setIsAllUsersChecked?.(!isAllUsersChecked);
         setIsBookHoldersChecked?.(false);
-        setBlockedUsers(false);
         setIsBlockedUsersChecked?.(false);
     };
 
     const handleBookHoldersChecked = () => {
-        setBookHolders(!bookHolders);
-        setIsBookHoldersChecked?.(!bookHolders);
-        setAllUsers(false);
+        setIsBookHoldersChecked?.(!isBookHoldersChecked);
         setIsAllUsersChecked?.(false);
     };
 
     const handleBlockedUsersChecked = () => {
-        setBlockedUsers(!blockedUsers);
-        setIsBlockedUsersChecked?.(!blockedUsers);
-        setAllUsers(false);
+        setIsBlockedUsersChecked?.(!isBlockedUsersChecked);
         setIsAllUsersChecked?.(false);
     };
 
@@ -86,11 +75,11 @@ export const AdminBurgerNavigation = ({ children }: AdminBurgerNavigationProps) 
                             type='checkbox'
                             id='isburgerbooking'
                             className={styles.filtersItemInput}
-                            checked={booked}
+                            checked={isBookedChecked}
                             onChange={handleBookedChecked}
                         />
                         <label htmlFor='isburgerbooking' className={styles.filtersItemLabel}>
-                            Забронирована
+                            {BUTTON_FILTERS.reserved}
                         </label>
                     </li>
                     <li className={styles.filtersItem}>
@@ -98,11 +87,11 @@ export const AdminBurgerNavigation = ({ children }: AdminBurgerNavigationProps) 
                             type='checkbox'
                             id='isburgerdelivery'
                             className={styles.filtersItemInput}
-                            checked={deliveried}
+                            checked={isDeliveriedChecked}
                             onChange={handleDeliveriedChecked}
                         />
                         <label htmlFor='isburgerdelivery' className={styles.filtersItemLabel}>
-                            Выдана
+                            {BUTTON_FILTERS.deliveried}
                         </label>
                     </li>
                 </ul>
@@ -131,11 +120,11 @@ export const AdminBurgerNavigation = ({ children }: AdminBurgerNavigationProps) 
                                 type='checkbox'
                                 id='allburger'
                                 className={styles.filtersItemInput}
-                                checked={allUsers}
+                                checked={isAllUsersChecked}
                                 onChange={handleAllUsersChecked}
                             />
                             <label htmlFor='allburger' className={styles.filtersItemLabel}>
-                                Все
+                                {BUTTON_FILTERS.all}
                             </label>
                         </li>
                         <li className={styles.filtersItem}>
@@ -143,11 +132,11 @@ export const AdminBurgerNavigation = ({ children }: AdminBurgerNavigationProps) 
                                 type='checkbox'
                                 id='bookholdersburger'
                                 className={styles.filtersItemInput}
-                                checked={bookHolders}
+                                checked={isBookHoldersChecked}
                                 onChange={handleBookHoldersChecked}
                             />
                             <label htmlFor='bookholdersburger' className={styles.filtersItemLabel}>
-                                Держатели книг
+                                {BUTTON_FILTERS.bookHolders}
                             </label>
                         </li>
                         <li className={styles.filtersItem}>
@@ -155,11 +144,11 @@ export const AdminBurgerNavigation = ({ children }: AdminBurgerNavigationProps) 
                                 type='checkbox'
                                 id='blockedburger'
                                 className={styles.filtersItemInput}
-                                checked={blockedUsers}
+                                checked={isBlockedUsersChecked}
                                 onChange={handleBlockedUsersChecked}
                             />
                             <label htmlFor='blockedburger' className={styles.filtersItemLabel}>
-                                Заблокированые
+                                {BUTTON_FILTERS.blocked}
                             </label>
                         </li>
                     </ul>

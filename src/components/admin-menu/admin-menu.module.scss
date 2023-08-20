@@ -1,5 +1,8 @@
 .adminMenu {
     margin-bottom: 32px;
+}
+
+.searchWrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -19,4 +22,37 @@
 
 .buttonSortImg {
     margin-left: 8px;
+}
+.filters {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 600px) {
+    .filtersBtn {
+        display: none;
+        padding: 4px 8px;
+        border-radius: 16px;
+        border: 1px solid var(--main-dark-30, rgba(54, 54, 54, 0.30));
+        background: var(--grey-black-10, #EBEBEB);
+        margin-right: 16px;
+
+        span {
+            margin-right: 4px;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 18px;
+        }
+
+        button {
+            border: none;
+        }
+    }
+
+    .filtersBtnActive {
+        display: flex;
+        align-items: center;
+    }
 }
