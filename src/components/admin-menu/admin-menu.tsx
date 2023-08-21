@@ -110,6 +110,19 @@ export const AdminMenu = ({ setIsSortedDesc, isSortedDesc }: AdminMenuProps) => 
                         className={styles.buttonSortImg}
                     />
                 </Button>
+                <Button
+                    classButton={classNames(
+                        styles.buttonSortAdapt,
+                        !isSearhView && styles.buttonSortAdaptUnactive,
+                    )}
+                    onClick={() => setIsSortedDesc(!isSortedDesc)}
+                >
+                    <img
+                        src={isSortedDesc ? sortDesc : sortAsc}
+                        alt='icon-sort'
+                        className={styles.buttonSortImg}
+                    />
+                </Button>
             </div>
         </div>
     );
