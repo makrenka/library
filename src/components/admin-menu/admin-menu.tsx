@@ -100,7 +100,10 @@ export const AdminMenu = ({ setIsSortedDesc, isSortedDesc }: AdminMenuProps) => 
                     isSortView={isSortView}
                 />
                 <Button
-                    classButton={styles.buttonSort}
+                    classButton={classNames(
+                        styles.buttonSort,
+                        !isSearhView && styles.buttonSortUnactive,
+                    )}
                     onClick={() => setIsSortedDesc(!isSortedDesc)}
                 >
                     <span>{isSortedDesc ? 'Сортировка от А до Я' : 'Сортировка от Я до А'}</span>
