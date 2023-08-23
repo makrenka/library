@@ -18,21 +18,19 @@ type CardUserType = {
     dataUsers: ResponseUsersList;
 };
 
-export const AdminCardUser = (props: CardUserType) => {
-    const {
-        dataUsers: {
-            id,
-            avatar,
-            lastName,
-            firstName,
-            username,
-            delivery: { handed, dateHandedTo },
-            createdAt,
-            phone,
-            blocked,
-        },
-    } = props;
-
+export const AdminCardUser = ({
+    dataUsers: {
+        id,
+        avatar,
+        lastName,
+        firstName,
+        username,
+        delivery: { handed, dateHandedTo },
+        createdAt,
+        phone,
+        blocked,
+    },
+}: CardUserType) => {
     const { filter } = useAppSelector(searchSelector);
     const handleHighlight = (string: string) => highlightMatches(filter, string);
     const lateBookReturn =

@@ -6,7 +6,8 @@ import { NAV_MENU_MAIN } from '../../constants/nav-menu-list';
 import { ROUTES } from '../../constants/routes';
 import { USER } from '../../constants/user';
 import { setAuthenticated } from '../../store/auth';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getUserSelector } from '../../store/user/selectors';
 
 import styles from './header-user.module.scss';
 
@@ -18,6 +19,7 @@ type HeaderUserProps = {
 export const HeaderUser = ({ userFirstName, avatar }: HeaderUserProps) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const { data } = useAppSelector(getUserSelector);
 
     const logout = () => {
         Cookies.remove('token');
@@ -40,6 +42,12 @@ export const HeaderUser = ({ userFirstName, avatar }: HeaderUserProps) => {
                 >
                     {NAV_MENU_MAIN.profile.name}
                 </Link>
+                {data.role.type === 'admin' ? (
+                    <Link className={styles.popUpItem} to={ROUTES.admin}>
+                        {NAV_MENU_MAIN.profile.admin}
+                    </Link>
+                ) : null}
+
                 <button type='button' className={styles.popUpItem} onClick={logout}>
                     {NAV_MENU_MAIN.exit.name}
                 </button>
