@@ -52,7 +52,7 @@ export const AdminAuthForm = () => {
 
     useEffect(() => {
         dispatch(authenticatedUserRequest());
-        if (data.role.type === 'admin') {
+        if (data.role?.type === 'admin') {
             navigate(ROUTES.adminBooks, { replace: true });
         }
     }, [data, navigate, dispatch]);

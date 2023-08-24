@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import Cookies from 'js-cookie';
@@ -10,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getUserSelector } from '../../store/user/selectors';
 
 import styles from './header-user.module.scss';
+import { authenticatedUserRequest } from '../../store/user';
 
 type HeaderUserProps = {
     userFirstName?: string;
@@ -42,7 +44,7 @@ export const HeaderUser = ({ userFirstName, avatar }: HeaderUserProps) => {
                 >
                     {NAV_MENU_MAIN.profile.name}
                 </Link>
-                {data.role.type === 'admin' ? (
+                {data.role?.type === 'admin' ? (
                     <Link className={styles.popUpItem} to={ROUTES.admin}>
                         {NAV_MENU_MAIN.profile.admin}
                     </Link>
