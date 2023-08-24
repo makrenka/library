@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import Cookies from 'js-cookie';
@@ -11,7 +10,6 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getUserSelector } from '../../store/user/selectors';
 
 import styles from './header-user.module.scss';
-import { authenticatedUserRequest } from '../../store/user';
 
 type HeaderUserProps = {
     userFirstName?: string;
