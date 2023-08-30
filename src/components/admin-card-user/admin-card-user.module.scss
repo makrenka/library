@@ -1,0 +1,245 @@
+.card {
+    display: grid;
+    box-shadow: var(--box-shadow-button);
+    border-radius: 12px;
+    padding: 16px;
+    column-gap: 16px;
+    grid-template-columns: 120px max-content 1fr;
+    grid-template-rows: max-content max-content 1fr;
+    align-content: start;
+    cursor: pointer;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.cardBlocked {
+    background: var(--other-negative-background, #FEEBEA);
+}
+
+.cardImg {
+    width: 120px;
+    height: 120px;
+    border-radius: 150px;
+    grid-column: 1 / 2;
+    grid-row: 1 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 120px;
+        height: 120px;
+        border-radius: 150px;
+    }
+}
+
+.userNameBlock {
+    grid-column: 2 / 4;
+    grid-row: 1 / 2;
+    margin-bottom: 12px;
+}
+
+.cardUserName {
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 30px;
+    letter-spacing: 0.1px;
+    -webkit-line-clamp: 4;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cardDescriptionText {
+    color: var(--grey-black-40, #A7A7A7);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    margin-top: 8px;
+
+    span {
+        color: var(--main-dark, #363636);
+    }
+}
+
+.cardDescriptionText:first-child {
+    margin-top: 0;
+}
+
+.cardDescriptionCounter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 119px;
+    height: 32px;
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: var(--other-positive-background, #EBF9F1);
+    margin: 18px 0;
+}
+
+.counterText {
+    color: var(--grey-black-70, #727272);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+}
+
+.cardButton {
+    justify-self: end;
+    align-self: end;
+    grid-column: 3;
+    grid-row: 3;
+
+    button {
+        width: 174px;
+    }
+}
+
+.returnSign {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 6px;
+    padding-left: 6.5px;
+    opacity: 0;
+
+    .dateHandedTo {
+        color: var(--main-white, #FFF);
+        text-align: center;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+        letter-spacing: 0.1px;
+    }
+}
+
+.returnSignGreen {
+    opacity: 1;
+    border-radius: 0px 12px 0px 60px;
+    background: var(--other-positive, #00CA71);
+}
+
+.returnSignRed {
+    opacity: 1;
+    border-radius: 0px 12px 0px 60px;
+    background: var(--other-text-select, #FF5253);
+}
+
+.cardDescriptionCounterWrapper {
+    grid-column: 2;
+}
+
+@media (max-Width: 768px) {
+    .card {
+        grid-template-columns: 80px max-content 1fr;
+        column-gap: 16px;
+    }
+
+    .cardImg,
+    .cardImg img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-Width: 550px) {
+    .card {
+        grid-template-columns: 80px 1fr;
+    }
+
+    .cardButton {
+        grid-row: 4;
+        grid-column: 2;
+        margin-top: 16px;
+        justify-self: center;
+    }
+}
+
+@media (max-Width: 400px) {
+    .card {
+        grid-template-columns: 32px 1fr;
+        column-gap: 8px;
+    }
+
+    .cardImg,
+    .cardImg img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .userNameBlock {
+        margin-bottom: 8px;
+    }
+
+    .cardUserName {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 18px;
+    }
+
+    .cardDescriptionText {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+    }
+
+    .cardDescriptionCounter {
+        width: 104px;
+        height: 26px;
+        margin: 16px 0;
+
+        img {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .counterText {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 18px;
+    }
+
+    .cardDescriptionCounterWrapper {
+        display: flex;
+        flex-direction: column;
+        grid-column: 1/4;
+        grid-row: 3;
+
+        .cardDescriptionCounter {
+            order: 3;
+        }
+    }
+
+    .cardButton {
+        grid-row: 4;
+        margin-top: 0;
+    }
+
+    .returnSign {
+        width: 54px;
+        height: 54px;
+        background-size: contain;
+
+        img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .dateHandedTo {
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+}

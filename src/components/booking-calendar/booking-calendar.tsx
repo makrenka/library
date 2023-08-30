@@ -1,18 +1,20 @@
 import { Fragment, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import startOfDay from 'date-fns/startOfDay';
 
-import { BOOKING } from '../../constants/books';
+import { BOOKING, DELIVERY } from '../../constants/books';
 import { useCalendar } from '../../hooks/use-calendar';
 import {
     bookingDeleteRequest,
     bookingRequest,
     bookingUpdateRequest,
+    deliveryRequest,
+    deliveryUpdateRequest,
     toggleBookingModal,
+    toggleDeliveryModal,
 } from '../../store/books';
 import { booksSelector } from '../../store/books/selectors';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { checkDateIsEqual, checkIsBlockedDate } from '../../utils/date';
+import { checkDateIsEqual, checkIsBlockedDate, createDate } from '../../utils/date';
 import { Button } from '../button';
 import { Modal } from '../modal';
 import arrow from '../navigation/assets/arrow-bottom-black.svg';
@@ -22,44 +24,85 @@ import styles from './booking-calendar.module.scss';
 export const BookingCalendar = () => {
     const dispatch = useAppDispatch();
     const {
-        booking: { bookId, isLoading, isEdit, id: bookingId, bookingDate, isOpenBookingModal },
+        booking: {
+            bookId,
+            isLoading,
+            isBookingEdit,
+            id: bookingId,
+            bookingDate,
+            isOpenBookingModal,
+        },
+        delivery: {
+            dateHandedFrom,
+            dateHandedTo,
+            isDeliveryEdit,
+            isDelivery,
+            bookIdDelivery,
+            id: deliveryId,
+        },
     } = useAppSelector(booksSelector);
+
     const today = new Date();
+
     const {
         state,
         functions: { setSelectedMonthByIndex, onClickArrow },
     } = useCalendar({ locale: 'default', selectedDate: today });
 
     const [dateOrder, setDateOrder] = useState<string | Date>('');
+    const [deliveryDateFrom, setDeliveryDateFrom] = useState<string | Date>('');
+    const [deliveryDateTo, setDeliveryDateTo] = useState<string | Date>('');
 
     const dayClassName = (dayNumberInWeek: number, date: Date) =>
         classNames(styles.dayButton, {
             [styles.dayButtonToday]: checkDateIsEqual(date, today),
-            [styles.dayButtonActive]: dateOrder === date.toISOString(),
+            [styles.dayButtonActive]:
+                dateOrder === date.toISOString() || deliveryDateTo === date.toISOString(),
             [styles.endWeek]: dayNumberInWeek === 1 || dayNumberInWeek === 7,
         });
 
     const closeHandler = () => {
         setDateOrder('');
         dispatch(toggleBookingModal({ showModal: false, bookId: null }));
+        dispatch(
+            toggleDeliveryModal({ showModal: false, bookIdDelivery: null, isDelivery: false }),
+        );
     };
 
     useEffect(() => {
-        if (isEdit && bookingDate) {
+        if (isBookingEdit && bookingDate) {
             setDateOrder(bookingDate);
         } else {
             setDateOrder('');
         }
-    }, [bookingDate, isEdit, state.calendarDays, state.selectedYear, isOpenBookingModal]);
+    }, [bookingDate, isBookingEdit, state.calendarDays, state.selectedYear, isOpenBookingModal]);
 
-    if (!isOpenBookingModal) {
-        return null;
-    }
+    useEffect(() => {
+        if (isDeliveryEdit && dateHandedFrom && dateHandedTo) {
+            setDeliveryDateFrom(dateHandedFrom);
+            setDeliveryDateTo(dateHandedTo);
+        } else {
+            setDeliveryDateFrom('');
+            setDeliveryDateTo('');
+        }
+    }, [
+        isDeliveryEdit,
+        dateHandedFrom,
+        dateHandedTo,
+        state.calendarDays,
+        state.selectedYear,
+        isOpenBookingModal,
+    ]);
 
-    return (
+    const deliveryDates = (date: Date) => {
+        setDeliveryDateFrom(today.toISOString());
+        setDeliveryDateTo(date.toISOString());
+    };
+
+    const renderBoocking = (
         <Modal
             onClose={closeHandler}
-            title={isEdit ? BOOKING.titleUpdate : BOOKING.titleCreate}
+            title={isBookingEdit ? BOOKING.titleUpdate : BOOKING.titleCreate}
             dataTestId='booking-modal'
         >
             <div className={styles.calendarWrapper} data-test-id='calendar'>
@@ -111,7 +154,7 @@ export const BookingCalendar = () => {
                             <Button
                                 key={`${date}`}
                                 classButton={dayClassName(dayNumberInWeek, date)}
-                                isDisabled={checkIsBlockedDate(state.calendarDays[index])}
+                                isDisabled={checkIsBlockedDate(state.calendarDays[index], 1)}
                                 onClick={() => setDateOrder(date.toISOString())}
                                 dataTestId='day-button'
                             >
@@ -122,7 +165,7 @@ export const BookingCalendar = () => {
                 </div>
             </div>
 
-            {isEdit ? (
+            {isBookingEdit ? (
                 <Fragment>
                     <Button
                         classButton={styles.buttonReserv}
@@ -159,4 +202,123 @@ export const BookingCalendar = () => {
             )}
         </Modal>
     );
+
+    const renderDelivery = (
+        <Modal
+            onClose={closeHandler}
+            title={isDeliveryEdit ? DELIVERY.titleUpdate : DELIVERY.titleCreate}
+        >
+            <div className={styles.calendarWrapper} data-test-id='calendar'>
+                <div className={styles.calendarHeader}>
+                    <select
+                        onChange={(e) => setSelectedMonthByIndex(Number(e.target.value))}
+                        value={state.selectedMonth.monthIndex}
+                        className={styles.select}
+                        data-test-id='month-select'
+                    >
+                        {state.monthesNames.map((item) => (
+                            <option
+                                label={`${item.month} ${
+                                    state.selectedMonth.monthIndex === item.monthIndex
+                                        ? state.selectedYear
+                                        : ''
+                                }`}
+                                value={item.monthIndex}
+                                key={item.month}
+                            >
+                                {item.month}
+                            </option>
+                        ))}
+                    </select>
+                    <Button
+                        classButton={styles.arrow}
+                        onClick={() => onClickArrow('left')}
+                        dataTestId='button-prev-month'
+                    >
+                        <img src={arrow} alt='' />
+                    </Button>
+                    <Button
+                        classButton={styles.arrow}
+                        onClick={() => onClickArrow('right')}
+                        dataTestId='button-next-month'
+                    >
+                        <img src={arrow} alt='' />
+                    </Button>
+                </div>
+
+                <div className={styles.calendarContent}>
+                    <div className={styles.calendarDayNames}>
+                        {state.weekDaysNames.map(({ dayShort }) => (
+                            <span key={dayShort}>{dayShort}</span>
+                        ))}
+                    </div>
+                    <div className={styles.calendarDaysWrapper}>
+                        {state.calendarDays.map(({ dayNumber, date, dayNumberInWeek }, index) => (
+                            <Button
+                                key={`${date}`}
+                                classButton={dayClassName(dayNumberInWeek, date)}
+                                isDisabled={checkIsBlockedDate(state.calendarDays[index], 14)}
+                                onClick={() => deliveryDates(date)}
+                                dataTestId='day-button'
+                            >
+                                {dayNumber}
+                            </Button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {isDeliveryEdit ? (
+                <Fragment>
+                    <Button
+                        classButton={styles.buttonReserv}
+                        onClick={() =>
+                            dispatch(
+                                deliveryUpdateRequest({
+                                    deliveryDateFrom,
+                                    deliveryDateTo,
+                                    bookIdDelivery,
+                                    deliveryId,
+                                }),
+                            )
+                        }
+                        view='primary'
+                        isDisabled={!deliveryDateTo || isLoading}
+                    >
+                        {DELIVERY.buttonUpdate}
+                    </Button>
+                    <Button
+                        classButton={styles.buttonReserv}
+                        view='secondary'
+                        onClick={closeHandler}
+                        isDisabled={isLoading}
+                    >
+                        {DELIVERY.buttonCancel}
+                    </Button>
+                </Fragment>
+            ) : (
+                <Button
+                    classButton={styles.buttonReserv}
+                    onClick={() =>
+                        dispatch(
+                            deliveryRequest({ deliveryDateFrom, deliveryDateTo, bookIdDelivery }),
+                        )
+                    }
+                    view='primary'
+                    isDisabled={!deliveryDateTo || isLoading}
+                >
+                    {DELIVERY.buttonCreate}
+                </Button>
+            )}
+        </Modal>
+    );
+
+    if (!isOpenBookingModal) {
+        return null;
+    }
+
+    if (isDelivery) {
+        return renderDelivery;
+    }
+    return renderBoocking;
 };

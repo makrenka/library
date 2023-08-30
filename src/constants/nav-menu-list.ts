@@ -19,6 +19,7 @@ export const NAV_MENU_MAIN = {
     },
     profile: {
         name: 'Профиль',
+        admin: 'Администрирование',
         path: 'profile',
     },
     exit: {

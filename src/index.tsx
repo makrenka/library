@@ -16,6 +16,8 @@ import { ProfilePage } from './pages/profile';
 import { Terms } from './pages/terms';
 import { reportWebVitals } from './report-web-vitals';
 import { store } from './store';
+import { LayoutAdminPage } from './components/layout-admin-page';
+import { Admin } from './pages/admin-page';
 
 import './index.scss';
 
@@ -23,6 +25,8 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import { AdminAuthForm } from './components/forms/admin-auth-form';
+import { AdminProtectedRoute } from './middlewares/admin-protected-route';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -35,6 +39,7 @@ root.render(
                     <Route path={ROUTES.registration} element={<RegisterForm />} />
                     <Route path={ROUTES.recovery} element={<RecoverForms />} />
                 </Route>
+                <Route path={ROUTES.admin} element={<AdminAuthForm />} />
                 <Route element={<ProtectedRoute />}>
                     <Route path={ROUTES.main} element={<Layout />}>
                         <Route element={<LayoutMainPage />}>
@@ -51,6 +56,18 @@ root.render(
                         </Route>
                         <Route path={ROUTES.bookDetail} element={<BookPage />} />
                         <Route path={ROUTES.profile} element={<ProfilePage />} />
+                        <Route element={<AdminProtectedRoute />}>
+                            <Route element={<LayoutAdminPage />}>
+                                <Route
+                                    path={ROUTES.adminBooks}
+                                    element={<Admin contentView='books' />}
+                                />
+                                <Route
+                                    path={ROUTES.adminUsers}
+                                    element={<Admin contentView='users' />}
+                                />
+                            </Route>
+                        </Route>
                     </Route>
                 </Route>
             </Routes>

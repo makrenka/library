@@ -4,4 +4,15 @@ export const BOOKING = {
     buttonCreate: 'Забронировать',
     buttonUpdate: 'Забронировать',
     buttonCancel: 'Отменить бронь',
+    status: 'Забронирована',
+};
+
+export const DELIVERY = {
+    titleCreate: 'Дата возврата',
+    titleUpdate: 'Дата продления',
+    buttonCreate: 'ВЫДАТЬ',
+    buttonUpdate: 'ПРОДЛИТЬ',
+    buttonReturn: 'ОТМЕТКА О ВОЗВРАТЕ',
+    buttonCancel: 'Отменить продление',
+    status: 'Выдана',
 };

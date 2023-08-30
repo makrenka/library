@@ -12,14 +12,19 @@ import {
     watchBookingRequest,
     watchBookingUpdateRequest,
     watchBookListRequest,
+    watchbookListRequestBooked,
+    watchbookListRequestDeliveried,
     watchBookListRequestScroll,
     watchbookListRequestSortingAlphabetAsc,
     watchbookListRequestSortingAlphabetDesc,
     watchBookRequest,
     watchBookReviewRequest,
     watchBookReviewUpdate,
+    watchDeliveryDeleteRequest,
+    watchDeliveryRequest,
+    watchdeliveryUpdateRequest,
 } from './books/sagas';
-import { watchUserRequest } from './user/sagas';
+import { watchUserRequest, watchUsersListRequest } from './user/sagas';
 
 export function* rootSaga() {
     yield all([
@@ -27,6 +32,8 @@ export function* rootSaga() {
         fork(watchBookListRequestScroll),
         fork(watchbookListRequestSortingAlphabetAsc),
         fork(watchbookListRequestSortingAlphabetDesc),
+        fork(watchbookListRequestBooked),
+        fork(watchbookListRequestDeliveried),
         fork(watchBookRequest),
         fork(watchUserRequest),
         fork(watchBookCategoriesRequest),
@@ -37,7 +44,11 @@ export function* rootSaga() {
         fork(watchBookingRequest),
         fork(watchBookingUpdateRequest),
         fork(watchBookingDeleteRequest),
+        fork(watchDeliveryRequest),
+        fork(watchdeliveryUpdateRequest),
+        fork(watchDeliveryDeleteRequest),
         fork(watchBookReviewRequest),
         fork(watchBookReviewUpdate),
+        fork(watchUsersListRequest),
     ]);
 }

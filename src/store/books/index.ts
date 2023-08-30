@@ -14,6 +14,10 @@ import {
     BookingUpdatePayload,
     BookListItem,
     BooksType,
+    DeliveryModalPayload,
+    DeliveryPayload,
+    DeliveryResponseSuccess,
+    DeliveryUpdatePayload,
 } from './types';
 
 export const initialState: BooksType = {
@@ -43,10 +47,24 @@ export const initialState: BooksType = {
         isOpenBookingModal: false,
         data: null,
         bookId: null,
-        isEdit: false,
+        isBookingEdit: false,
         bookingDate: null,
         message: null,
         isOnBookInfoPage: undefined,
+    },
+    delivery: {
+        id: null,
+        isLoading: false,
+        isSuccess: false,
+        isError: false,
+        data: null,
+        bookIdDelivery: null,
+        isDeliveryEdit: false,
+        dateHandedFrom: null,
+        dateHandedTo: null,
+        message: null,
+        isOnBookInfoPage: undefined,
+        isDelivery: false,
     },
     bookReview: {
         bookId: null,
@@ -109,6 +127,28 @@ export const booksSlice = createSlice({
                 ? [...state.bookList.data, ...action.payload]
                 : action.payload;
         },
+        bookListRequestBooked: (state) => {
+            state.bookList.isLoading = true;
+        },
+        bookListRequestBookedSuccess: (state, action: PayloadAction<BookListItem[]>) => {
+            state.bookList.isLoading = false;
+            state.bookList.isError = false;
+            state.bookList.isSuccess = true;
+            state.bookList.data = state.bookList.data
+                ? [...state.bookList.data, ...action.payload]
+                : action.payload;
+        },
+        bookListRequestDeliveried: (state) => {
+            state.bookList.isLoading = true;
+        },
+        bookListRequestDeliveriedSuccess: (state, action: PayloadAction<BookListItem[]>) => {
+            state.bookList.isLoading = false;
+            state.bookList.isError = false;
+            state.bookList.isSuccess = true;
+            state.bookList.data = state.bookList.data
+                ? [...state.bookList.data, ...action.payload]
+                : action.payload;
+        },
         bookListRequestFailure: (state) => {
             state.bookList.isLoading = false;
             state.bookList.isError = true;
@@ -153,7 +193,7 @@ export const booksSlice = createSlice({
         toggleBookingModal: (state, { payload }: PayloadAction<BookingModalPayload>) => {
             state.booking.isOpenBookingModal = payload.showModal;
             state.booking.bookId = payload.bookId;
-            state.booking.isEdit = payload.isEdit || false;
+            state.booking.isBookingEdit = payload.isBookingEdit || false;
             state.booking.id = payload.bookingId || null;
             state.booking.bookingDate = payload.bookingDate || null;
             state.booking.isOnBookInfoPage = payload.isOnBookInfoPage;
@@ -185,6 +225,42 @@ export const booksSlice = createSlice({
             state.booking.isOpenBookingModal = false;
             state.booking.message = action.payload;
         },
+        toggleDeliveryModal: (state, { payload }: PayloadAction<DeliveryModalPayload>) => {
+            state.booking.isOpenBookingModal = payload.showModal;
+            state.delivery.bookIdDelivery = payload.bookIdDelivery;
+            state.delivery.isDeliveryEdit = payload.isDeliveryEdit || false;
+            state.delivery.id = payload.deliveryId || null;
+            state.delivery.dateHandedFrom = payload.dateHandedFrom || null;
+            state.delivery.dateHandedTo = payload.dateHandedTo || null;
+            state.delivery.isDelivery = payload.isDelivery;
+        },
+        deliveryRequest: (state, { payload }: PayloadAction<DeliveryPayload>) => {
+            state.delivery.isLoading = true;
+        },
+        deliveryDeleteRequest: (state, action: PayloadAction<BooksType['delivery']['id']>) => {
+            state.delivery.isLoading = true;
+        },
+        deliveryUpdateRequest: (state, { payload }: PayloadAction<DeliveryUpdatePayload>) => {
+            state.delivery.isLoading = true;
+        },
+        deliveryRequestSuccess: (
+            state,
+            { payload }: PayloadAction<{ data: DeliveryResponseSuccess; message: string | null }>,
+        ) => {
+            state.delivery.data = payload.data;
+            state.delivery.isLoading = false;
+            state.delivery.isSuccess = true;
+            state.delivery.message = payload.message;
+            state.booking.isOpenBookingModal = false;
+        },
+        deliveryRequestFailure: (state, action: PayloadAction<string | null>) => {
+            state.delivery.isLoading = false;
+            state.delivery.isError = true;
+            state.delivery.isSuccess = false;
+            state.delivery.data = null;
+            state.delivery.message = action.payload;
+            state.booking.isOpenBookingModal = false;
+        },
         bookingReset: (state) => {
             state.booking.id = null;
             state.booking.isLoading = false;
@@ -192,7 +268,7 @@ export const booksSlice = createSlice({
             state.booking.isError = false;
             state.booking.data = null;
             state.booking.bookId = null;
-            state.booking.isEdit = false;
+            state.booking.isBookingEdit = false;
             state.booking.bookingDate = null;
             state.booking.message = null;
         },
@@ -271,6 +347,10 @@ export const {
     bookListRequestSortingAlphabetAscSuccess,
     bookListRequestSortingAlphabetDesc,
     bookListRequestSortingAlphabetDescSuccess,
+    bookListRequestBooked,
+    bookListRequestBookedSuccess,
+    bookListRequestDeliveried,
+    bookListRequestDeliveriedSuccess,
     bookListRequestFailure,
     bookRequest,
     bookRequestSuccess,
@@ -286,6 +366,12 @@ export const {
     bookingUpdateRequest,
     bookingDeleteRequest,
     bookingReset,
+    toggleDeliveryModal,
+    deliveryRequest,
+    deliveryRequestSuccess,
+    deliveryRequestFailure,
+    deliveryUpdateRequest,
+    deliveryDeleteRequest,
     bookReviewRequestSuccess,
     bookReviewRequestFailure,
     bookReviewRequest,

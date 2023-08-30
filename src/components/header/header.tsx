@@ -45,7 +45,9 @@ export const Header = ({ path, userFirstName, avatar }: HeaderPropsType) => {
                 <h2 className={styles.title}>
                     {path.includes('all')
                         ? HEADER_TITLE.library
-                        : HEADER_TITLE[path as keyof typeof HEADER_TITLE]}
+                        : path.includes('admin')
+                            ? HEADER_TITLE.admin
+                            : HEADER_TITLE[path as keyof typeof HEADER_TITLE]}
                 </h2>
             </div>
             <HeaderUser avatar={avatar} userFirstName={userFirstName} />

@@ -27,10 +27,24 @@ export type BooksType = {
         isOpenBookingModal: boolean;
         data: BookingResponseSuccess | null;
         bookId: null | string | number;
-        isEdit: boolean;
+        isBookingEdit: boolean;
         bookingDate: null | string;
         message: string | null;
         isOnBookInfoPage?: boolean;
+    };
+    delivery: {
+        id: string | null | number;
+        isLoading: boolean;
+        isSuccess: boolean;
+        isError: boolean;
+        data: DeliveryResponseSuccess | null;
+        bookIdDelivery: null | string | number;
+        isDeliveryEdit: boolean;
+        dateHandedFrom: null | string;
+        dateHandedTo: null | string;
+        message: string | null;
+        isOnBookInfoPage?: boolean;
+        isDelivery: boolean;
     };
     bookReview: {
         bookId: string | null | number;
@@ -44,7 +58,7 @@ export type BooksType = {
     };
 };
 
-export type BookListItem = {
+export type  BookListItem = {
     issueYear: string;
     rating: number;
     title: string;
@@ -59,13 +73,17 @@ export type BookListItem = {
         order: boolean;
         dateOrder: string;
         customerId: number;
+        customerFirstName: string;
+        customerLastName: string;
     };
     delivery: {
         id: number;
         handed: boolean;
-        dateHandedFrom: string;
         dateHandedTo: string;
+        dateHandedFrom: string;
         recipientId: number;
+        recipientFirstName: string;
+        recipientLastName: string;
     };
     histories: [
         {
@@ -127,10 +145,20 @@ export type BookCategoriesItem = {
 export type BookingModalPayload = {
     showModal: boolean;
     bookId: string | null | number;
-    isEdit?: boolean;
+    isBookingEdit?: boolean;
     bookingId?: string | null | number;
     bookingDate?: string | null;
     isOnBookInfoPage?: boolean;
+};
+
+export type DeliveryModalPayload = {
+    showModal: boolean;
+    bookIdDelivery: string | null | number;
+    deliveryId?: string | null | number;
+    isDeliveryEdit?: boolean;
+    dateHandedFrom?: string | null;
+    dateHandedTo?: string | null;
+    isDelivery: boolean;
 };
 
 export type BookCategoriesDataType = BookCategoriesItem[];
@@ -143,6 +171,18 @@ export type BookingResponseSuccess = {
         updatedAt: string;
         publishedAt: string;
         dateOrder: string;
+    };
+};
+
+export type DeliveryResponseSuccess = {
+    id: number | string;
+    attributes: {
+        handed: true;
+        dateHandedTo: string;
+        dateHandedFrom: string;
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
     };
 };
 
@@ -160,3 +200,11 @@ export type BookRateSuccess = {
         publishedAt: string;
     };
 };
+
+export type DeliveryPayload = {
+    deliveryDateFrom: string | Date; 
+    deliveryDateTo: string | Date;
+    bookIdDelivery: string | number | null;
+};
+
+export type DeliveryUpdatePayload = DeliveryPayload & {deliveryId: string | number | null};

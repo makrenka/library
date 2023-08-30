@@ -12,6 +12,7 @@ import { setToast } from '../view';
 import {
     FileUploadResponseType,
     ResponseUser,
+    ResponseUsersList,
     UpdateUserActionType,
     UploadAvatarActionType,
 } from './types';
@@ -25,7 +26,24 @@ import {
     userRequest,
     userRequestError,
     userRequestSuccess,
+    usersListRequest,
+    usersListRequestError,
+    usersListRequestSuccess,
 } from '.';
+
+function* usersListRequestWorker() {
+    try {
+        const { data }: AxiosResponse<ResponseUsersList[]> = yield call(
+            axiosInstance.get,
+            USERS_URL.user,
+        );
+
+        yield put(usersListRequestSuccess(data));
+    } catch {
+        yield put(usersListRequestError());
+        yield put(setToast({ type: TOAST.error, text: ERROR.users }));
+    }
+}
 
 function* userRequestWorker({ payload }: PayloadAction<string>) {
     try {
@@ -115,4 +133,8 @@ export function* watchUserRequest() {
     yield takeLatest(authenticatedUserRequest, getAuthenticatedUserWorker);
     yield takeLatest(updateUserRequest, updateUserWorker);
     yield takeLatest(uploadAvatarRequest, uploadAvatarWorker);
+}
+
+export function* watchUsersListRequest() {
+    yield takeLatest(usersListRequest, usersListRequestWorker);
 }

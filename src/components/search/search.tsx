@@ -30,7 +30,7 @@ export const Search = ({ isSearhView, setSearhView, isSortView }: SearchProps) =
             <Button
                 classButton={classNames(
                     styles.searchButton,
-                    (!isSearhView || !isSortView) && styles.buttonHidden
+                    (!isSearhView || !isSortView) && styles.buttonHidden,
                 )}
                 onClick={() => setSearhView(!isSearhView)}
                 dataTestId='button-search-open'

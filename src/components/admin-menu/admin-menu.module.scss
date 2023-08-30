@@ -1,0 +1,123 @@
+.adminMenu {
+    margin-bottom: 32px;
+}
+
+.searchWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.buttonSort {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 20px;
+    background: var(--main-white, #FFF);
+    box-shadow: 0px 1px 5px 0px rgba(191, 196, 201, 0.24), 0px 3px 4px 0px rgba(191, 196, 201, 0.18), 0px 2px 4px 0px rgba(191, 196, 201, 0.20);
+    cursor: pointer;
+}
+
+.buttonSortUnactive {
+    display: none;
+}
+
+.buttonSortImg {
+    margin-left: 8px;
+}
+
+.filters {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.filtersBtn {
+    display: none;
+    padding: 4px 8px;
+    border-radius: 16px;
+    border: 1px solid var(--main-dark-30, rgba(54, 54, 54, 0.30));
+    background: var(--grey-black-10, #EBEBEB);
+    margin-right: 16px;
+    position: relative;
+
+    span {
+        margin-right: 4px;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px;
+    }
+
+    button {
+        border: none;
+    }
+
+    .closeBtn {
+        width: 16px;
+        height: 16px;
+    }
+
+    .closeBtn::before,
+    .closeBtn::after {
+        content: "";
+        background-color: #363636;
+        position: absolute;
+        width: 2px;
+        height: 14px;
+    }
+
+    .closeBtn::before {
+        transform: rotate(45deg);
+    }
+
+    .closeBtn::after {
+        transform: rotate(-45deg);
+    }
+}
+
+.buttonSortAdapt {
+    display: none;
+    width: 38px;
+    height: 38px;
+    border: none;
+    margin-left: 16px;
+    border-radius: 599px;
+    background: var(--main-white, #FFF);
+    box-shadow: 0px 1px 5px 0px rgba(191, 196, 201, 0.24), 0px 3px 4px 0px rgba(191, 196, 201, 0.18), 0px 2px 4px 0px rgba(191, 196, 201, 0.20);
+}
+
+@media (max-width: 600px) {
+
+    .filtersBtnActive {
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media (max-width: 400px) {
+    .searchWrapper {
+        justify-content: flex-start;
+    }
+
+    .buttonSort {
+        display: none;
+    }
+
+    .buttonSortAdapt {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .buttonSortImg {
+        margin-left: 0;
+    }
+
+    .buttonSortAdaptUnactive {
+        display: none;
+    }
+}
