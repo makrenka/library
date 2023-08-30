@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { Card } from '../../../components/card';
-import { BookingDataType } from '../../../constants/profile-page';
+import { BookingDataType, TAKEN_DATA } from '../../../constants/profile-page';
 import { getBookList } from '../../../store/books/selectors';
 import { BookListItem } from '../../../store/books/types';
 import { useAppSelector } from '../../../store/hooks';
@@ -33,6 +34,7 @@ export const ProfileBooking = ({
 }: ProfileBookingProps) => {
     const books = useAppSelector(getBookList);
     const [book, setBook] = useState({} as BookListItem | undefined);
+    const { pathname } = useLocation();
 
     // TODO Когда у "коротких" книг появятся картинки - переделать напрямую передачу
     useEffect(() => {
@@ -52,8 +54,13 @@ export const ProfileBooking = ({
                     expiredSubtitle={data.expiredSubtitle}
                 />
             )}
-            <span className={styles.title}>{data.title}</span>
-            <span className={styles.subtitle}>{data.subtitle}</span>
+            <span className={styles.title}>
+                {pathname.includes('profile') ? data.title : data.titleAdmin}
+            </span>
+
+            {pathname.includes('profile') ? (
+                <span className={styles.subtitle}>{data.subtitle}</span>
+            ) : null}
             {!!bookingBookId || !!deliveryId ? (
                 <Card
                     data={book ? book : ({} as BookListItem)}
@@ -63,7 +70,9 @@ export const ProfileBooking = ({
                     bookingId={bookingId}
                 />
             ) : (
-                <ProfileEmpty data={data.data} />
+                <ProfileEmpty
+                    data={pathname.includes('profile') ? data.data : (data.dataAdmin as string)}
+                />
             )}
         </div>
     );

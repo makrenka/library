@@ -16,3 +16,15 @@
         max-width: 394px;
     }
 }
+
+.dataAdmin {
+    display: flex;
+    align-items: center;
+    padding: 36px 16px;
+    min-height: auto;
+    margin-top: 32px;
+
+    .textAdmin {
+        max-width: 100%;
+    }
+}

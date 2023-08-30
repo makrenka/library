@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FreeMode, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import classNames from 'classnames';
 
 import { Card } from '../../../components/card';
 import { MenuViewEnum } from '../../../constants/menu-view';
@@ -24,6 +26,11 @@ const DATA = {
     data: 'Вы не читали книг из нашей библиотеки',
 };
 
+const DATA_ADMIN = {
+    title: 'История прочитанных книг ',
+    data: 'Ещё нет истории книг',
+};
+
 type ProfileHistoryProps = {
     history: ShortBookData[] | null;
     userId?: number;
@@ -33,6 +40,7 @@ type ProfileHistoryProps = {
 export const ProfileHistory = ({ history, userId, commentsUserBooksId }: ProfileHistoryProps) => {
     const books = useAppSelector(getBookList);
     const [findHistory, setFindHistory] = useState<BookListItem[]>();
+    const { pathname } = useLocation();
 
     // TODO Когда у "коротких" книг появятся картинки - переделать на прямую передачу + можно брать id книги из комментариев пользователя при добавлении комментария
 
@@ -48,8 +56,17 @@ export const ProfileHistory = ({ history, userId, commentsUserBooksId }: Profile
 
     return (
         <div className={styles.functionsItem} data-test-id='history'>
-            <span className={styles.title}>{DATA.title}</span>
-            <span className={styles.subtitle}>{DATA.subtitle}</span>
+            <span className={styles.title}>
+                {pathname.includes('profile') ? DATA.title : DATA_ADMIN.title}
+            </span>
+            <span
+                className={classNames(
+                    styles.subtitle,
+                    pathname.includes('admin') && styles.subtitleUnactive,
+                )}
+            >
+                {DATA.subtitle}
+            </span>
 
             {history?.length ? (
                 <Swiper
@@ -91,7 +108,7 @@ export const ProfileHistory = ({ history, userId, commentsUserBooksId }: Profile
                     ))}
                 </Swiper>
             ) : (
-                <ProfileEmpty data={DATA.data} />
+                <ProfileEmpty data={pathname.includes('profile') ? DATA.data : DATA_ADMIN.data} />
             )}
         </div>
     );

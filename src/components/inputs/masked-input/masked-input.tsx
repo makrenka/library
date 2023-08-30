@@ -1,4 +1,5 @@
 import { ChangeEventHandler, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useFormContext, ValidationRule } from 'react-hook-form';
 import MaskedInput from 'react-text-mask';
 import classNames from 'classnames';
@@ -34,6 +35,7 @@ export const CustomMaskedInput = ({
     const [isFilled, setIsFilled] = useState(false);
     const inputClassName = classNames(styles.input, className, error && styles.error);
     const { register, watch, trigger, setValue, clearErrors } = useFormContext();
+    const { pathname } = useLocation();
 
     const watchedFieldValue = watch(name || '');
 
@@ -83,9 +85,11 @@ export const CustomMaskedInput = ({
                     defaultValue={defaultValue}
                 />
             </div>
-            <Hint view={error ? 'error' : 'ghost'} className={styles.hint}>
-                {error || hint}
-            </Hint>
+            {pathname.includes('profile') ? (
+                <Hint view={error ? 'error' : 'ghost'} className={styles.hint}>
+                    {error || hint}
+                </Hint>
+            ) : null}
         </div>
     );
 };

@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { BOOKS_URL } from '../../../constants/api';
 
 import { BOOKING_DATA, TAKEN_DATA } from '../../../constants/profile-page';
 import { bookListRequest } from '../../../store/books';
