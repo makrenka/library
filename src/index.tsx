@@ -27,6 +27,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import { AdminAuthForm } from './components/forms/admin-auth-form';
 import { AdminProtectedRoute } from './middlewares/admin-protected-route';
+import { UserPage } from './pages/user';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -68,6 +69,7 @@ root.render(
                                 />
                             </Route>
                         </Route>
+                        <Route path={ROUTES.adminUser} element={<UserPage />} />
                     </Route>
                 </Route>
             </Routes>

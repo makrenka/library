@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { useAppSelector } from '../../store/hooks';
@@ -6,6 +7,7 @@ import { ResponseUsersList } from '../../store/user/types';
 import { highlightMatches } from '../../utils/highlight-matches';
 import { Button } from '../button';
 import { BUTTON_TEXT } from '../../constants/button';
+import { ROUTES } from '../../constants/routes';
 
 import IconPlugImg from './assets/icon-plug-img.svg';
 import IconBook from './assets/icon-book.svg';
@@ -30,6 +32,7 @@ export const AdminCardUser = ({
         phone,
         blocked,
     },
+    dataUsers,
 }: CardUserType) => {
     const { filter } = useAppSelector(searchSelector);
     const handleHighlight = (string: string) => highlightMatches(filter, string);
@@ -38,12 +41,20 @@ export const AdminCardUser = ({
 
     return (
         <li className={classNames(styles.card, blocked && styles.cardBlocked)}>
-            <div className={styles.cardImg}>
+            <Link
+                to={`${ROUTES.adminUsers}/${id}`}
+                state={{ dataUser: dataUsers }}
+                className={styles.cardImg}
+            >
                 <img src={avatar ? avatar : IconPlugImg} alt={username} />
-            </div>
-            <div className={styles.userNameBlock}>
+            </Link>
+            <Link
+                to={`${ROUTES.adminUsers}/${id}`}
+                state={{ dataUser: dataUsers }}
+                className={styles.userNameBlock}
+            >
                 <p className={styles.cardUserName}>{handleHighlight(`${lastName} ${firstName}`)}</p>
-            </div>
+            </Link>
             <div className={styles.cardDescription}>
                 <p className={styles.cardDescriptionText}>
                     Логин: <span>{username}</span>

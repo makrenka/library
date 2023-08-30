@@ -12,4 +12,5 @@ export const ROUTES = {
     admin: '/admin',
     adminBooks: '/admin/books',
     adminUsers: '/admin/users',
+    adminUser: '/admin/users/:userId',
 };
