@@ -93,7 +93,7 @@
     justify-self: end;
     align-self: end;
     grid-column: 3;
-        grid-row: 3;
+    grid-row: 3;
 
     button {
         width: 174px;
@@ -126,13 +126,16 @@
 
 .returnSignGreen {
     opacity: 1;
-    background-image: url(./assets/return-sign-bgr-green.svg);
+    border-radius: 0px 12px 0px 60px;
+    background: var(--other-positive, #00CA71);
 }
 
 .returnSignRed {
     opacity: 1;
-    background-image: url(./assets/return-sign-bgr-red.svg);
+    border-radius: 0px 12px 0px 60px;
+    background: var(--other-text-select, #FF5253);
 }
+
 .cardDescriptionCounterWrapper {
     grid-column: 2;
 }
@@ -223,19 +226,20 @@
         grid-row: 4;
         margin-top: 0;
     }
-        .returnSign {
-            width: 54px;
-            height: 54px;
-            background-size: contain;
-    
-            img {
-                width: 16px;
-                height: 16px;
-            }
-    
-            .dateHandedTo {
-                font-size: 14px;
-                line-height: 18px;
-            }
+
+    .returnSign {
+        width: 54px;
+        height: 54px;
+        background-size: contain;
+
+        img {
+            width: 16px;
+            height: 16px;
         }
+
+        .dateHandedTo {
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
 }

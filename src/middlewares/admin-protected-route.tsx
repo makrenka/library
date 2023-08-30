@@ -29,7 +29,7 @@ export const AdminProtectedRoute = () => {
         }
     }, [navigate, dispatch, userData]);
 
-    if (data.role.type !== 'admin') {
+    if (data.role?.type !== 'admin') {
         navigate(ROUTES.admin, { replace: true });
     }
 

@@ -51,7 +51,7 @@ export const AdminMenu = ({ setIsSortedDesc, isSortedDesc }: AdminMenuProps) => 
                         >
                             <span>{BUTTON_FILTERS.reserved}</span>
                             <Button onClick={() => setIsBookedChecked(false)}>
-                                <img src={iconClose} alt='icon-close' />
+                                <div className={styles.closeBtn}> </div>
                             </Button>
                         </div>
                         <div
@@ -62,7 +62,7 @@ export const AdminMenu = ({ setIsSortedDesc, isSortedDesc }: AdminMenuProps) => 
                         >
                             <span>{BUTTON_FILTERS.deliveried}</span>
                             <Button onClick={() => setIsDeliveriedChecked(false)}>
-                                <img src={iconClose} alt='icon-close' />
+                                <div className={styles.closeBtn}> </div>
                             </Button>
                         </div>
                     </>
@@ -76,7 +76,7 @@ export const AdminMenu = ({ setIsSortedDesc, isSortedDesc }: AdminMenuProps) => 
                         >
                             <span>{BUTTON_FILTERS.bookHolders}</span>
                             <Button onClick={() => setIsBookHoldersChecked(false)}>
-                                <img src={iconClose} alt='icon-close' />
+                                <div className={styles.closeBtn}> </div>
                             </Button>
                         </div>
                         <div
@@ -87,7 +87,7 @@ export const AdminMenu = ({ setIsSortedDesc, isSortedDesc }: AdminMenuProps) => 
                         >
                             <span>{BUTTON_FILTERS.blocked}</span>
                             <Button onClick={() => setIsBlockedUsersChecked(false)}>
-                                <img src={iconClose} alt='icon-close' />
+                                <div className={styles.closeBtn}> </div>
                             </Button>
                         </div>
                     </>

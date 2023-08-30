@@ -5,6 +5,7 @@ import { searchSelector } from '../../store/search/selectors';
 import { ResponseUsersList } from '../../store/user/types';
 import { highlightMatches } from '../../utils/highlight-matches';
 import { Button } from '../button';
+import { BUTTON_TEXT } from '../../constants/button';
 
 import IconPlugImg from './assets/icon-plug-img.svg';
 import IconBook from './assets/icon-book.svg';
@@ -12,7 +13,6 @@ import IconCalendar from './assets/icon-calendar.svg';
 import IconWarning from './assets/icon-warning.svg';
 
 import styles from './admin-card-user.module.scss';
-import { BUTTON_TEXT } from '../../constants/button';
 
 type CardUserType = {
     dataUsers: ResponseUsersList;

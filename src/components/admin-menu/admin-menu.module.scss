@@ -24,6 +24,7 @@
 .buttonSortUnactive {
     display: none;
 }
+
 .buttonSortImg {
     margin-left: 8px;
 }
@@ -41,6 +42,7 @@
     border: 1px solid var(--main-dark-30, rgba(54, 54, 54, 0.30));
     background: var(--grey-black-10, #EBEBEB);
     margin-right: 16px;
+    position: relative;
 
     span {
         margin-right: 4px;
@@ -52,6 +54,28 @@
 
     button {
         border: none;
+    }
+
+    .closeBtn {
+        width: 16px;
+        height: 16px;
+    }
+
+    .closeBtn::before,
+    .closeBtn::after {
+        content: "";
+        background-color: #363636;
+        position: absolute;
+        width: 2px;
+        height: 14px;
+    }
+
+    .closeBtn::before {
+        transform: rotate(45deg);
+    }
+
+    .closeBtn::after {
+        transform: rotate(-45deg);
     }
 }
 
