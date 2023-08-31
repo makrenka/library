@@ -18,6 +18,7 @@ export const initialState: UserStateType = {
     isUpdateError: false,
     isError: false,
     data: {} as ResponseUser,
+    userForAdmin: {} as ResponseUser,
     usersList: {
         data: null,
     },
@@ -65,6 +66,18 @@ export const userSlice = createSlice({
             state.isSuccess = true;
             state.data = action.payload;
         },
+        userForAdminRequest: (state, action: PayloadAction<string>) => {
+            state.isLoading = true;
+        },
+        userForAdminRequestSuccess: (state, action: PayloadAction<ResponseUser>) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.userForAdmin = action.payload;
+        },
+        resetUserForAdmin: (state) => {
+            state.userForAdmin = {} as ResponseUser;
+        },
         authenticatedUserRequest: (state) => {
             state.isLoading = true;
         },
@@ -104,7 +117,7 @@ export const userSlice = createSlice({
             state.data.booking = action.payload;
         },
         deleteDeliveryUpdateUser: (state) => {
-            state.data.booking = initialBooking as UserBooking;
+            state.data.delivery = initialDelivery as UserDelivery;
         },
         addDeliveryUpdateUser: (state, action: PayloadAction<UserDelivery>) => {
             state.data.delivery = action.payload;
@@ -119,6 +132,9 @@ export const {
     userRequest,
     userRequestSuccess,
     userRequestError,
+    userForAdminRequest,
+    userForAdminRequestSuccess,
+    resetUserForAdmin,
     authenticatedUserRequest,
     authenticatedUserSuccess,
     updateUserRequest,

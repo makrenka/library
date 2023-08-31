@@ -34,4 +34,6 @@ export const booksSelector = (state: RootState) => state.books;
 
 export const bookingSelector = (state: RootState) => state.books.booking;
 
+export const deliverySelector = (state: RootState) => state.books.delivery;
+
 export const bookReviewSelector = (state: RootState) => state.books.bookReview;

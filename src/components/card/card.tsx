@@ -145,13 +145,15 @@ export const Card = (props: BookType) => {
                 )
             ) : isBooking ? (
                 <div className={classNameCard('cardButton')}>
-                    <Button
-                        dataTestId='cancel-booking-button'
-                        view='primary'
-                        onClick={handleCancelBooking}
-                    >
-                        Отменить бронь
-                    </Button>
+                    {!pathname.includes('admin/users') ?
+                        <Button
+                            dataTestId='cancel-booking-button'
+                            view='primary'
+                            onClick={handleCancelBooking}
+                        >
+                            Отменить бронь
+                        </Button> : ''}
+
                 </div>
             ) : (
                 <div className={classNameCard('cardButton')}>
@@ -188,14 +190,14 @@ export const Card = (props: BookType) => {
                         {booking
                             ? booking?.dateOrder.slice(0, 10).split('-').reverse().join('.')
                             : `${delivery?.dateHandedFrom
-                                  .slice(0, 10)
-                                  .split('-')
-                                  .reverse()
-                                  .join('.')}-${delivery?.dateHandedTo
-                                  .slice(0, 10)
-                                  .split('-')
-                                  .reverse()
-                                  .join('.')}`}
+                                .slice(0, 10)
+                                .split('-')
+                                .reverse()
+                                .join('.')}-${delivery?.dateHandedTo
+                                    .slice(0, 10)
+                                    .split('-')
+                                    .reverse()
+                                    .join('.')}`}
                     </span>
                 </p>
                 <p className={styles.cardDateStatus}>

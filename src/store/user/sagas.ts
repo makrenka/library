@@ -23,6 +23,8 @@ import {
     updateUserSuccess,
     uploadAvatarRequest,
     uploadAvatarSuccess,
+    userForAdminRequest,
+    userForAdminRequestSuccess,
     userRequest,
     userRequestError,
     userRequestSuccess,
@@ -58,6 +60,21 @@ function* userRequestWorker({ payload }: PayloadAction<string>) {
         yield put(setToast({ type: TOAST.error, text: ERROR.profile }));
     }
 }
+
+function* userForAdminRequestWorker({ payload }: PayloadAction<string>) {
+    try {
+        const { data }: AxiosResponse<ResponseUser> = yield call(
+            axiosInstance.get,
+            `${USERS_URL.user}/${payload}`,
+        );
+
+        yield put(userForAdminRequestSuccess(data));
+    } catch {
+        yield put(userRequestError());
+        yield put(setToast({ type: TOAST.error, text: ERROR.profile }));
+    }
+}
+
 function* getAuthenticatedUserWorker() {
     try {
         const { data }: AxiosResponse<ResponseUser> = yield call(
@@ -137,4 +154,8 @@ export function* watchUserRequest() {
 
 export function* watchUsersListRequest() {
     yield takeLatest(usersListRequest, usersListRequestWorker);
+}
+
+export function* watchuserForAdminRequest() {
+    yield takeLatest(userForAdminRequest, userForAdminRequestWorker);
 }

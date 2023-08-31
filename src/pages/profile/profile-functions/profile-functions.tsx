@@ -43,8 +43,8 @@ export const ProfileFunctions = ({ user }: ProfileFunctionsProps) => {
                 dataTestId='delivery'
                 deliveryId={user.delivery?.book?.id}
                 data={TAKEN_DATA}
-                isExpired={new Date().getTime() >= new Date(user.delivery?.dateHandedTo).getTime()}
-                deliveryDate={user.delivery?.dateHandedTo}
+                isExpired={new Date().getTime() >= new Date(user.delivery?.dateHandedTo || '').getTime()}
+                deliveryDate={user.delivery?.dateHandedTo || ''}
             />
             <ProfileHistory
                 history={user.history?.books}

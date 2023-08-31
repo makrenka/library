@@ -24,7 +24,7 @@ import {
     watchDeliveryRequest,
     watchdeliveryUpdateRequest,
 } from './books/sagas';
-import { watchUserRequest, watchUsersListRequest } from './user/sagas';
+import { watchuserForAdminRequest, watchUserRequest, watchUsersListRequest } from './user/sagas';
 
 export function* rootSaga() {
     yield all([
@@ -50,5 +50,6 @@ export function* rootSaga() {
         fork(watchBookReviewRequest),
         fork(watchBookReviewUpdate),
         fork(watchUsersListRequest),
+        fork(watchuserForAdminRequest),
     ]);
 }

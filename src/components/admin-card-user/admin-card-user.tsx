@@ -43,14 +43,12 @@ export const AdminCardUser = ({
         <li className={classNames(styles.card, blocked && styles.cardBlocked)}>
             <Link
                 to={`${ROUTES.adminUsers}/${id}`}
-                state={{ dataUser: dataUsers }}
                 className={styles.cardImg}
             >
                 <img src={avatar ? avatar : IconPlugImg} alt={username} />
             </Link>
             <Link
                 to={`${ROUTES.adminUsers}/${id}`}
-                state={{ dataUser: dataUsers }}
                 className={styles.userNameBlock}
             >
                 <p className={styles.cardUserName}>{handleHighlight(`${lastName} ${firstName}`)}</p>
