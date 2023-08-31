@@ -9,6 +9,7 @@ export const BOOKS_URL = {
     booking: `${BASE_URL}/bookings`,
     comment: `${BASE_URL}/comments`,
     delivery: `${BASE_URL}/deliveries`,
+    history: `${BASE_URL}/histories`,
 };
 
 export const AUTH_URL = {

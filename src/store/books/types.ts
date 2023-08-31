@@ -56,6 +56,14 @@ export type BooksType = {
         message: string | null;
         userId?: number;
     };
+    history: {
+        books: number | null | string;
+        id: number | null | string;
+        isLoading: boolean;
+        isSuccess: boolean;
+        isError: boolean;
+        data: HistoryResponseSuccess | null;
+    };
 };
 
 export type  BookListItem = {
@@ -186,6 +194,15 @@ export type DeliveryResponseSuccess = {
     };
 };
 
+export type HistoryResponseSuccess = {
+    id: number | string;
+    attributes: {
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
+    };
+};
+
 export type BookingPayload = { dateOrder: string | Date; bookId: string | number | null };
 
 export type BookingUpdatePayload = BookingPayload & { bookingId: string | number | null };
@@ -208,3 +225,8 @@ export type DeliveryPayload = {
 };
 
 export type DeliveryUpdatePayload = DeliveryPayload & {deliveryId: string | number | null};
+
+export type HistoryPayload = {
+    books: number | null | string;
+    id: number | null | string;
+};

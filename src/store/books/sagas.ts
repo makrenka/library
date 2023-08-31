@@ -12,8 +12,8 @@ import { ERROR } from '../../constants/errors';
 import { TOAST } from '../../constants/toast';
 import { MESSAGES } from '../../constants/toast-messages';
 import { authenticationSelector } from '../auth/selectors';
-import { addBookingUpdateUser, addDeliveryUpdateUser, deleteBookingUpdateUser, deleteDeliveryUpdateUser } from '../user';
-import { Comment, UserBooking, UserDelivery } from '../user/types';
+import { addBookingUpdateUser, addDeliveryUpdateUser, addHistoryUpdateUser, deleteBookingUpdateUser, deleteDeliveryUpdateUser } from '../user';
+import { Comment, UserBooking, UserDelivery, UserHistory } from '../user/types';
 import { setToast } from '../view';
 
 import { booksSelector } from './selectors';
@@ -53,6 +53,9 @@ import {
     bookListRequestDeliveried,
     deliveryDeleteRequest,
     deliveryUpdateRequest,
+    historyRequestSuccess,
+    historyRequest,
+    historyRequestFailure,
 } from '.';
 import { searchSelector } from '../search/selectors';
 
@@ -290,6 +293,49 @@ function* deliveryRequestWorker({ payload }: PayloadAction<{
     } catch {
         yield put(deliveryRequestFailure(ERROR.deliveryError));
         yield put(setToast({ type: TOAST.error, text: ERROR.deliveryError }));
+    }
+}
+
+function* historyRequestWorker({ payload }: PayloadAction<{
+    books: string | number;
+    id: string | number;
+}>) {
+    const {
+        history,
+        book,
+        bookList: { data: bookListData },
+    } = yield select(booksSelector);
+
+    try {
+        const { userData } = yield select(authenticationSelector);
+        const { data }: AxiosResponse = yield call(axiosInstance.post, BOOKS_URL.history, {
+            data: {
+                book: payload.books,
+                user: userData.id,
+            },
+        });
+
+        yield put(
+            historyRequestSuccess({data}),
+        );
+
+        const { id } = data;
+        const bookUpdateData = bookListData.find(
+            ({ id: itemId }: BookListItem) => itemId === payload.books,
+        );
+        const userHistoryUpdate: UserHistory = {
+            id,
+            books: bookUpdateData,
+        };
+
+        yield put(addHistoryUpdateUser(userHistoryUpdate));
+
+        if(history) {
+            yield put(historyRequest(book.data.id));
+        } 
+
+    } catch {
+        yield put(historyRequestFailure());
     }
 }
 
@@ -569,4 +615,8 @@ export function* watchBookReviewRequest() {
 
 export function* watchBookReviewUpdate() {
     yield takeLatest(bookReviewUpdateRequest, bookReviewUpdateWorker);
+}
+
+export function* watchhistoryRequest() {
+    yield takeLatest(historyRequest, historyRequestWorker);
 }

@@ -18,6 +18,8 @@ import {
     DeliveryPayload,
     DeliveryResponseSuccess,
     DeliveryUpdatePayload,
+    HistoryPayload,
+    HistoryResponseSuccess,
 } from './types';
 
 export const initialState: BooksType = {
@@ -76,6 +78,14 @@ export const initialState: BooksType = {
         message: null,
         userId: undefined,
     },
+    history: {
+        books: null,
+        id: null,
+        isLoading: false,
+        isSuccess: false,
+        isError: false,
+        data: null,
+    }
 };
 
 export const booksSlice = createSlice({
@@ -261,6 +271,23 @@ export const booksSlice = createSlice({
             state.delivery.message = action.payload;
             state.booking.isOpenBookingModal = false;
         },
+        historyRequest: (state, { payload }: PayloadAction<HistoryPayload>) => {
+            state.history.isLoading = true;
+        },
+        historyRequestSuccess: (
+            state,
+            { payload }: PayloadAction<{ data: HistoryResponseSuccess }>,
+        ) => {
+            state.history.data = payload.data;
+            state.history.isLoading = false;
+            state.history.isSuccess = true;
+        },
+        historyRequestFailure: (state) => {
+            state.history.isLoading = false;
+            state.history.isError = true;
+            state.history.isSuccess = false;
+            state.history.data = null;
+        },
         bookingReset: (state) => {
             state.booking.id = null;
             state.booking.isLoading = false;
@@ -372,6 +399,9 @@ export const {
     deliveryRequestFailure,
     deliveryUpdateRequest,
     deliveryDeleteRequest,
+    historyRequest,
+    historyRequestSuccess,
+    historyRequestFailure,
     bookReviewRequestSuccess,
     bookReviewRequestFailure,
     bookReviewRequest,

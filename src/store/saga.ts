@@ -23,6 +23,7 @@ import {
     watchDeliveryDeleteRequest,
     watchDeliveryRequest,
     watchdeliveryUpdateRequest,
+    watchhistoryRequest,
 } from './books/sagas';
 import { watchuserForAdminRequest, watchUserRequest, watchUsersListRequest } from './user/sagas';
 
@@ -51,5 +52,6 @@ export function* rootSaga() {
         fork(watchBookReviewUpdate),
         fork(watchUsersListRequest),
         fork(watchuserForAdminRequest),
+        fork(watchhistoryRequest),
     ]);
 }
