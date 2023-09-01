@@ -16,7 +16,7 @@ import { addBookingUpdateUser, addDeliveryUpdateUser, addHistoryUpdateUser, dele
 import { Comment, UserBooking, UserDelivery, UserHistory } from '../user/types';
 import { setToast } from '../view';
 
-import { booksSelector } from './selectors';
+import { booksSelector, historySelector } from './selectors';
 import { BookCategoriesDataType, BookDataType, BookListItem } from './types';
 import {
     bookCategoriesFailure,
@@ -56,6 +56,9 @@ import {
     historyRequestSuccess,
     historyRequest,
     historyRequestFailure,
+    historyAddRequestSuccess,
+    historyAddRequest,
+    historyAddRequestFailure,
 } from '.';
 import { searchSelector } from '../search/selectors';
 
@@ -282,7 +285,7 @@ function* deliveryRequestWorker({ payload }: PayloadAction<{
         yield put(setToast({ type: TOAST.success, text: MESSAGES.deliverySuccess }));
         yield put(addDeliveryUpdateUser(userDeliveryUpdate));
 
-        if(delivery?.isOnBookInfoPage) {
+        if (delivery?.isOnBookInfoPage) {
             yield put(bookRequest(book.data.id));
         } else {
             yield put(bookListRequestNull());
@@ -297,8 +300,7 @@ function* deliveryRequestWorker({ payload }: PayloadAction<{
 }
 
 function* historyRequestWorker({ payload }: PayloadAction<{
-    books: string | number;
-    id: string | number;
+    bookId: string | number;
 }>) {
     const {
         history,
@@ -310,18 +312,18 @@ function* historyRequestWorker({ payload }: PayloadAction<{
         const { userData } = yield select(authenticationSelector);
         const { data }: AxiosResponse = yield call(axiosInstance.post, BOOKS_URL.history, {
             data: {
-                book: payload.books,
+                book: payload.bookId,
                 user: userData.id,
             },
         });
 
         yield put(
-            historyRequestSuccess({data}),
+            historyRequestSuccess({ data }),
         );
 
         const { id } = data;
         const bookUpdateData = bookListData.find(
-            ({ id: itemId }: BookListItem) => itemId === payload.books,
+            ({ id: itemId }: BookListItem) => itemId === payload.bookId,
         );
         const userHistoryUpdate: UserHistory = {
             id,
@@ -330,12 +332,54 @@ function* historyRequestWorker({ payload }: PayloadAction<{
 
         yield put(addHistoryUpdateUser(userHistoryUpdate));
 
-        if(history) {
+        if (history) {
             yield put(historyRequest(book.data.id));
-        } 
+        }
 
     } catch {
         yield put(historyRequestFailure());
+    }
+}
+
+function* historyAddRequestWorker({ payload }: PayloadAction<{
+    bookId: string | number;
+}>) {
+    const {
+        history,
+        book,
+        bookList: { data: bookListData },
+    } = yield select(booksSelector);
+
+    try {
+        const { userData } = yield select(authenticationSelector);
+        const { data }: AxiosResponse = yield call(axiosInstance.put, `${BOOKS_URL.history}/${payload}`, {
+            data: {
+                book: payload.bookId,
+                user: userData.id,
+            },
+        });
+
+        yield put(
+            historyAddRequestSuccess({ data }),
+        );
+
+        const { id } = data;
+        const bookUpdateData = bookListData.find(
+            ({ id: itemId }: BookListItem) => itemId === payload.bookId,
+        );
+        const userHistoryUpdate: UserHistory = {
+            id,
+            books: bookUpdateData,
+        };
+
+        yield put(addHistoryUpdateUser(userHistoryUpdate));
+
+        if (history) {
+            yield put(historyAddRequest(book.data.id));
+        }
+
+    } catch {
+        yield put(historyAddRequestFailure());
     }
 }
 
@@ -426,12 +470,12 @@ function* bookingDeleteRequestWorker({ payload }: PayloadAction<string>) {
 
 function* deliveryUpdateRequestWorker({
     payload,
-}: PayloadAction<{ 
-    deliveryDateFrom: string; 
-    deliveryDateTo: string; 
+}: PayloadAction<{
+    deliveryDateFrom: string;
+    deliveryDateTo: string;
     bookIdDelivery: string | number | null;
     deliveryId: string | number;
- }>) {
+}>) {
     const { delivery, book } = yield select(booksSelector);
 
     try {
@@ -459,7 +503,7 @@ function* deliveryUpdateRequestWorker({
         );
         yield put(setToast({ type: TOAST.success, text: MESSAGES.editSuccess }));
 
-        if(delivery?.isOnBookInfoPage) {
+        if (delivery?.isOnBookInfoPage) {
             yield put(bookRequest(book.data.id));
         } else {
             yield put(bookListRequestNull());
@@ -490,7 +534,7 @@ function* deliveryDeleteRequestWorker({ payload }: PayloadAction<string>) {
         yield put(setToast({ type: TOAST.success, text: MESSAGES.deliveryDelete }));
         yield put(deleteDeliveryUpdateUser());
 
-        if(delivery?.isOnBookInfoPage) {
+        if (delivery?.isOnBookInfoPage) {
             yield put(bookRequest(book.data.id));
         } else {
             yield put(bookListRequestNull());
@@ -619,4 +663,8 @@ export function* watchBookReviewUpdate() {
 
 export function* watchhistoryRequest() {
     yield takeLatest(historyRequest, historyRequestWorker);
+}
+
+export function* watchhistoryAddRequest() {
+    yield takeLatest(historyAddRequest, historyAddRequestWorker);
 }

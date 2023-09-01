@@ -56,7 +56,10 @@ export const ProfileHistory = ({ history, userId, commentsUserBooksId }: Profile
 
     return (
         <div className={styles.functionsItem} data-test-id='history'>
-            <span className={styles.title}>
+            <span className={classNames(
+                styles.title,
+                pathname.includes('admin') && styles.titleAdmin,
+            )}>
                 {pathname.includes('profile') ? DATA.title : DATA_ADMIN.title}
             </span>
             <span
@@ -73,7 +76,6 @@ export const ProfileHistory = ({ history, userId, commentsUserBooksId }: Profile
                     className='history'
                     spaceBetween={30}
                     slidesPerView={1}
-                    loop={true}
                     modules={[FreeMode, Pagination]}
                     pagination={{
                         clickable: true,
@@ -102,7 +104,7 @@ export const ProfileHistory = ({ history, userId, commentsUserBooksId }: Profile
                                 isProfileCard={!!history}
                                 isHistory={true}
                                 userId={userId}
-                                isCommented={commentsUserBooksId?.includes(book.id)}
+                                isCommented={commentsUserBooksId?.includes(book?.id)}
                             />
                         </SwiperSlide>
                     ))}

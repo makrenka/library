@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { Card } from '../../../components/card';
 import { BookingDataType, TAKEN_DATA } from '../../../constants/profile-page';
@@ -54,7 +55,10 @@ export const ProfileBooking = ({
                     expiredSubtitle={data.expiredSubtitle}
                 />
             )}
-            <span className={styles.title}>
+            <span className={classNames(
+                styles.title,
+                pathname.includes('admin') && styles.titleAdmin,
+            )}>
                 {pathname.includes('profile') ? data.title : data.titleAdmin}
             </span>
 

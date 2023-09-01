@@ -9,6 +9,7 @@ import {
     bookingUpdateRequest,
     deliveryRequest,
     deliveryUpdateRequest,
+    historyRequest,
     toggleBookingModal,
     toggleDeliveryModal,
 } from '../../store/books';
@@ -99,6 +100,13 @@ export const BookingCalendar = () => {
         setDeliveryDateTo(date.toISOString());
     };
 
+    const createDelivery = () => {
+        dispatch(
+            deliveryRequest({ deliveryDateFrom, deliveryDateTo, bookIdDelivery }),
+        );
+        dispatch(historyRequest({ bookId }));
+    };
+
     const renderBoocking = (
         <Modal
             onClose={closeHandler}
@@ -115,11 +123,10 @@ export const BookingCalendar = () => {
                     >
                         {state.monthesNames.map((item) => (
                             <option
-                                label={`${item.month} ${
-                                    state.selectedMonth.monthIndex === item.monthIndex
-                                        ? state.selectedYear
-                                        : ''
-                                }`}
+                                label={`${item.month} ${state.selectedMonth.monthIndex === item.monthIndex
+                                    ? state.selectedYear
+                                    : ''
+                                    }`}
                                 value={item.monthIndex}
                                 key={item.month}
                             >
@@ -218,11 +225,10 @@ export const BookingCalendar = () => {
                     >
                         {state.monthesNames.map((item) => (
                             <option
-                                label={`${item.month} ${
-                                    state.selectedMonth.monthIndex === item.monthIndex
-                                        ? state.selectedYear
-                                        : ''
-                                }`}
+                                label={`${item.month} ${state.selectedMonth.monthIndex === item.monthIndex
+                                    ? state.selectedYear
+                                    : ''
+                                    }`}
                                 value={item.monthIndex}
                                 key={item.month}
                             >
@@ -299,11 +305,7 @@ export const BookingCalendar = () => {
             ) : (
                 <Button
                     classButton={styles.buttonReserv}
-                    onClick={() =>
-                        dispatch(
-                            deliveryRequest({ deliveryDateFrom, deliveryDateTo, bookIdDelivery }),
-                        )
-                    }
+                    onClick={createDelivery}
                     view='primary'
                     isDisabled={!deliveryDateTo || isLoading}
                 >

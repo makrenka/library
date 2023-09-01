@@ -1,4 +1,4 @@
-import { Comment } from '../user/types';
+import { Comment, ShortBookData } from '../user/types';
 
 export type BooksType = {
     bookList: {
@@ -57,7 +57,7 @@ export type BooksType = {
         userId?: number;
     };
     history: {
-        books: number | null | string;
+        books: ShortBookData[] | null;
         id: number | null | string;
         isLoading: boolean;
         isSuccess: boolean;
@@ -66,7 +66,7 @@ export type BooksType = {
     };
 };
 
-export type  BookListItem = {
+export type BookListItem = {
     issueYear: string;
     rating: number;
     title: string;
@@ -219,14 +219,13 @@ export type BookRateSuccess = {
 };
 
 export type DeliveryPayload = {
-    deliveryDateFrom: string | Date; 
+    deliveryDateFrom: string | Date;
     deliveryDateTo: string | Date;
     bookIdDelivery: string | number | null;
 };
 
-export type DeliveryUpdatePayload = DeliveryPayload & {deliveryId: string | number | null};
+export type DeliveryUpdatePayload = DeliveryPayload & { deliveryId: string | number | null };
 
 export type HistoryPayload = {
-    books: number | null | string;
-    id: number | null | string;
+    bookId: number | null | string;
 };

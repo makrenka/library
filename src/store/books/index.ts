@@ -288,6 +288,22 @@ export const booksSlice = createSlice({
             state.history.isSuccess = false;
             state.history.data = null;
         },
+        historyAddRequest: (state, { payload }: PayloadAction<HistoryPayload>) => {
+            state.history.isLoading = true;
+        },
+        historyAddRequestSuccess: (
+            state,
+            { payload }: PayloadAction<{ data: HistoryResponseSuccess }>,
+        ) => {
+            state.history.data = payload.data;
+            state.history.isLoading = false;
+            state.history.isSuccess = true;
+        },
+        historyAddRequestFailure: (state) => {
+            state.history.isLoading = false;
+            state.history.isError = true;
+            state.history.isSuccess = false;
+        },
         bookingReset: (state) => {
             state.booking.id = null;
             state.booking.isLoading = false;
@@ -402,6 +418,9 @@ export const {
     historyRequest,
     historyRequestSuccess,
     historyRequestFailure,
+    historyAddRequest,
+    historyAddRequestSuccess,
+    historyAddRequestFailure,
     bookReviewRequestSuccess,
     bookReviewRequestFailure,
     bookReviewRequest,

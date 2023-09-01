@@ -128,21 +128,24 @@ export const Card = (props: BookType) => {
                 {authors && authors.length > 0 && authors.join(', ')}, {issueYear}
             </span>
             {isProfileCard ? (
-                isHistory ? (
-                    <div className={classNameCard('cardButton')}>
-                        <Button
-                            dataTestId='history-review-button'
-                            view={isCommented ? 'secondary' : 'primary'}
-                            onClick={handleOpenTakeReviewModal}
-                        >
-                            {isCommented ? 'Изменить оценку' : 'Оставить отзыв'}
-                        </Button>
-                    </div>
-                ) : (
-                    <span className={styles.backtime}>
-                        Возврат {formatDate(deliveryDate?.toString() || '')}
-                    </span>
-                )
+                isHistory ?
+                    !pathname.includes('admin/users') ?
+                        (
+                            <div className={classNameCard('cardButton')}>
+                                <Button
+                                    dataTestId='history-review-button'
+                                    view={isCommented ? 'secondary' : 'primary'}
+                                    onClick={handleOpenTakeReviewModal}
+                                >
+                                    {isCommented ? 'Изменить оценку' : 'Оставить отзыв'}
+                                </Button>
+                            </div>
+                        ) : null
+                    : (
+                        <span className={styles.backtime}>
+                            Возврат {formatDate(deliveryDate?.toString() || '')}
+                        </span>
+                    )
             ) : isBooking ? (
                 <div className={classNameCard('cardButton')}>
                     {!pathname.includes('admin/users') ?
