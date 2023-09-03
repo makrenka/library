@@ -342,6 +342,7 @@ function* historyRequestWorker({ payload }: PayloadAction<{
 }
 
 function* historyAddRequestWorker({ payload }: PayloadAction<{
+    historyId: string | number;
     bookId: string | number;
 }>) {
     const {
@@ -352,7 +353,7 @@ function* historyAddRequestWorker({ payload }: PayloadAction<{
 
     try {
         const { userData } = yield select(authenticationSelector);
-        const { data }: AxiosResponse = yield call(axiosInstance.put, `${BOOKS_URL.history}/${payload}`, {
+        const { data }: AxiosResponse = yield call(axiosInstance.put, `${BOOKS_URL.history}/${payload.historyId}`, {
             data: {
                 book: payload.bookId,
                 user: userData.id,

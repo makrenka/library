@@ -9,6 +9,7 @@ import {
     bookingUpdateRequest,
     deliveryRequest,
     deliveryUpdateRequest,
+    historyAddRequest,
     historyRequest,
     toggleBookingModal,
     toggleDeliveryModal,
@@ -19,6 +20,8 @@ import { checkDateIsEqual, checkIsBlockedDate, createDate } from '../../utils/da
 import { Button } from '../button';
 import { Modal } from '../modal';
 import arrow from '../navigation/assets/arrow-bottom-black.svg';
+import { getUserSelector } from '../../store/user/selectors';
+import { resetUserForAdmin, userForAdminRequest } from '../../store/user';
 
 import styles from './booking-calendar.module.scss';
 
@@ -40,8 +43,12 @@ export const BookingCalendar = () => {
             isDelivery,
             bookIdDelivery,
             id: deliveryId,
+            userId,
         },
     } = useAppSelector(booksSelector);
+
+    const { userForAdmin: user } = useAppSelector(getUserSelector);
+    console.log(user);
 
     const today = new Date();
 
@@ -95,16 +102,29 @@ export const BookingCalendar = () => {
         isOpenBookingModal,
     ]);
 
+    useEffect(() => {
+        if (userId) {
+            dispatch(userForAdminRequest(String(userId)));
+        }
+
+        return () => {
+            dispatch(resetUserForAdmin());
+        };
+    }, [userId, dispatch]);
+
     const deliveryDates = (date: Date) => {
         setDeliveryDateFrom(today.toISOString());
         setDeliveryDateTo(date.toISOString());
     };
 
     const createDelivery = () => {
-        dispatch(
-            deliveryRequest({ deliveryDateFrom, deliveryDateTo, bookIdDelivery }),
-        );
-        dispatch(historyRequest({ bookId }));
+        dispatch(deliveryRequest({ deliveryDateFrom, deliveryDateTo, bookIdDelivery }));
+        dispatch(historyAddRequest({ bookId }));
+        // if (historyId) {
+        //     dispatch(historyAddRequest({ bookId }));
+        // } else {
+        //     dispatch(historyRequest({ bookId }));
+        // }
     };
 
     const renderBoocking = (
@@ -123,10 +143,11 @@ export const BookingCalendar = () => {
                     >
                         {state.monthesNames.map((item) => (
                             <option
-                                label={`${item.month} ${state.selectedMonth.monthIndex === item.monthIndex
-                                    ? state.selectedYear
-                                    : ''
-                                    }`}
+                                label={`${item.month} ${
+                                    state.selectedMonth.monthIndex === item.monthIndex
+                                        ? state.selectedYear
+                                        : ''
+                                }`}
                                 value={item.monthIndex}
                                 key={item.month}
                             >
@@ -225,10 +246,11 @@ export const BookingCalendar = () => {
                     >
                         {state.monthesNames.map((item) => (
                             <option
-                                label={`${item.month} ${state.selectedMonth.monthIndex === item.monthIndex
-                                    ? state.selectedYear
-                                    : ''
-                                    }`}
+                                label={`${item.month} ${
+                                    state.selectedMonth.monthIndex === item.monthIndex
+                                        ? state.selectedYear
+                                        : ''
+                                }`}
                                 value={item.monthIndex}
                                 key={item.month}
                             >

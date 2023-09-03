@@ -45,6 +45,7 @@ export type BooksType = {
         message: string | null;
         isOnBookInfoPage?: boolean;
         isDelivery: boolean;
+        userId: string | null | number;
     };
     bookReview: {
         bookId: string | null | number;
@@ -167,6 +168,7 @@ export type DeliveryModalPayload = {
     dateHandedFrom?: string | null;
     dateHandedTo?: string | null;
     isDelivery: boolean;
+    userId?: string | null | number;
 };
 
 export type BookCategoriesDataType = BookCategoriesItem[];

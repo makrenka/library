@@ -67,6 +67,7 @@ export const initialState: BooksType = {
         message: null,
         isOnBookInfoPage: undefined,
         isDelivery: false,
+        userId: null,
     },
     bookReview: {
         bookId: null,
@@ -243,6 +244,7 @@ export const booksSlice = createSlice({
             state.delivery.dateHandedFrom = payload.dateHandedFrom || null;
             state.delivery.dateHandedTo = payload.dateHandedTo || null;
             state.delivery.isDelivery = payload.isDelivery;
+            state.delivery.userId = payload.userId || null;
         },
         deliveryRequest: (state, { payload }: PayloadAction<DeliveryPayload>) => {
             state.delivery.isLoading = true;

@@ -15,7 +15,6 @@ export const UserPage = () => {
     const dispatch = useAppDispatch();
     const { userForAdmin: user, isLoading } = useAppSelector(getUserSelector);
     const { userId } = useParams();
-    console.log(user);
 
     useEffect(() => {
         if (userId) {

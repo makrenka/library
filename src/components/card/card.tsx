@@ -25,7 +25,6 @@ import { BOOKING, DELIVERY } from '../../constants/books';
 import IconPlugImg from './assets/icon-plug-img.svg';
 
 import styles from './card.module.scss';
-import { booksSelector } from '../../store/books/selectors';
 
 type BookType = {
     data: BookListItem;
@@ -105,6 +104,7 @@ export const Card = (props: BookType) => {
                 dateHandedFrom: bookData?.delivery?.dateHandedFrom,
                 dateHandedTo: bookData?.delivery?.dateHandedTo,
                 isDelivery: true,
+                userId: booking?.customerId || delivery?.recipientId || null,
             }),
         );
     };
@@ -128,35 +128,36 @@ export const Card = (props: BookType) => {
                 {authors && authors.length > 0 && authors.join(', ')}, {issueYear}
             </span>
             {isProfileCard ? (
-                isHistory ?
-                    !pathname.includes('admin/users') ?
-                        (
-                            <div className={classNameCard('cardButton')}>
-                                <Button
-                                    dataTestId='history-review-button'
-                                    view={isCommented ? 'secondary' : 'primary'}
-                                    onClick={handleOpenTakeReviewModal}
-                                >
-                                    {isCommented ? 'Изменить оценку' : 'Оставить отзыв'}
-                                </Button>
-                            </div>
-                        ) : null
-                    : (
-                        <span className={styles.backtime}>
-                            Возврат {formatDate(deliveryDate?.toString() || '')}
-                        </span>
-                    )
+                isHistory ? (
+                    !pathname.includes('admin/users') ? (
+                        <div className={classNameCard('cardButton')}>
+                            <Button
+                                dataTestId='history-review-button'
+                                view={isCommented ? 'secondary' : 'primary'}
+                                onClick={handleOpenTakeReviewModal}
+                            >
+                                {isCommented ? 'Изменить оценку' : 'Оставить отзыв'}
+                            </Button>
+                        </div>
+                    ) : null
+                ) : (
+                    <span className={styles.backtime}>
+                        Возврат {formatDate(deliveryDate?.toString() || '')}
+                    </span>
+                )
             ) : isBooking ? (
                 <div className={classNameCard('cardButton')}>
-                    {!pathname.includes('admin/users') ?
+                    {!pathname.includes('admin/users') ? (
                         <Button
                             dataTestId='cancel-booking-button'
                             view='primary'
                             onClick={handleCancelBooking}
                         >
                             Отменить бронь
-                        </Button> : ''}
-
+                        </Button>
+                    ) : (
+                        ''
+                    )}
                 </div>
             ) : (
                 <div className={classNameCard('cardButton')}>
@@ -193,14 +194,14 @@ export const Card = (props: BookType) => {
                         {booking
                             ? booking?.dateOrder.slice(0, 10).split('-').reverse().join('.')
                             : `${delivery?.dateHandedFrom
-                                .slice(0, 10)
-                                .split('-')
-                                .reverse()
-                                .join('.')}-${delivery?.dateHandedTo
-                                    .slice(0, 10)
-                                    .split('-')
-                                    .reverse()
-                                    .join('.')}`}
+                                  .slice(0, 10)
+                                  .split('-')
+                                  .reverse()
+                                  .join('.')}-${delivery?.dateHandedTo
+                                  .slice(0, 10)
+                                  .split('-')
+                                  .reverse()
+                                  .join('.')}`}
                     </span>
                 </p>
                 <p className={styles.cardDateStatus}>
