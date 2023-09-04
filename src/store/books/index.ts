@@ -18,6 +18,7 @@ import {
     DeliveryPayload,
     DeliveryResponseSuccess,
     DeliveryUpdatePayload,
+    HistoryAddPayload,
     HistoryPayload,
     HistoryResponseSuccess,
 } from './types';
@@ -290,7 +291,7 @@ export const booksSlice = createSlice({
             state.history.isSuccess = false;
             state.history.data = null;
         },
-        historyAddRequest: (state, { payload }: PayloadAction<HistoryPayload>) => {
+        historyAddRequest: (state, { payload }: PayloadAction<HistoryAddPayload>) => {
             state.history.isLoading = true;
         },
         historyAddRequestSuccess: (

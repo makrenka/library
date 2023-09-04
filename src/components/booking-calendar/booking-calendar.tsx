@@ -48,6 +48,7 @@ export const BookingCalendar = () => {
     } = useAppSelector(booksSelector);
 
     const { userForAdmin: user } = useAppSelector(getUserSelector);
+    const historyId = user.history?.id;
     console.log(user);
 
     const today = new Date();
@@ -119,12 +120,11 @@ export const BookingCalendar = () => {
 
     const createDelivery = () => {
         dispatch(deliveryRequest({ deliveryDateFrom, deliveryDateTo, bookIdDelivery }));
-        dispatch(historyAddRequest({ bookId }));
-        // if (historyId) {
-        //     dispatch(historyAddRequest({ bookId }));
-        // } else {
-        //     dispatch(historyRequest({ bookId }));
-        // }
+        if (user.history.id) {
+            dispatch(historyAddRequest({ historyId, bookId }));
+        } else {
+            dispatch(historyRequest({ bookId }));
+        }
     };
 
     const renderBoocking = (
@@ -143,11 +143,10 @@ export const BookingCalendar = () => {
                     >
                         {state.monthesNames.map((item) => (
                             <option
-                                label={`${item.month} ${
-                                    state.selectedMonth.monthIndex === item.monthIndex
-                                        ? state.selectedYear
-                                        : ''
-                                }`}
+                                label={`${item.month} ${state.selectedMonth.monthIndex === item.monthIndex
+                                    ? state.selectedYear
+                                    : ''
+                                    }`}
                                 value={item.monthIndex}
                                 key={item.month}
                             >
@@ -246,11 +245,10 @@ export const BookingCalendar = () => {
                     >
                         {state.monthesNames.map((item) => (
                             <option
-                                label={`${item.month} ${
-                                    state.selectedMonth.monthIndex === item.monthIndex
-                                        ? state.selectedYear
-                                        : ''
-                                }`}
+                                label={`${item.month} ${state.selectedMonth.monthIndex === item.monthIndex
+                                    ? state.selectedYear
+                                    : ''
+                                    }`}
                                 value={item.monthIndex}
                                 key={item.month}
                             >

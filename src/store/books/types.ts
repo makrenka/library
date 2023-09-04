@@ -231,3 +231,8 @@ export type DeliveryUpdatePayload = DeliveryPayload & { deliveryId: string | num
 export type HistoryPayload = {
     bookId: number | null | string;
 };
+
+export type HistoryAddPayload = {
+    historyId: number | null | string;
+    bookId: number | null | string;
+};

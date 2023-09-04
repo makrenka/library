@@ -61,6 +61,7 @@ import {
     historyAddRequestFailure,
 } from '.';
 import { searchSelector } from '../search/selectors';
+import { getUserSelector } from '../user/selectors';
 
 function* bookListRequestWorker() {
     try {
@@ -251,14 +252,14 @@ function* deliveryRequestWorker({ payload }: PayloadAction<{
     } = yield select(booksSelector);
 
     try {
-        const { userData } = yield select(authenticationSelector);
+        const { userForAdmin: user } = yield select(getUserSelector);
         const { data }: AxiosResponse = yield call(axiosInstance.post, BOOKS_URL.delivery, {
             data: {
                 handed: true,
                 dateHandedFrom: payload.deliveryDateFrom,
                 dateHandedTo: payload.deliveryDateTo,
                 book: payload.bookIdDelivery,
-                recipient: userData.id,
+                recipient: user.id,
             },
         });
 
@@ -309,11 +310,11 @@ function* historyRequestWorker({ payload }: PayloadAction<{
     } = yield select(booksSelector);
 
     try {
-        const { userData } = yield select(authenticationSelector);
+        const { userForAdmin: user } = yield select(getUserSelector);
         const { data }: AxiosResponse = yield call(axiosInstance.post, BOOKS_URL.history, {
             data: {
                 book: payload.bookId,
-                user: userData.id,
+                user: user.id,
             },
         });
 
@@ -352,11 +353,11 @@ function* historyAddRequestWorker({ payload }: PayloadAction<{
     } = yield select(booksSelector);
 
     try {
-        const { userData } = yield select(authenticationSelector);
+        // const { userData } = yield select(authenticationSelector);
         const { data }: AxiosResponse = yield call(axiosInstance.put, `${BOOKS_URL.history}/${payload.historyId}`, {
             data: {
                 book: payload.bookId,
-                user: userData.id,
+                // user: userData.id,
             },
         });
 
