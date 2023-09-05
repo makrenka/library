@@ -120,9 +120,9 @@ export const BookingCalendar = () => {
     const createDelivery = () => {
         dispatch(deliveryRequest({ deliveryDateFrom, deliveryDateTo, bookIdDelivery }));
         if (user.history?.id) {
-            dispatch(historyAddRequest({ historyId, bookId }));
+            dispatch(historyAddRequest({ historyId, bookIdDelivery }));
         } else {
-            dispatch(historyRequest({ bookId }));
+            dispatch(historyRequest({ bookIdDelivery }));
         }
     };
 

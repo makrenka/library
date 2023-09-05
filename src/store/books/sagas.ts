@@ -248,7 +248,7 @@ function* deliveryRequestWorker({ payload }: PayloadAction<{
     const {
         delivery,
         book,
-        bookList: { data: bookListData },
+        bookList: { dataAdmin: bookListData },
     } = yield select(booksSelector);
 
     try {
@@ -301,19 +301,19 @@ function* deliveryRequestWorker({ payload }: PayloadAction<{
 }
 
 function* historyRequestWorker({ payload }: PayloadAction<{
-    bookId: string | number;
+    bookIdDelivery: string | number;
 }>) {
     const {
         history,
         book,
-        bookList: { data: bookListData },
+        bookList: { dataAdmin: bookListData },
     } = yield select(booksSelector);
 
     try {
         const { userForAdmin: user } = yield select(getUserSelector);
         const { data }: AxiosResponse = yield call(axiosInstance.post, BOOKS_URL.history, {
             data: {
-                book: payload.bookId,
+                book: payload.bookIdDelivery,
                 user: user.id,
             },
         });
@@ -324,7 +324,7 @@ function* historyRequestWorker({ payload }: PayloadAction<{
 
         const { id } = data;
         const bookUpdateData = bookListData.find(
-            ({ id: itemId }: BookListItem) => itemId === payload.bookId,
+            ({ id: itemId }: BookListItem) => itemId === payload.bookIdDelivery,
         );
         const userHistoryUpdate: UserHistory = {
             id,
@@ -332,6 +332,7 @@ function* historyRequestWorker({ payload }: PayloadAction<{
         };
 
         yield put(addHistoryUpdateUser(userHistoryUpdate));
+        // yield put(historyRequest(book.data.id));
 
         if (history) {
             yield put(historyRequest(book.data.id));
@@ -344,7 +345,7 @@ function* historyRequestWorker({ payload }: PayloadAction<{
 
 function* historyAddRequestWorker({ payload }: PayloadAction<{
     historyId: string | number;
-    bookId: string | number;
+    bookIdDelivery: string | number;
 }>) {
     const {
         history,
@@ -355,7 +356,7 @@ function* historyAddRequestWorker({ payload }: PayloadAction<{
     try {
         const { data }: AxiosResponse = yield call(axiosInstance.put, `${BOOKS_URL.history}/${payload.historyId}`, {
             data: {
-                book: payload.bookId,
+                book: payload.bookIdDelivery,
             },
         });
 
@@ -363,20 +364,20 @@ function* historyAddRequestWorker({ payload }: PayloadAction<{
             historyAddRequestSuccess({ data }),
         );
 
-        const { id } = data;
-        const bookUpdateData = bookListData.find(
-            ({ id: itemId }: BookListItem) => itemId === payload.bookId,
-        );
-        const userHistoryUpdate: UserHistory = {
-            id,
-            books: bookUpdateData,
-        };
+        // const { id } = data;
+        // const bookUpdateData = bookListData.find(
+        //     ({ id: itemId }: BookListItem) => itemId === payload.bookId,
+        // );
+        // const userHistoryUpdate: UserHistory = {
+        //     id,
+        //     books: bookUpdateData,
+        // };
 
-        yield put(addHistoryUpdateUser(userHistoryUpdate));
+        // yield put(addHistoryUpdateUser(userHistoryUpdate));
 
-        if (history) {
-            yield put(historyAddRequest(book.data.id));
-        }
+        // if (history) {
+        //     yield put(historyAddRequest(book.data.id));
+        // }
 
     } catch {
         yield put(historyAddRequestFailure());

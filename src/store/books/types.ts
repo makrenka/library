@@ -230,10 +230,10 @@ export type DeliveryPayload = {
 export type DeliveryUpdatePayload = DeliveryPayload & { deliveryId: string | number | null };
 
 export type HistoryPayload = {
-    bookId: number | null | string;
+    bookIdDelivery: number | null | string;
 };
 
 export type HistoryAddPayload = {
     historyId: number | null | string;
-    bookId: number | null | string;
+    bookIdDelivery: number | null | string;
 };
