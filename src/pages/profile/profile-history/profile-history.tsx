@@ -47,7 +47,7 @@ export const ProfileHistory = ({ history, userId, commentsUserBooksId }: Profile
     useEffect(() => {
         if (books && !!history?.length) {
             setFindHistory(
-                history.map(({ id: itemid }) =>
+                history?.map(({ id: itemid }) =>
                     books?.find(({ id }) => itemid === id),
                 ) as BookListItem[],
             );

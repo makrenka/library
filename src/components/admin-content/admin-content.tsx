@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { getBookList } from '../../store/books/selectors';
+import { getBookList, getBookListAdmin } from '../../store/books/selectors';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     bookListRequestBooked,
@@ -44,7 +44,7 @@ export const AdminContent = ({
 }: AdminContentProps) => {
     const [dataBook, setDataBook] = useState<BookListItem[] | null>(null);
     const [dataUsers, setDataUsers] = useState<ResponseUsersList[] | null>(null);
-    const bookList = useAppSelector(getBookList);
+    const bookList = useAppSelector(getBookListAdmin);
     const usersList = useAppSelector(getUsersListSelector);
     const dispatch = useAppDispatch();
 

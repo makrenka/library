@@ -49,7 +49,6 @@ export const BookingCalendar = () => {
 
     const { userForAdmin: user } = useAppSelector(getUserSelector);
     const historyId = user.history?.id;
-    console.log(user);
 
     const today = new Date();
 
@@ -120,7 +119,7 @@ export const BookingCalendar = () => {
 
     const createDelivery = () => {
         dispatch(deliveryRequest({ deliveryDateFrom, deliveryDateTo, bookIdDelivery }));
-        if (user.history.id) {
+        if (user.history?.id) {
             dispatch(historyAddRequest({ historyId, bookId }));
         } else {
             dispatch(historyRequest({ bookId }));

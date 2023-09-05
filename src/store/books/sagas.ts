@@ -353,11 +353,9 @@ function* historyAddRequestWorker({ payload }: PayloadAction<{
     } = yield select(booksSelector);
 
     try {
-        // const { userData } = yield select(authenticationSelector);
         const { data }: AxiosResponse = yield call(axiosInstance.put, `${BOOKS_URL.history}/${payload.historyId}`, {
             data: {
                 book: payload.bookId,
-                // user: userData.id,
             },
         });
 

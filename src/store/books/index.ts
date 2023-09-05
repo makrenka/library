@@ -29,6 +29,7 @@ export const initialState: BooksType = {
         isSuccess: false,
         isError: false,
         data: null,
+        dataAdmin: null,
     },
     book: {
         isLoading: false,
@@ -116,6 +117,7 @@ export const booksSlice = createSlice({
         },
         bookListRequestNull: (state) => {
             state.bookList.data = null;
+            state.bookList.dataAdmin = null;
         },
         bookListRequestSortingAlphabetAsc: (state, action: PayloadAction<number>) => {
             state.bookList.isLoading = true;
@@ -146,8 +148,8 @@ export const booksSlice = createSlice({
             state.bookList.isLoading = false;
             state.bookList.isError = false;
             state.bookList.isSuccess = true;
-            state.bookList.data = state.bookList.data
-                ? [...state.bookList.data, ...action.payload]
+            state.bookList.dataAdmin = state.bookList.dataAdmin
+                ? [...state.bookList.dataAdmin, ...action.payload]
                 : action.payload;
         },
         bookListRequestDeliveried: (state) => {
@@ -157,8 +159,8 @@ export const booksSlice = createSlice({
             state.bookList.isLoading = false;
             state.bookList.isError = false;
             state.bookList.isSuccess = true;
-            state.bookList.data = state.bookList.data
-                ? [...state.bookList.data, ...action.payload]
+            state.bookList.dataAdmin = state.bookList.dataAdmin
+                ? [...state.bookList.dataAdmin, ...action.payload]
                 : action.payload;
         },
         bookListRequestFailure: (state) => {
