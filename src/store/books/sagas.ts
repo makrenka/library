@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { AnyAction, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
 
 import { axiosInstance } from '../../api/axios';
@@ -303,11 +303,6 @@ function* deliveryRequestWorker({ payload }: PayloadAction<{
 function* historyRequestWorker({ payload }: PayloadAction<{
     bookIdDelivery: string | number;
 }>) {
-    const {
-        history,
-        book,
-        bookList: { dataAdmin: bookListData },
-    } = yield select(booksSelector);
 
     try {
         const { userForAdmin: user } = yield select(getUserSelector);
@@ -322,21 +317,6 @@ function* historyRequestWorker({ payload }: PayloadAction<{
             historyRequestSuccess({ data }),
         );
 
-        // const { id } = data;
-        // const bookUpdateData = bookListData.find(
-        //     ({ id: itemId }: BookListItem) => itemId === payload.bookIdDelivery,
-        // );
-        // const userHistoryUpdate: UserHistory = {
-        //     id,
-        //     books: bookUpdateData,
-        // };
-
-        // yield put(addHistoryUpdateUser(userHistoryUpdate));
-
-        // if (history) {
-        //     yield put(historyRequest(book.data.id));
-        // }
-
     } catch {
         yield put(historyRequestFailure());
     }
@@ -346,11 +326,6 @@ function* historyAddRequestWorker({ payload }: PayloadAction<{
     historyId: string | number;
     bookIdDelivery: string | number;
 }>) {
-    const {
-        history,
-        book,
-        bookList: { data: bookListData },
-    } = yield select(booksSelector);
 
     try {
         const { data }: AxiosResponse = yield call(axiosInstance.put, `${BOOKS_URL.history}/${payload.historyId}`, {

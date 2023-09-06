@@ -67,6 +67,11 @@ export const userSlice = createSlice({
             state.isSuccess = true;
             state.data = action.payload;
         },
+        userRequestError: (state) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+        },
         userForAdminRequest: (state, action: PayloadAction<string>) => {
             state.isLoading = true;
         },
@@ -87,12 +92,7 @@ export const userSlice = createSlice({
             state.isError = false;
             state.isSuccess = true;
             state.data = action.payload;
-        },
-        userRequestError: (state) => {
-            state.isLoading = false;
-            state.isError = true;
-            state.isSuccess = false;
-        },
+        },        
         updateUserRequest: (state, action: PayloadAction<UpdateUserActionType>) => {
             state.isUpdateLoading = true;
         },
@@ -110,6 +110,34 @@ export const userSlice = createSlice({
             state.isError = false;
             state.isSuccess = true;
             // state.data = action.payload;
+        },
+        blockUserRequest: (state, action: PayloadAction<number | string>) => {
+            state.isLoading = true;
+        },
+        blockUserRequestSuccess: (state, action: PayloadAction<ResponseUser>) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.data = action.payload;
+        },
+        blockUserRequestError: (state) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+        },
+        unblockUserRequest: (state, action: PayloadAction<number | string>) => {
+            state.isLoading = true;
+        },
+        unblockUserRequestSuccess: (state, action: PayloadAction<ResponseUser>) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.data = action.payload;
+        },
+        unblockUserRequestError: (state) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
         },
         deleteBookingUpdateUser: (state) => {
             state.data.booking = initialBooking as UserBooking;
@@ -150,4 +178,10 @@ export const {
     addBookingUpdateUser,
     addDeliveryUpdateUser,
     addHistoryUpdateUser,
+    blockUserRequest,
+    blockUserRequestSuccess,
+    blockUserRequestError,
+    unblockUserRequest,
+    unblockUserRequestSuccess,
+    unblockUserRequestError,
 } = userSlice.actions;

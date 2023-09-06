@@ -26,3 +26,7 @@ export const USERS_URL = {
 export const FILE_UPLOAD = {
     upload: `${BASE_URL}/upload`,
 };
+
+export const USERS_BLOCKING = {
+    blocking: `${BASE_URL}/users-permissions`,
+};

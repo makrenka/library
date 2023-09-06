@@ -7,4 +7,6 @@ export enum MESSAGES {
     bookingSuccess = 'Книга забронирована. Подробности можно посмотреть на странице Профиль',
     updateReviewSuccess = 'Спасибо, что нашли время изменить оценку!',
     deliverySuccess = 'Книга успешно выдана',
+    blockingSuccess = 'Пользователь заблокирован',
+    unblockingSuccess = 'Пользователь разблокирован',
 }
