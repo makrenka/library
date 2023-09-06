@@ -3,8 +3,8 @@ import { useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { Card } from '../../../components/card';
-import { BookingDataType, TAKEN_DATA } from '../../../constants/profile-page';
-import { getBookList } from '../../../store/books/selectors';
+import { BookingDataType } from '../../../constants/profile-page';
+import { getBookListProfile } from '../../../store/books/selectors';
 import { BookListItem } from '../../../store/books/types';
 import { useAppSelector } from '../../../store/hooks';
 import { ExpiredMask } from '../expired-mask';
@@ -33,7 +33,7 @@ export const ProfileBooking = ({
     isBooking,
     dataTestId,
 }: ProfileBookingProps) => {
-    const books = useAppSelector(getBookList);
+    const books = useAppSelector(getBookListProfile);
     const [book, setBook] = useState({} as BookListItem | undefined);
     const { pathname } = useLocation();
 

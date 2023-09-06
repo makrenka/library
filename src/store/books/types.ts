@@ -7,6 +7,7 @@ export type BooksType = {
         isError: boolean;
         data: null | BookListItem[];
         dataAdmin: null | BookListItem[];
+        dataProfile: null | BookListItem[];
     };
     book: {
         isLoading: boolean;

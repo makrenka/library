@@ -32,7 +32,6 @@ export const AdminCardUser = ({
         phone,
         blocked,
     },
-    dataUsers,
 }: CardUserType) => {
     const { filter } = useAppSelector(searchSelector);
     const handleHighlight = (string: string) => highlightMatches(filter, string);

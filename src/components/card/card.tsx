@@ -25,6 +25,7 @@ import { BOOKING, DELIVERY } from '../../constants/books';
 import IconPlugImg from './assets/icon-plug-img.svg';
 
 import styles from './card.module.scss';
+import { ROUTES } from '../../constants/routes';
 
 type BookType = {
     data: BookListItem;
@@ -182,11 +183,13 @@ export const Card = (props: BookType) => {
             <div className={styles.cardDescription}>
                 <p className={styles.cardUser}>
                     Пользователь:{' '}
-                    <span>
-                        {booking
-                            ? `${booking?.customerLastName} ${booking?.customerFirstName}`
-                            : `${delivery?.recipientLastName} ${delivery?.recipientFirstName}`}
-                    </span>
+                    <Link to={`${ROUTES.adminUsers}/${booking?.customerId || delivery?.recipientId}`}>
+                        <span>
+                            {booking
+                                ? `${booking?.customerLastName} ${booking?.customerFirstName}`
+                                : `${delivery?.recipientLastName} ${delivery?.recipientFirstName}`}
+                        </span>
+                    </Link>
                 </p>
                 <p className={styles.cardDateStatus}>
                     {booking ? 'Дата: ' : 'Срок: '}
@@ -194,14 +197,14 @@ export const Card = (props: BookType) => {
                         {booking
                             ? booking?.dateOrder.slice(0, 10).split('-').reverse().join('.')
                             : `${delivery?.dateHandedFrom
-                                  .slice(0, 10)
-                                  .split('-')
-                                  .reverse()
-                                  .join('.')}-${delivery?.dateHandedTo
-                                  .slice(0, 10)
-                                  .split('-')
-                                  .reverse()
-                                  .join('.')}`}
+                                .slice(0, 10)
+                                .split('-')
+                                .reverse()
+                                .join('.')}-${delivery?.dateHandedTo
+                                    .slice(0, 10)
+                                    .split('-')
+                                    .reverse()
+                                    .join('.')}`}
                     </span>
                 </p>
                 <p className={styles.cardDateStatus}>

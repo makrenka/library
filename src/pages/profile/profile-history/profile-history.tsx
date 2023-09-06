@@ -6,9 +6,9 @@ import classNames from 'classnames';
 
 import { Card } from '../../../components/card';
 import { MenuViewEnum } from '../../../constants/menu-view';
-import { getBookList } from '../../../store/books/selectors';
+import { getBookListProfile } from '../../../store/books/selectors';
 import { BookListItem } from '../../../store/books/types';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { ShortBookData } from '../../../store/user/types';
 import { ProfileEmpty } from '../profile-empty';
 
@@ -38,9 +38,10 @@ type ProfileHistoryProps = {
 };
 
 export const ProfileHistory = ({ history, userId, commentsUserBooksId }: ProfileHistoryProps) => {
-    const books = useAppSelector(getBookList);
+    const books = useAppSelector(getBookListProfile);
     const [findHistory, setFindHistory] = useState<BookListItem[]>();
     const { pathname } = useLocation();
+    const dispatch = useAppDispatch();
 
     // TODO Когда у "коротких" книг появятся картинки - переделать на прямую передачу + можно брать id книги из комментариев пользователя при добавлении комментария
 

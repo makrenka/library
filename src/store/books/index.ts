@@ -30,6 +30,7 @@ export const initialState: BooksType = {
         isError: false,
         data: null,
         dataAdmin: null,
+        dataProfile: null,
     },
     book: {
         isLoading: false,
@@ -103,6 +104,7 @@ export const booksSlice = createSlice({
             state.bookList.isError = false;
             state.bookList.isSuccess = true;
             state.bookList.data = action.payload;
+            state.bookList.dataProfile = action.payload;
         },
         bookListRequestScroll: (state, action: PayloadAction<number>) => {
             state.bookList.isLoading = true;

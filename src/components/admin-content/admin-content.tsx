@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { getBookList, getBookListAdmin } from '../../store/books/selectors';
+import { getBookListAdmin } from '../../store/books/selectors';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     bookListRequestBooked,
@@ -8,12 +8,11 @@ import {
     bookListRequestNull,
 } from '../../store/books';
 import { BookListItem } from '../../store/books/types';
-import { Card } from '../card';
-
-import styles from './admin-content.module.scss';
 import { ResponseUsersList } from '../../store/user/types';
 import { getUsersListSelector } from '../../store/user/selectors';
 import { usersListRequest } from '../../store/user';
+
+import { Card } from '../card';
 import { AdminCardUser } from '../admin-card-user';
 import {
     AllUsersCheckedContext,
@@ -22,6 +21,8 @@ import {
     BookedCheckedContext,
     DeliveriedCheckedContext,
 } from '../layout/layout';
+
+import styles from './admin-content.module.scss';
 
 export type AdminContentProps = {
     isSortedDesc: boolean;
@@ -64,7 +65,7 @@ export const AdminContent = ({
 
     useEffect(() => {
         dispatch(usersListRequest());
-    }, [dispatch]);
+    }, [dispatch, dataBook]);
 
     useEffect(() => {
         if (bookList) {

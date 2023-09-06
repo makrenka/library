@@ -4,6 +4,7 @@ import { RootState } from '..';
 
 export const getBookList = (state: RootState) => state.books.bookList.data;
 export const getBookListAdmin = (state: RootState) => state.books.bookList.dataAdmin;
+export const getBookListProfile = (state: RootState) => state.books.bookList.dataProfile;
 export const getBookData = (state: RootState) => state.books.book.data;
 export const getBookDataState = (state: RootState) => state.books.book;
 export const getLoadingBooksList = (state: RootState) => state.books.bookList.isLoading;

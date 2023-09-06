@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { BOOKING_DATA, TAKEN_DATA } from '../../../constants/profile-page';
 import { bookListRequest } from '../../../store/books';
-import { getBookList } from '../../../store/books/selectors';
+import { getBookListProfile } from '../../../store/books/selectors';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { ResponseUser } from '../../../store/user/types';
 import { ProfileBooking } from '../profile-booking';
@@ -15,7 +15,7 @@ type ProfileFunctionsProps = {
 };
 
 export const ProfileFunctions = ({ user }: ProfileFunctionsProps) => {
-    const books = useAppSelector(getBookList);
+    const books = useAppSelector(getBookListProfile);
     const dispatch = useAppDispatch();
 
     const commentsUserBooksId = user?.comments?.map(({ bookId }) => bookId);
