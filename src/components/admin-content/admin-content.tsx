@@ -71,7 +71,7 @@ export const AdminContent = ({
         if (bookList) {
             const data = [...bookList];
             const sortedByAlphabet = data.sort((a, b) =>
-                isSortedDesc ? b.title.localeCompare(a.title) : a.title.localeCompare(b.title),
+                isSortedDesc ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title),
             );
             setDataBook(sortedByAlphabet);
         }

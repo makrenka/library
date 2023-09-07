@@ -21,11 +21,11 @@ import { Button } from '../button';
 import { Rating } from '../rating';
 import { authSelector } from '../../store/auth/selectors';
 import { BOOKING, DELIVERY } from '../../constants/books';
+import { ROUTES } from '../../constants/routes';
 
 import IconPlugImg from './assets/icon-plug-img.svg';
 
 import styles from './card.module.scss';
-import { ROUTES } from '../../constants/routes';
 
 type BookType = {
     data: BookListItem;
@@ -58,7 +58,7 @@ export const Card = (props: BookType) => {
     const { pathname } = useLocation();
     const userIdReserved = bookData?.delivery?.recipientId;
     const {
-        auth: { userData },
+        auth: { userData: userDataBooking },
     } = useAppSelector(authSelector);
 
     const { filter } = useAppSelector(searchSelector);
@@ -218,7 +218,7 @@ export const Card = (props: BookType) => {
                         <Button
                             view='primary'
                             onClick={(e) =>
-                                handleOpenDeliveryModal(e, userIdReserved === userData?.id)
+                                handleOpenDeliveryModal(e, userIdReserved === userDataBooking?.id)
                             }
                         >
                             {booking ? DELIVERY.buttonCreate : DELIVERY.buttonUpdate}
@@ -238,7 +238,7 @@ export const Card = (props: BookType) => {
                             <Button
                                 view='primary'
                                 onClick={(e) =>
-                                    handleOpenDeliveryModal(e, userIdReserved === userData?.id)
+                                    handleOpenDeliveryModal(e, userIdReserved === delivery?.recipientId)
                                 }
                             >
                                 {booking ? DELIVERY.buttonCreate : DELIVERY.buttonUpdate}

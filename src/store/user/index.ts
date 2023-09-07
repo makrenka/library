@@ -92,7 +92,7 @@ export const userSlice = createSlice({
             state.isError = false;
             state.isSuccess = true;
             state.data = action.payload;
-        },        
+        },
         updateUserRequest: (state, action: PayloadAction<UpdateUserActionType>) => {
             state.isUpdateLoading = true;
         },
