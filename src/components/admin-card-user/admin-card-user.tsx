@@ -1,11 +1,15 @@
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { SyntheticEvent } from 'react';
 
-import { useAppSelector } from '../../store/hooks';
+import { blockUserRequest, unblockUserRequest } from '../../store/user';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { searchSelector } from '../../store/search/selectors';
 import { ResponseUsersList } from '../../store/user/types';
 import { highlightMatches } from '../../utils/highlight-matches';
 import { Button } from '../button';
 import { BUTTON_TEXT } from '../../constants/button';
+import { ROUTES } from '../../constants/routes';
 
 import IconPlugImg from './assets/icon-plug-img.svg';
 import IconBook from './assets/icon-book.svg';
@@ -32,18 +36,30 @@ export const AdminCardUser = ({
     },
 }: CardUserType) => {
     const { filter } = useAppSelector(searchSelector);
+    const dispatch = useAppDispatch();
+
     const handleHighlight = (string: string) => highlightMatches(filter, string);
     const lateBookReturn =
         new Date() > new Date(Date.parse(dateHandedTo !== null ? dateHandedTo : ''));
 
+    const blockUser = (e: SyntheticEvent) => {
+        e.preventDefault();
+        dispatch(blockUserRequest(id));
+    };
+
+    const unblockUser = (e: SyntheticEvent) => {
+        e.preventDefault();
+        dispatch(unblockUserRequest(id));
+    };
+
     return (
         <li className={classNames(styles.card, blocked && styles.cardBlocked)}>
-            <div className={styles.cardImg}>
+            <Link to={`${ROUTES.adminUsers}/${id}`} className={styles.cardImg}>
                 <img src={avatar ? avatar : IconPlugImg} alt={username} />
-            </div>
-            <div className={styles.userNameBlock}>
+            </Link>
+            <Link to={`${ROUTES.adminUsers}/${id}`} className={styles.userNameBlock}>
                 <p className={styles.cardUserName}>{handleHighlight(`${lastName} ${firstName}`)}</p>
-            </div>
+            </Link>
             <div className={styles.cardDescription}>
                 <p className={styles.cardDescriptionText}>
                     Логин: <span>{username}</span>
@@ -67,11 +83,15 @@ export const AdminCardUser = ({
             </div>
             {blocked ? (
                 <div className={styles.cardButton}>
-                    <Button view='primary'>{BUTTON_TEXT.UNBLOCK}</Button>
+                    <Button view='primary' onClick={unblockUser}>
+                        {BUTTON_TEXT.UNBLOCK}
+                    </Button>
                 </div>
             ) : (
                 <div className={styles.cardButton}>
-                    <Button view='secondary'>{BUTTON_TEXT.BLOCK}</Button>
+                    <Button view='secondary' onClick={blockUser}>
+                        {BUTTON_TEXT.BLOCK}
+                    </Button>
                 </div>
             )}
             <div

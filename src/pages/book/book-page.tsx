@@ -85,8 +85,8 @@ export const BookPage = () => {
                             {category === NAV_MENU_ALL.category
                                 ? NAV_MENU_ALL.name
                                 : bookCategories?.map(
-                                      (menuList) => menuList.path === category && menuList.name,
-                                  )}
+                                    (menuList) => menuList.path === category && menuList.name,
+                                )}
                         </Link>
                         <span className={styles.breadcrumbsSeparator}>/</span>
                         <span data-test-id='book-name'>{bookData?.title}</span>

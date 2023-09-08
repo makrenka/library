@@ -48,27 +48,27 @@ type BlockedUsersChecked = {
 
 export const BookedCheckedContext = createContext<BookedChecked>({
     isBookedChecked: true,
-    setIsBookedChecked: () => {},
+    setIsBookedChecked: () => { },
 });
 
 export const DeliveriedCheckedContext = createContext<DeliveriedChecked>({
     isDeliveriedChecked: true,
-    setIsDeliveriedChecked: () => {},
+    setIsDeliveriedChecked: () => { },
 });
 
 export const AllUsersCheckedContext = createContext<AllUsersChecked>({
     isAllUsersChecked: true,
-    setIsAllUsersChecked: () => {},
+    setIsAllUsersChecked: () => { },
 });
 
 export const BookHoldersCheckedContext = createContext<BookHoldersChecked>({
     isBookHoldersChecked: true,
-    setIsBookHoldersChecked: () => {},
+    setIsBookHoldersChecked: () => { },
 });
 
 export const BlockedUsersCheckedContext = createContext<BlockedUsersChecked>({
     isBlockedUsersChecked: true,
-    setIsBlockedUsersChecked: () => {},
+    setIsBlockedUsersChecked: () => { },
 });
 
 export const Layout = () => {

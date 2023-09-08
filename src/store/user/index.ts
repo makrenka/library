@@ -7,6 +7,7 @@ import {
     UploadAvatarActionType,
     UserBooking,
     UserDelivery,
+    UserHistory,
     UserStateType,
 } from './types';
 
@@ -18,6 +19,7 @@ export const initialState: UserStateType = {
     isUpdateError: false,
     isError: false,
     data: {} as ResponseUser,
+    userForAdmin: {} as ResponseUser,
     usersList: {
         data: null,
     },
@@ -65,6 +67,23 @@ export const userSlice = createSlice({
             state.isSuccess = true;
             state.data = action.payload;
         },
+        userRequestError: (state) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+        },
+        userForAdminRequest: (state, action: PayloadAction<string>) => {
+            state.isLoading = true;
+        },
+        userForAdminRequestSuccess: (state, action: PayloadAction<ResponseUser>) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.userForAdmin = action.payload;
+        },
+        resetUserForAdmin: (state) => {
+            state.userForAdmin = {} as ResponseUser;
+        },
         authenticatedUserRequest: (state) => {
             state.isLoading = true;
         },
@@ -73,11 +92,6 @@ export const userSlice = createSlice({
             state.isError = false;
             state.isSuccess = true;
             state.data = action.payload;
-        },
-        userRequestError: (state) => {
-            state.isLoading = false;
-            state.isError = true;
-            state.isSuccess = false;
         },
         updateUserRequest: (state, action: PayloadAction<UpdateUserActionType>) => {
             state.isUpdateLoading = true;
@@ -97,6 +111,34 @@ export const userSlice = createSlice({
             state.isSuccess = true;
             // state.data = action.payload;
         },
+        blockUserRequest: (state, action: PayloadAction<number | string>) => {
+            state.isLoading = true;
+        },
+        blockUserRequestSuccess: (state, action: PayloadAction<ResponseUser>) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.data = action.payload;
+        },
+        blockUserRequestError: (state) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+        },
+        unblockUserRequest: (state, action: PayloadAction<number | string>) => {
+            state.isLoading = true;
+        },
+        unblockUserRequestSuccess: (state, action: PayloadAction<ResponseUser>) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.data = action.payload;
+        },
+        unblockUserRequestError: (state) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+        },
         deleteBookingUpdateUser: (state) => {
             state.data.booking = initialBooking as UserBooking;
         },
@@ -104,10 +146,13 @@ export const userSlice = createSlice({
             state.data.booking = action.payload;
         },
         deleteDeliveryUpdateUser: (state) => {
-            state.data.booking = initialBooking as UserBooking;
+            state.data.delivery = initialDelivery as UserDelivery;
         },
         addDeliveryUpdateUser: (state, action: PayloadAction<UserDelivery>) => {
             state.data.delivery = action.payload;
+        },
+        addHistoryUpdateUser: (state, action: PayloadAction<UserHistory>) => {
+            state.data.history = action.payload;
         },
     },
 });
@@ -119,6 +164,9 @@ export const {
     userRequest,
     userRequestSuccess,
     userRequestError,
+    userForAdminRequest,
+    userForAdminRequestSuccess,
+    resetUserForAdmin,
     authenticatedUserRequest,
     authenticatedUserSuccess,
     updateUserRequest,
@@ -129,4 +177,11 @@ export const {
     deleteDeliveryUpdateUser,
     addBookingUpdateUser,
     addDeliveryUpdateUser,
+    addHistoryUpdateUser,
+    blockUserRequest,
+    blockUserRequestSuccess,
+    blockUserRequestError,
+    unblockUserRequest,
+    unblockUserRequestSuccess,
+    unblockUserRequestError,
 } = userSlice.actions;

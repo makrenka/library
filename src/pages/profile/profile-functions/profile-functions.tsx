@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { BOOKS_URL } from '../../../constants/api';
 
 import { BOOKING_DATA, TAKEN_DATA } from '../../../constants/profile-page';
 import { bookListRequest } from '../../../store/books';
-import { getBookList } from '../../../store/books/selectors';
+import { getBookListProfile } from '../../../store/books/selectors';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { ResponseUser } from '../../../store/user/types';
 import { ProfileBooking } from '../profile-booking';
@@ -16,7 +15,7 @@ type ProfileFunctionsProps = {
 };
 
 export const ProfileFunctions = ({ user }: ProfileFunctionsProps) => {
-    const books = useAppSelector(getBookList);
+    const books = useAppSelector(getBookListProfile);
     const dispatch = useAppDispatch();
 
     const commentsUserBooksId = user?.comments?.map(({ bookId }) => bookId);
@@ -44,8 +43,8 @@ export const ProfileFunctions = ({ user }: ProfileFunctionsProps) => {
                 dataTestId='delivery'
                 deliveryId={user.delivery?.book?.id}
                 data={TAKEN_DATA}
-                isExpired={new Date().getTime() >= new Date(user.delivery?.dateHandedTo).getTime()}
-                deliveryDate={user.delivery?.dateHandedTo}
+                isExpired={new Date().getTime() >= new Date(user.delivery?.dateHandedTo || '').getTime()}
+                deliveryDate={user.delivery?.dateHandedTo || ''}
             />
             <ProfileHistory
                 history={user.history?.books}

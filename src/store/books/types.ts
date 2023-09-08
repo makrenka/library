@@ -1,4 +1,4 @@
-import { Comment } from '../user/types';
+import { Comment, ShortBookData } from '../user/types';
 
 export type BooksType = {
     bookList: {
@@ -6,6 +6,8 @@ export type BooksType = {
         isSuccess: boolean;
         isError: boolean;
         data: null | BookListItem[];
+        dataAdmin: null | BookListItem[];
+        dataProfile: null | BookListItem[];
     };
     book: {
         isLoading: boolean;
@@ -45,6 +47,7 @@ export type BooksType = {
         message: string | null;
         isOnBookInfoPage?: boolean;
         isDelivery: boolean;
+        userId: string | null | number;
     };
     bookReview: {
         bookId: string | null | number;
@@ -56,9 +59,17 @@ export type BooksType = {
         message: string | null;
         userId?: number;
     };
+    history: {
+        books: ShortBookData[] | null;
+        id: number | null | string;
+        isLoading: boolean;
+        isSuccess: boolean;
+        isError: boolean;
+        data: HistoryResponseSuccess | null;
+    };
 };
 
-export type  BookListItem = {
+export type BookListItem = {
     issueYear: string;
     rating: number;
     title: string;
@@ -159,6 +170,7 @@ export type DeliveryModalPayload = {
     dateHandedFrom?: string | null;
     dateHandedTo?: string | null;
     isDelivery: boolean;
+    userId?: string | null | number;
 };
 
 export type BookCategoriesDataType = BookCategoriesItem[];
@@ -186,6 +198,15 @@ export type DeliveryResponseSuccess = {
     };
 };
 
+export type HistoryResponseSuccess = {
+    id: number | string;
+    attributes: {
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
+    };
+};
+
 export type BookingPayload = { dateOrder: string | Date; bookId: string | number | null };
 
 export type BookingUpdatePayload = BookingPayload & { bookingId: string | number | null };
@@ -202,9 +223,18 @@ export type BookRateSuccess = {
 };
 
 export type DeliveryPayload = {
-    deliveryDateFrom: string | Date; 
+    deliveryDateFrom: string | Date;
     deliveryDateTo: string | Date;
     bookIdDelivery: string | number | null;
 };
 
-export type DeliveryUpdatePayload = DeliveryPayload & {deliveryId: string | number | null};
+export type DeliveryUpdatePayload = DeliveryPayload & { deliveryId: string | number | null };
+
+export type HistoryPayload = {
+    bookIdDelivery: number | null | string;
+};
+
+export type HistoryAddPayload = {
+    historyId: number | null | string;
+    bookIdDelivery: number | null | string;
+};

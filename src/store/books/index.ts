@@ -18,6 +18,9 @@ import {
     DeliveryPayload,
     DeliveryResponseSuccess,
     DeliveryUpdatePayload,
+    HistoryAddPayload,
+    HistoryPayload,
+    HistoryResponseSuccess,
 } from './types';
 
 export const initialState: BooksType = {
@@ -26,6 +29,8 @@ export const initialState: BooksType = {
         isSuccess: false,
         isError: false,
         data: null,
+        dataAdmin: null,
+        dataProfile: null,
     },
     book: {
         isLoading: false,
@@ -65,6 +70,7 @@ export const initialState: BooksType = {
         message: null,
         isOnBookInfoPage: undefined,
         isDelivery: false,
+        userId: null,
     },
     bookReview: {
         bookId: null,
@@ -76,6 +82,14 @@ export const initialState: BooksType = {
         message: null,
         userId: undefined,
     },
+    history: {
+        books: null,
+        id: null,
+        isLoading: false,
+        isSuccess: false,
+        isError: false,
+        data: null,
+    }
 };
 
 export const booksSlice = createSlice({
@@ -90,6 +104,7 @@ export const booksSlice = createSlice({
             state.bookList.isError = false;
             state.bookList.isSuccess = true;
             state.bookList.data = action.payload;
+            state.bookList.dataProfile = action.payload;
         },
         bookListRequestScroll: (state, action: PayloadAction<number>) => {
             state.bookList.isLoading = true;
@@ -104,6 +119,7 @@ export const booksSlice = createSlice({
         },
         bookListRequestNull: (state) => {
             state.bookList.data = null;
+            state.bookList.dataAdmin = null;
         },
         bookListRequestSortingAlphabetAsc: (state, action: PayloadAction<number>) => {
             state.bookList.isLoading = true;
@@ -134,8 +150,8 @@ export const booksSlice = createSlice({
             state.bookList.isLoading = false;
             state.bookList.isError = false;
             state.bookList.isSuccess = true;
-            state.bookList.data = state.bookList.data
-                ? [...state.bookList.data, ...action.payload]
+            state.bookList.dataAdmin = state.bookList.dataAdmin
+                ? [...state.bookList.dataAdmin, ...action.payload]
                 : action.payload;
         },
         bookListRequestDeliveried: (state) => {
@@ -145,8 +161,8 @@ export const booksSlice = createSlice({
             state.bookList.isLoading = false;
             state.bookList.isError = false;
             state.bookList.isSuccess = true;
-            state.bookList.data = state.bookList.data
-                ? [...state.bookList.data, ...action.payload]
+            state.bookList.dataAdmin = state.bookList.dataAdmin
+                ? [...state.bookList.dataAdmin, ...action.payload]
                 : action.payload;
         },
         bookListRequestFailure: (state) => {
@@ -233,6 +249,7 @@ export const booksSlice = createSlice({
             state.delivery.dateHandedFrom = payload.dateHandedFrom || null;
             state.delivery.dateHandedTo = payload.dateHandedTo || null;
             state.delivery.isDelivery = payload.isDelivery;
+            state.delivery.userId = payload.userId || null;
         },
         deliveryRequest: (state, { payload }: PayloadAction<DeliveryPayload>) => {
             state.delivery.isLoading = true;
@@ -260,6 +277,39 @@ export const booksSlice = createSlice({
             state.delivery.data = null;
             state.delivery.message = action.payload;
             state.booking.isOpenBookingModal = false;
+        },
+        historyRequest: (state, { payload }: PayloadAction<HistoryPayload>) => {
+            state.history.isLoading = true;
+        },
+        historyRequestSuccess: (
+            state,
+            { payload }: PayloadAction<{ data: HistoryResponseSuccess }>,
+        ) => {
+            state.history.data = payload.data;
+            state.history.isLoading = false;
+            state.history.isSuccess = true;
+        },
+        historyRequestFailure: (state) => {
+            state.history.isLoading = false;
+            state.history.isError = true;
+            state.history.isSuccess = false;
+            state.history.data = null;
+        },
+        historyAddRequest: (state, { payload }: PayloadAction<HistoryAddPayload>) => {
+            state.history.isLoading = true;
+        },
+        historyAddRequestSuccess: (
+            state,
+            { payload }: PayloadAction<{ data: HistoryResponseSuccess }>,
+        ) => {
+            state.history.data = payload.data;
+            state.history.isLoading = false;
+            state.history.isSuccess = true;
+        },
+        historyAddRequestFailure: (state) => {
+            state.history.isLoading = false;
+            state.history.isError = true;
+            state.history.isSuccess = false;
         },
         bookingReset: (state) => {
             state.booking.id = null;
@@ -372,6 +422,12 @@ export const {
     deliveryRequestFailure,
     deliveryUpdateRequest,
     deliveryDeleteRequest,
+    historyRequest,
+    historyRequestSuccess,
+    historyRequestFailure,
+    historyAddRequest,
+    historyAddRequestSuccess,
+    historyAddRequestFailure,
     bookReviewRequestSuccess,
     bookReviewRequestFailure,
     bookReviewRequest,

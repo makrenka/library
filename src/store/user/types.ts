@@ -50,11 +50,11 @@ export type UserHistory = {
 };
 
 export type UserDelivery = {
-    id: number;
-    handed: string;
-    dateHandedFrom: string | Date;
-    dateHandedTo: string | Date;
-    book: ShortBookData;
+    id: number | null;
+    handed: string | null;
+    dateHandedFrom: string | Date | null;
+    dateHandedTo: string | Date | null;
+    book: ShortBookData | null;
 };
 
 export type ResponseUserComment = {
@@ -109,6 +109,7 @@ export type UserStateType = {
     isUpdateLoading: boolean;
     isUpdateError: boolean;
     data: ResponseUser;
+    userForAdmin: ResponseUser;
     usersList: {
         data: null | ResponseUsersList[];
     }

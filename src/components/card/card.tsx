@@ -21,11 +21,11 @@ import { Button } from '../button';
 import { Rating } from '../rating';
 import { authSelector } from '../../store/auth/selectors';
 import { BOOKING, DELIVERY } from '../../constants/books';
+import { ROUTES } from '../../constants/routes';
 
 import IconPlugImg from './assets/icon-plug-img.svg';
 
 import styles from './card.module.scss';
-import { booksSelector } from '../../store/books/selectors';
 
 type BookType = {
     data: BookListItem;
@@ -58,7 +58,7 @@ export const Card = (props: BookType) => {
     const { pathname } = useLocation();
     const userIdReserved = bookData?.delivery?.recipientId;
     const {
-        auth: { userData },
+        auth: { userData: userDataBooking },
     } = useAppSelector(authSelector);
 
     const { filter } = useAppSelector(searchSelector);
@@ -105,6 +105,7 @@ export const Card = (props: BookType) => {
                 dateHandedFrom: bookData?.delivery?.dateHandedFrom,
                 dateHandedTo: bookData?.delivery?.dateHandedTo,
                 isDelivery: true,
+                userId: booking?.customerId || delivery?.recipientId || null,
             }),
         );
     };
@@ -129,15 +130,17 @@ export const Card = (props: BookType) => {
             </span>
             {isProfileCard ? (
                 isHistory ? (
-                    <div className={classNameCard('cardButton')}>
-                        <Button
-                            dataTestId='history-review-button'
-                            view={isCommented ? 'secondary' : 'primary'}
-                            onClick={handleOpenTakeReviewModal}
-                        >
-                            {isCommented ? 'Изменить оценку' : 'Оставить отзыв'}
-                        </Button>
-                    </div>
+                    !pathname.includes('admin/users') ? (
+                        <div className={classNameCard('cardButton')}>
+                            <Button
+                                dataTestId='history-review-button'
+                                view={isCommented ? 'secondary' : 'primary'}
+                                onClick={handleOpenTakeReviewModal}
+                            >
+                                {isCommented ? 'Изменить оценку' : 'Оставить отзыв'}
+                            </Button>
+                        </div>
+                    ) : null
                 ) : (
                     <span className={styles.backtime}>
                         Возврат {formatDate(deliveryDate?.toString() || '')}
@@ -145,13 +148,17 @@ export const Card = (props: BookType) => {
                 )
             ) : isBooking ? (
                 <div className={classNameCard('cardButton')}>
-                    <Button
-                        dataTestId='cancel-booking-button'
-                        view='primary'
-                        onClick={handleCancelBooking}
-                    >
-                        Отменить бронь
-                    </Button>
+                    {!pathname.includes('admin/users') ? (
+                        <Button
+                            dataTestId='cancel-booking-button'
+                            view='primary'
+                            onClick={handleCancelBooking}
+                        >
+                            Отменить бронь
+                        </Button>
+                    ) : (
+                        ''
+                    )}
                 </div>
             ) : (
                 <div className={classNameCard('cardButton')}>
@@ -176,11 +183,13 @@ export const Card = (props: BookType) => {
             <div className={styles.cardDescription}>
                 <p className={styles.cardUser}>
                     Пользователь:{' '}
-                    <span>
-                        {booking
-                            ? `${booking?.customerLastName} ${booking?.customerFirstName}`
-                            : `${delivery?.recipientLastName} ${delivery?.recipientFirstName}`}
-                    </span>
+                    <Link to={`${ROUTES.adminUsers}/${booking?.customerId || delivery?.recipientId}`}>
+                        <span>
+                            {booking
+                                ? `${booking?.customerLastName} ${booking?.customerFirstName}`
+                                : `${delivery?.recipientLastName} ${delivery?.recipientFirstName}`}
+                        </span>
+                    </Link>
                 </p>
                 <p className={styles.cardDateStatus}>
                     {booking ? 'Дата: ' : 'Срок: '}
@@ -188,14 +197,14 @@ export const Card = (props: BookType) => {
                         {booking
                             ? booking?.dateOrder.slice(0, 10).split('-').reverse().join('.')
                             : `${delivery?.dateHandedFrom
-                                  .slice(0, 10)
-                                  .split('-')
-                                  .reverse()
-                                  .join('.')}-${delivery?.dateHandedTo
-                                  .slice(0, 10)
-                                  .split('-')
-                                  .reverse()
-                                  .join('.')}`}
+                                .slice(0, 10)
+                                .split('-')
+                                .reverse()
+                                .join('.')}-${delivery?.dateHandedTo
+                                    .slice(0, 10)
+                                    .split('-')
+                                    .reverse()
+                                    .join('.')}`}
                     </span>
                 </p>
                 <p className={styles.cardDateStatus}>
@@ -209,7 +218,7 @@ export const Card = (props: BookType) => {
                         <Button
                             view='primary'
                             onClick={(e) =>
-                                handleOpenDeliveryModal(e, userIdReserved === userData?.id)
+                                handleOpenDeliveryModal(e, userIdReserved === userDataBooking?.id)
                             }
                         >
                             {booking ? DELIVERY.buttonCreate : DELIVERY.buttonUpdate}
@@ -229,7 +238,7 @@ export const Card = (props: BookType) => {
                             <Button
                                 view='primary'
                                 onClick={(e) =>
-                                    handleOpenDeliveryModal(e, userIdReserved === userData?.id)
+                                    handleOpenDeliveryModal(e, userIdReserved === delivery?.recipientId)
                                 }
                             >
                                 {booking ? DELIVERY.buttonCreate : DELIVERY.buttonUpdate}

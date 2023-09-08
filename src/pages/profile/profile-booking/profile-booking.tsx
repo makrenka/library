@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { Card } from '../../../components/card';
 import { BookingDataType } from '../../../constants/profile-page';
-import { getBookList } from '../../../store/books/selectors';
+import { getBookListProfile } from '../../../store/books/selectors';
 import { BookListItem } from '../../../store/books/types';
 import { useAppSelector } from '../../../store/hooks';
 import { ExpiredMask } from '../expired-mask';
@@ -31,8 +33,9 @@ export const ProfileBooking = ({
     isBooking,
     dataTestId,
 }: ProfileBookingProps) => {
-    const books = useAppSelector(getBookList);
+    const books = useAppSelector(getBookListProfile);
     const [book, setBook] = useState({} as BookListItem | undefined);
+    const { pathname } = useLocation();
 
     // TODO Когда у "коротких" книг появятся картинки - переделать напрямую передачу
     useEffect(() => {
@@ -52,8 +55,16 @@ export const ProfileBooking = ({
                     expiredSubtitle={data.expiredSubtitle}
                 />
             )}
-            <span className={styles.title}>{data.title}</span>
-            <span className={styles.subtitle}>{data.subtitle}</span>
+            <span className={classNames(
+                styles.title,
+                pathname.includes('admin') && styles.titleAdmin,
+            )}>
+                {pathname.includes('profile') ? data.title : data.titleAdmin}
+            </span>
+
+            {pathname.includes('profile') ? (
+                <span className={styles.subtitle}>{data.subtitle}</span>
+            ) : null}
             {!!bookingBookId || !!deliveryId ? (
                 <Card
                     data={book ? book : ({} as BookListItem)}
@@ -63,7 +74,9 @@ export const ProfileBooking = ({
                     bookingId={bookingId}
                 />
             ) : (
-                <ProfileEmpty data={data.data} />
+                <ProfileEmpty
+                    data={pathname.includes('profile') ? data.data : (data.dataAdmin as string)}
+                />
             )}
         </div>
     );
