@@ -23,6 +23,7 @@ import {
 } from '../layout/layout';
 
 import styles from './admin-content.module.scss';
+import { searchSelector } from '../../store/search/selectors';
 
 export type AdminContentProps = {
     isSortedDesc: boolean;
@@ -48,6 +49,7 @@ export const AdminContent = ({
     const bookList = useAppSelector(getBookListAdmin);
     const usersList = useAppSelector(getUsersListSelector);
     const dispatch = useAppDispatch();
+    const { filter } = useAppSelector(searchSelector);
 
     const burgerIsBookedChecked = useContext(BookedCheckedContext).isBookedChecked;
     const burgerIsDeliveriedChecked = useContext(DeliveriedCheckedContext).isDeliveriedChecked;
@@ -69,34 +71,43 @@ export const AdminContent = ({
 
     useEffect(() => {
         if (bookList) {
-            const data = [...bookList];
-            const sortedByAlphabet = data.sort((a, b) =>
-                isSortedDesc ? b.title.localeCompare(a.title) : a.title.localeCompare(b.title),
+            const searchResult =
+                filter.length > 0
+                    ? bookList.filter(({ title }) => title.toLowerCase().includes(filter))
+                    : bookList;
+
+            const sortedByAlphabet = [...searchResult].sort((a, b) =>
+                isSortedDesc ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title),
             );
             setDataBook(sortedByAlphabet);
         }
-    }, [bookList, isSortedDesc]);
+    }, [bookList, isSortedDesc, filter]);
 
     useEffect(() => {
         if (usersList.data) {
             const data = [...usersList.data];
-            const sortedByAlphabet = data?.sort((a, b) =>
+            const searchResult =
+                filter.length > 0
+                    ? data.filter(({ lastName }) => lastName.toLowerCase().includes(filter))
+                    : data;
+
+            const sortedByAlphabet = [...searchResult].sort((a, b) =>
                 isSortedDesc
                     ? a.lastName.localeCompare(b.lastName)
                     : b.lastName.localeCompare(a.lastName),
             );
             setDataUsers(sortedByAlphabet);
         }
-    }, [usersList, isSortedDesc]);
+    }, [usersList, isSortedDesc, filter]);
 
     return (
         <main className={styles.adminContent}>
             {contentView === 'books' ? (
                 dataBook &&
-                    isBookedChecked &&
-                    isDeliveriedChecked &&
-                    burgerIsBookedChecked &&
-                    burgerIsDeliveriedChecked ? (
+                isBookedChecked &&
+                isDeliveriedChecked &&
+                burgerIsBookedChecked &&
+                burgerIsDeliveriedChecked ? (
                     <ul className={styles.adminContentList}>
                         {dataBook.map((book) => (
                             <div key={book.id}>
@@ -105,22 +116,22 @@ export const AdminContent = ({
                         ))}
                     </ul>
                 ) : !isBookedChecked &&
-                    isDeliveriedChecked &&
-                    burgerIsBookedChecked &&
-                    burgerIsDeliveriedChecked &&
-                    dataBook?.filter((book) => book.delivery).length === 0 ? (
+                  isDeliveriedChecked &&
+                  burgerIsBookedChecked &&
+                  burgerIsDeliveriedChecked &&
+                  dataBook?.filter((book) => book.delivery).length === 0 ? (
                     <div className={styles.emptyDataText}>Нет выданных книг</div>
                 ) : isBookedChecked &&
-                    isDeliveriedChecked &&
-                    !burgerIsBookedChecked &&
-                    burgerIsDeliveriedChecked &&
-                    dataBook?.filter((book) => book.delivery).length === 0 ? (
+                  isDeliveriedChecked &&
+                  !burgerIsBookedChecked &&
+                  burgerIsDeliveriedChecked &&
+                  dataBook?.filter((book) => book.delivery).length === 0 ? (
                     <div className={styles.emptyDataText}>Нет выданных книг</div>
                 ) : dataBook &&
-                    !isBookedChecked &&
-                    isDeliveriedChecked &&
-                    burgerIsBookedChecked &&
-                    burgerIsDeliveriedChecked ? (
+                  !isBookedChecked &&
+                  isDeliveriedChecked &&
+                  burgerIsBookedChecked &&
+                  burgerIsDeliveriedChecked ? (
                     <ul className={styles.adminContentList}>
                         {dataBook
                             .filter((book) => book.delivery)
@@ -131,10 +142,10 @@ export const AdminContent = ({
                             ))}
                     </ul>
                 ) : dataBook &&
-                    isBookedChecked &&
-                    isDeliveriedChecked &&
-                    !burgerIsBookedChecked &&
-                    burgerIsDeliveriedChecked ? (
+                  isBookedChecked &&
+                  isDeliveriedChecked &&
+                  !burgerIsBookedChecked &&
+                  burgerIsDeliveriedChecked ? (
                     <ul className={styles.adminContentList}>
                         {dataBook
                             .filter((book) => book.delivery)
@@ -145,22 +156,22 @@ export const AdminContent = ({
                             ))}
                     </ul>
                 ) : isBookedChecked &&
-                    !isDeliveriedChecked &&
-                    burgerIsBookedChecked &&
-                    burgerIsDeliveriedChecked &&
-                    dataBook?.filter((book) => book.booking).length === 0 ? (
+                  !isDeliveriedChecked &&
+                  burgerIsBookedChecked &&
+                  burgerIsDeliveriedChecked &&
+                  dataBook?.filter((book) => book.booking).length === 0 ? (
                     <div className={styles.emptyDataText}>Никто не бронировал книг</div>
                 ) : isBookedChecked &&
-                    isDeliveriedChecked &&
-                    burgerIsBookedChecked &&
-                    !burgerIsDeliveriedChecked &&
-                    dataBook?.filter((book) => book.booking).length === 0 ? (
+                  isDeliveriedChecked &&
+                  burgerIsBookedChecked &&
+                  !burgerIsDeliveriedChecked &&
+                  dataBook?.filter((book) => book.booking).length === 0 ? (
                     <div className={styles.emptyDataText}>Никто не бронировал книг</div>
                 ) : dataBook &&
-                    isBookedChecked &&
-                    !isDeliveriedChecked &&
-                    burgerIsBookedChecked &&
-                    burgerIsDeliveriedChecked ? (
+                  isBookedChecked &&
+                  !isDeliveriedChecked &&
+                  burgerIsBookedChecked &&
+                  burgerIsDeliveriedChecked ? (
                     <ul className={styles.adminContentList}>
                         {dataBook
                             .filter((book) => book.booking)
@@ -171,10 +182,10 @@ export const AdminContent = ({
                             ))}
                     </ul>
                 ) : dataBook &&
-                    isBookedChecked &&
-                    isDeliveriedChecked &&
-                    burgerIsBookedChecked &&
-                    !burgerIsDeliveriedChecked ? (
+                  isBookedChecked &&
+                  isDeliveriedChecked &&
+                  burgerIsBookedChecked &&
+                  !burgerIsDeliveriedChecked ? (
                     <ul className={styles.adminContentList}>
                         {dataBook
                             .filter((book) => book.booking)
@@ -188,12 +199,12 @@ export const AdminContent = ({
                     <div className={styles.emptyDataText}>Ничего не выбрано</div>
                 )
             ) : dataUsers &&
-                isAllUsersChecked &&
-                !isBookHoldersChecked &&
-                !isBlockedUsersChecked &&
-                burgerIsAllUsersChecked &&
-                !burgerIsBookHoldersChecked &&
-                !burgerIsBlockedUsersChecked ? (
+              isAllUsersChecked &&
+              !isBookHoldersChecked &&
+              !isBlockedUsersChecked &&
+              burgerIsAllUsersChecked &&
+              !burgerIsBookHoldersChecked &&
+              !burgerIsBlockedUsersChecked ? (
                 <ul className={styles.adminContentList}>
                     {dataUsers.map((user) => (
                         <div key={user.id}>
@@ -202,11 +213,11 @@ export const AdminContent = ({
                     ))}
                 </ul>
             ) : dataUsers &&
-                isBookHoldersChecked &&
-                !isBlockedUsersChecked &&
-                burgerIsAllUsersChecked &&
-                !burgerIsBookHoldersChecked &&
-                !burgerIsBlockedUsersChecked ? (
+              isBookHoldersChecked &&
+              !isBlockedUsersChecked &&
+              burgerIsAllUsersChecked &&
+              !burgerIsBookHoldersChecked &&
+              !burgerIsBlockedUsersChecked ? (
                 <ul className={styles.adminContentList}>
                     {(dataUsers as ResponseUsersList[])
                         .filter((user) => user.delivery.handed && !user.blocked)
@@ -217,11 +228,11 @@ export const AdminContent = ({
                         ))}
                 </ul>
             ) : dataUsers &&
-                isAllUsersChecked &&
-                !isBookHoldersChecked &&
-                !isBlockedUsersChecked &&
-                burgerIsBookHoldersChecked &&
-                !burgerIsBlockedUsersChecked ? (
+              isAllUsersChecked &&
+              !isBookHoldersChecked &&
+              !isBlockedUsersChecked &&
+              burgerIsBookHoldersChecked &&
+              !burgerIsBlockedUsersChecked ? (
                 <ul className={styles.adminContentList}>
                     {(dataUsers as ResponseUsersList[])
                         .filter((user) => user.delivery.handed && !user.blocked)
@@ -232,11 +243,11 @@ export const AdminContent = ({
                         ))}
                 </ul>
             ) : dataUsers &&
-                isBookHoldersChecked &&
-                isBlockedUsersChecked &&
-                burgerIsAllUsersChecked &&
-                !burgerIsBookHoldersChecked &&
-                !burgerIsBlockedUsersChecked ? (
+              isBookHoldersChecked &&
+              isBlockedUsersChecked &&
+              burgerIsAllUsersChecked &&
+              !burgerIsBookHoldersChecked &&
+              !burgerIsBlockedUsersChecked ? (
                 <ul className={styles.adminContentList}>
                     {(dataUsers as ResponseUsersList[])
                         .filter((user) => user.delivery.handed || user.blocked)
@@ -247,11 +258,11 @@ export const AdminContent = ({
                         ))}
                 </ul>
             ) : dataUsers &&
-                isAllUsersChecked &&
-                !isBookHoldersChecked &&
-                !isBlockedUsersChecked &&
-                burgerIsBookHoldersChecked &&
-                burgerIsBlockedUsersChecked ? (
+              isAllUsersChecked &&
+              !isBookHoldersChecked &&
+              !isBlockedUsersChecked &&
+              burgerIsBookHoldersChecked &&
+              burgerIsBlockedUsersChecked ? (
                 <ul className={styles.adminContentList}>
                     {(dataUsers as ResponseUsersList[])
                         .filter((user) => user.delivery.handed || user.blocked)
@@ -262,11 +273,11 @@ export const AdminContent = ({
                         ))}
                 </ul>
             ) : dataUsers &&
-                !isBookHoldersChecked &&
-                isBlockedUsersChecked &&
-                burgerIsAllUsersChecked &&
-                !burgerIsBookHoldersChecked &&
-                !burgerIsBlockedUsersChecked ? (
+              !isBookHoldersChecked &&
+              isBlockedUsersChecked &&
+              burgerIsAllUsersChecked &&
+              !burgerIsBookHoldersChecked &&
+              !burgerIsBlockedUsersChecked ? (
                 <ul className={styles.adminContentList}>
                     {(dataUsers as ResponseUsersList[])
                         .filter((user) => user.blocked)
@@ -277,11 +288,11 @@ export const AdminContent = ({
                         ))}
                 </ul>
             ) : dataUsers &&
-                isAllUsersChecked &&
-                !isBookHoldersChecked &&
-                !isBlockedUsersChecked &&
-                !burgerIsBookHoldersChecked &&
-                burgerIsBlockedUsersChecked ? (
+              isAllUsersChecked &&
+              !isBookHoldersChecked &&
+              !isBlockedUsersChecked &&
+              !burgerIsBookHoldersChecked &&
+              burgerIsBlockedUsersChecked ? (
                 <ul className={styles.adminContentList}>
                     {(dataUsers as ResponseUsersList[])
                         .filter((user) => user.blocked)

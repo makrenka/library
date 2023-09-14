@@ -53,7 +53,7 @@ export const AdminCardUser = ({
     };
 
     return (
-        <li className={classNames(styles.card, blocked && styles.cardBlocked)}>
+        <li className={classNames(styles.card, blocked && styles.cardBlocked)} key={id}>
             <Link to={`${ROUTES.adminUsers}/${id}`} className={styles.cardImg}>
                 <img src={avatar ? avatar : IconPlugImg} alt={username} />
             </Link>

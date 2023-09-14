@@ -183,7 +183,9 @@ export const Card = (props: BookType) => {
             <div className={styles.cardDescription}>
                 <p className={styles.cardUser}>
                     Пользователь:{' '}
-                    <Link to={`${ROUTES.adminUsers}/${booking?.customerId || delivery?.recipientId}`}>
+                    <Link
+                        to={`${ROUTES.adminUsers}/${booking?.customerId || delivery?.recipientId}`}
+                    >
                         <span>
                             {booking
                                 ? `${booking?.customerLastName} ${booking?.customerFirstName}`
@@ -197,14 +199,14 @@ export const Card = (props: BookType) => {
                         {booking
                             ? booking?.dateOrder.slice(0, 10).split('-').reverse().join('.')
                             : `${delivery?.dateHandedFrom
-                                .slice(0, 10)
-                                .split('-')
-                                .reverse()
-                                .join('.')}-${delivery?.dateHandedTo
-                                    .slice(0, 10)
-                                    .split('-')
-                                    .reverse()
-                                    .join('.')}`}
+                                  .slice(0, 10)
+                                  .split('-')
+                                  .reverse()
+                                  .join('.')}-${delivery?.dateHandedTo
+                                  .slice(0, 10)
+                                  .split('-')
+                                  .reverse()
+                                  .join('.')}`}
                     </span>
                 </p>
                 <p className={styles.cardDateStatus}>
