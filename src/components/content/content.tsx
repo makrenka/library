@@ -173,7 +173,7 @@ export const Content = ({
                             ?.filter((book) => (checkboxChecked ? book.booking === null : book))
                             .map((book) => (
                                 <div key={book.id} ref={setLastElement}>
-                                    <Card data={book} menuView={menuView} />
+                                    <Card data={book} menuView={menuView} key={book.id} />
                                 </div>
                             ))}
                     </ul>
