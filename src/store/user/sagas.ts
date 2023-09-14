@@ -112,7 +112,7 @@ function* updateUserWorker({ payload }: PayloadAction<UpdateUserActionType>) {
     }
 }
 
-function* blockUserRequestWorker({payload}: PayloadAction<number | string>) {
+function* blockUserRequestWorker({ payload }: PayloadAction<number | string>) {
     try {
         const { data }: AxiosResponse<ResponseUser> = yield call(
             axiosInstance.get,
@@ -127,7 +127,7 @@ function* blockUserRequestWorker({payload}: PayloadAction<number | string>) {
     }
 }
 
-function* unblockUserRequestWorker({payload}: PayloadAction<number | string>) {
+function* unblockUserRequestWorker({ payload }: PayloadAction<number | string>) {
     try {
         const { data }: AxiosResponse<ResponseUser> = yield call(
             axiosInstance.get,
