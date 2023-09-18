@@ -208,7 +208,7 @@ export const AdminContent = ({
                 <ul className={styles.adminContentList}>
                     {dataUsers.map((user) => (
                         <div key={user.id}>
-                            <AdminCardUser dataUsers={user} />
+                            <AdminCardUser dataUsers={user} key={user.id} />
                         </div>
                     ))}
                 </ul>
@@ -223,7 +223,7 @@ export const AdminContent = ({
                         .filter((user) => user.delivery.handed && !user.blocked)
                         .map((user) => (
                             <div key={user.id}>
-                                <AdminCardUser dataUsers={user} />
+                                <AdminCardUser dataUsers={user} key={user.id} />
                             </div>
                         ))}
                 </ul>
@@ -238,7 +238,7 @@ export const AdminContent = ({
                         .filter((user) => user.delivery.handed && !user.blocked)
                         .map((user) => (
                             <div key={user.id}>
-                                <AdminCardUser dataUsers={user} />
+                                <AdminCardUser dataUsers={user} key={user.id} />
                             </div>
                         ))}
                 </ul>
@@ -253,7 +253,7 @@ export const AdminContent = ({
                         .filter((user) => user.delivery.handed || user.blocked)
                         .map((user) => (
                             <div key={user.id}>
-                                <AdminCardUser dataUsers={user} />
+                                <AdminCardUser dataUsers={user} key={user.id} />
                             </div>
                         ))}
                 </ul>
@@ -268,7 +268,7 @@ export const AdminContent = ({
                         .filter((user) => user.delivery.handed || user.blocked)
                         .map((user) => (
                             <div key={user.id}>
-                                <AdminCardUser dataUsers={user} />
+                                <AdminCardUser dataUsers={user} key={user.id} />
                             </div>
                         ))}
                 </ul>
@@ -283,7 +283,7 @@ export const AdminContent = ({
                         .filter((user) => user.blocked)
                         .map((user) => (
                             <div key={user.id}>
-                                <AdminCardUser dataUsers={user} />
+                                <AdminCardUser dataUsers={user} key={user.id} />
                             </div>
                         ))}
                 </ul>
@@ -298,7 +298,7 @@ export const AdminContent = ({
                         .filter((user) => user.blocked)
                         .map((user) => (
                             <div key={user.id}>
-                                <AdminCardUser dataUsers={user} />
+                                <AdminCardUser dataUsers={user} key={user.id} />
                             </div>
                         ))}
                 </ul>
