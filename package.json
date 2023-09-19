@@ -95,5 +95,8 @@
     "src/**/*.{css,scss,sass}": [
       "prettier --write"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/makrenka/library.git",
+  "license": "MIT"
 }

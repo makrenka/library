@@ -24,6 +24,7 @@
     justify-content: end;
     column-gap: 32px;
     align-items: center;
+    margin-left: 16px;
 }
 
 .buttonDisplay {
@@ -84,13 +85,13 @@
     height: 24px;
     flex-shrink: 0;
     flex-grow: 0;
-    border: 1px solid #A7A7A7;
+    border: 1px solid #a7a7a7;
     border-radius: 6px;
     margin-right: 8px;
     background-position: center center;
 }
 
-.hideBookingInput:checked+label::before {
+.hideBookingInput:checked + label::before {
     border-color: #ff5253;
     background-image: url(./assets/check.svg);
 }
@@ -109,8 +110,8 @@
     justify-content: space-between;
     max-width: 200px;
     border-radius: 16px;
-    border: 1px solid var(--main-dark-30, rgba(54, 54, 54, 0.30));
-    background: #FFF;
+    border: 1px solid var(--main-dark-30, rgba(54, 54, 54, 0.3));
+    background: #fff;
     padding: 4px 8px;
     margin-top: 16px;
     grid-column: 1/3;
