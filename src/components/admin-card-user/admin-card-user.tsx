@@ -59,7 +59,9 @@ export const AdminCardUser = ({
                     <img src={avatar ? avatar : IconPlugImg} alt={username} />
                 </div>
                 <div className={styles.userNameBlock}>
-                    <p className={styles.cardUserName}>{handleHighlight(`${lastName} ${firstName}`)}</p>
+                    <p className={styles.cardUserName}>
+                        {handleHighlight(`${lastName} ${firstName}`)}
+                    </p>
                 </div>
                 <div className={styles.cardDescription}>
                     <p className={styles.cardDescriptionText}>
