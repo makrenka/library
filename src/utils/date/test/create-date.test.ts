@@ -10,8 +10,8 @@ describe('create date', () => {
         }
         const tzOffset = new Date().getTimezoneOffset() * 60000;
 
-        expect(createDate(params)).toBe({
-            date: Date.parse('2023-02-01T03:00:00.000Z'),
+        expect(createDate(params)).toEqual({
+            date: new Date(date.getTime() - tzOffset),
             dayNumber: 1,
             day: 'среда',
             dayNumberInWeek: 4,
