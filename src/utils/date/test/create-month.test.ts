@@ -12,18 +12,28 @@ describe('create month', () => {
             date: date,
         };
 
-        const getDay = (dayNumber = 1) =>
-            createDate({ date: new Date(2023, 1, dayNumber), locale: 'default' });
+        // const getDay = (dayNumber = 1) =>
+        //     createDate({ date: new Date(2023, 1, dayNumber), locale: 'default' });
 
-        const createMonthDays = () => {
-            const days = [];
+        let getDay = jest.fn();
+        jest.mock('../create-month', () => {
+            return getDay
+        });
 
-            for (let i = 0; i <= getMonthNumberOfDays(1, 2023) - 1; i += 1) {
-                days[i] = getDay(i + 1);
-            }
+        // const createMonthDays = () => {
+        //     const days = [];
 
-            return days;
-        };
+        //     for (let i = 0; i <= getMonthNumberOfDays(1, 2023) - 1; i += 1) {
+        //         days[i] = getDay(i + 1);
+        //     }
+
+        //     return days;
+        // };
+
+        let createMonthDays = jest.fn();
+        jest.mock("../create-month", () => {
+            return createMonthDays
+        });
 
         expect(createMonth(params)).toEqual({
             getDay,
