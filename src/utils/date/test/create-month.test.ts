@@ -1,37 +1,51 @@
 import { describe, expect, jest, test } from '@jest/globals';
+import { set, reset } from 'mockdate';
 
 import { createMonth } from '../create-month';
 import { createDate } from '../create-date';
 import { getMonthNumberOfDays } from '../get-month-number-of-days';
+import { getWeekNumber } from '../get-week-number';
+
+// let getDay = jest.fn();
+// jest.doMock('../create-month', () => {
+//     return getDay
+// })
 
 describe('create month', () => {
-    test('get month params', () => {
-        const date = new Date('2023-02-01');
+    const date = new Date();
+    const tzOffset = new Date().getTimezoneOffset() * 60000;
+    const defaultDateWithOffset = date.getTime() + tzOffset;
+    const dateWithOffset = new Date(defaultDateWithOffset);
+
+    beforeEach(() => {
+        set(date);
+    });
+
+    it('gets day', () => {
         const params = {
+            date: dateWithOffset,
             locale: 'default',
+        };
+        const dayNumber = date.getDate();
+        const getDay = (dayNumber = date.getDate()) => createDate(params);
+        expect(getDay(dayNumber)).toEqual({
             date: date,
-        };
-
-        const getDay = (dayNumber = 1) =>
-            createDate({ date: new Date(2023, 1, dayNumber), locale: 'default' });
-
-        const createMonthDays = () => {
-            const days = [];
-
-            for (let i = 0; i <= getMonthNumberOfDays(1, 2023) - 1; i += 1) {
-                days[i] = getDay(i + 1);
-            }
-
-            return days;
-        };
-
-        expect(createMonth(params)).toEqual({
-            getDay,
-            monthName: 'февраль',
-            monthIndex: 1,
-            monthNumber: 2,
-            year: 2023,
-            createMonthDays,
+            day: date.toLocaleString('default', { weekday: 'long' }),
+            dayNumber: date.getDate(),
+            dayNumberInWeek: date.getDay() + 1,
+            dayShort: date.toLocaleString('default', { weekday: 'short' }),
+            month: date.toLocaleString('default', { month: 'long' }),
+            monthIndex: date.getMonth(),
+            monthNumber: date.getMonth() + 1,
+            monthShort: date.toLocaleString('default', { month: 'short' }),
+            timestamp: date.getTime(),
+            week: getWeekNumber(date),
+            year: date.getFullYear(),
+            yearShort: date.toLocaleString('default', { year: '2-digit' }),
         });
+    });
+
+    afterEach(() => {
+        reset();
     });
 });
