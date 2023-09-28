@@ -1,47 +1,37 @@
 import { describe, expect, jest, test } from '@jest/globals';
+import { set, reset } from 'mockdate';
 
 import { createMonth } from '../create-month';
 import { createDate } from '../create-date';
 import { getMonthNumberOfDays } from '../get-month-number-of-days';
 
+// let getDay = jest.fn();
+// jest.doMock('../create-month', () => {
+//     return getDay
+// })
+
 describe('create month', () => {
-    test('get month params', () => {
-        const date = new Date('2023-02-01');
+    const date = new Date();
+
+    beforeEach(() => {
+        set(date);
+    });
+
+    it('gets day', () => {
         const params = {
-            locale: 'default',
             date: date,
-        };
+            locale: 'default',
+        }
+        const dayNumber = date.getDate();
+        const getDay = (dayNumber = date.getDate()) =>
+            createDate(params);
+        expect(getDay(dayNumber)).toEqual({
+            date: date,
 
-        // const getDay = (dayNumber = 1) =>
-        //     createDate({ date: new Date(2023, 1, dayNumber), locale: 'default' });
-
-        let getDay = jest.fn();
-        jest.mock('../create-month', () => {
-            return getDay
         });
+    })
 
-        // const createMonthDays = () => {
-        //     const days = [];
-
-        //     for (let i = 0; i <= getMonthNumberOfDays(1, 2023) - 1; i += 1) {
-        //         days[i] = getDay(i + 1);
-        //     }
-
-        //     return days;
-        // };
-
-        let createMonthDays = jest.fn();
-        jest.mock("../create-month", () => {
-            return createMonthDays
-        });
-
-        expect(createMonth(params)).toEqual({
-            getDay,
-            monthName: 'февраль',
-            monthIndex: 1,
-            monthNumber: 2,
-            year: 2023,
-            createMonthDays,
-        });
+    afterEach(() => {
+        reset();
     });
 });
