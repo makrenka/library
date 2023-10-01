@@ -82,7 +82,7 @@
     "cy": "cypress open",
     "e2e": "start-server-and-test start http-get://localhost:3000 cy",
     "e2e:run": "start-test 3000 'cypress run'",
-    "test:jest": "jest"
+    "test-jest": "jest"
   },
   "prettier": "arui-presets-lint/prettier",
   "browserslist": {
