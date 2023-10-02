@@ -142,10 +142,11 @@ export const BookingCalendar = () => {
                     >
                         {state.monthesNames.map((item) => (
                             <option
-                                label={`${item.month} ${state.selectedMonth.monthIndex === item.monthIndex
-                                    ? state.selectedYear
-                                    : ''
-                                    }`}
+                                label={`${item.month} ${
+                                    state.selectedMonth.monthIndex === item.monthIndex
+                                        ? state.selectedYear
+                                        : ''
+                                }`}
                                 value={item.monthIndex}
                                 key={item.month}
                             >
@@ -244,10 +245,11 @@ export const BookingCalendar = () => {
                     >
                         {state.monthesNames.map((item) => (
                             <option
-                                label={`${item.month} ${state.selectedMonth.monthIndex === item.monthIndex
-                                    ? state.selectedYear
-                                    : ''
-                                    }`}
+                                label={`${item.month} ${
+                                    state.selectedMonth.monthIndex === item.monthIndex
+                                        ? state.selectedYear
+                                        : ''
+                                }`}
                                 value={item.monthIndex}
                                 key={item.month}
                             >

@@ -12,10 +12,12 @@ export const checkIsBlockedDate = (date: ReturnType<typeof createDate>, days: nu
     const isLessThanToday = date.timestamp < todayDate.timestamp;
 
     const isTodayFriday =
-        todayDate.dayNumberInWeek === 6 && date.timestamp > todayDate.timestamp + dayMs * (3 + days);
+        todayDate.dayNumberInWeek === 6 &&
+        date.timestamp > todayDate.timestamp + dayMs * (3 + days);
 
     const isTodaySaturday =
-        todayDate.dayNumberInWeek === 7 && date.timestamp > todayDate.timestamp + dayMs * (2 + days);
+        todayDate.dayNumberInWeek === 7 &&
+        date.timestamp > todayDate.timestamp + dayMs * (2 + days);
 
     const isTodaySunday =
         todayDate.dayNumberInWeek === 1 && date.timestamp > todayDate.timestamp + dayMs * days;

@@ -24,7 +24,8 @@
     "web-vitals": "^3.0.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.0",
+    "@babel/core": "^7.22.20",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.22.20",
     "@babel/preset-typescript": "^7.23.0",
     "@commitlint/cli": "^17.2.0",
@@ -81,7 +82,7 @@
     "cy": "cypress open",
     "e2e": "start-server-and-test start http-get://localhost:3000 cy",
     "e2e:run": "start-test 3000 'cypress run'",
-    "test:jest": "jest"
+    "test-jest": "jest"
   },
   "prettier": "arui-presets-lint/prettier",
   "browserslist": {
