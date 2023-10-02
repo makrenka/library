@@ -14,7 +14,7 @@ export const highlightMatches = (
                 const match = matchValue.shift();
 
                 return (
-                    <React.Fragment>
+                    <React.Fragment key={substr}>
                         {substr}
                         <span style={{ color: '#FF5253' }} data-test-id='highlight-matches'>
                             {match}

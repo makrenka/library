@@ -27,6 +27,7 @@
     "@babel/core": "^7.22.20",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.22.20",
+    "@babel/preset-react": "^7.22.15",
     "@babel/preset-typescript": "^7.23.0",
     "@commitlint/cli": "^17.2.0",
     "@commitlint/config-conventional": "^17.2.0",
@@ -39,6 +40,7 @@
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
+    "@types/react-test-renderer": "^18.0.3",
     "@types/react-text-mask": "^5.4.11",
     "arui-presets-lint": "^6.0.1",
     "babel-jest": "^29.7.0",
@@ -63,6 +65,7 @@
     "prettier": "^2.7.1",
     "prettier-eslint": "^15.0.1",
     "prettier-eslint-cli": "^7.1.0",
+    "react-test-renderer": "^18.2.0",
     "start-server-and-test": "^1.14.0",
     "stylelint": "^14.14.1",
     "stylelint-config-standard": "^29.0.0",
@@ -82,7 +85,8 @@
     "cy": "cypress open",
     "e2e": "start-server-and-test start http-get://localhost:3000 cy",
     "e2e:run": "start-test 3000 'cypress run'",
-    "test-jest": "jest"
+    "test-jest": "jest",
+    "test-jest-cov": "jest --coverage"
   },
   "prettier": "arui-presets-lint/prettier",
   "browserslist": {
