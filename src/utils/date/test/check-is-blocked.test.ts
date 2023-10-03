@@ -1,53 +1,100 @@
 import { describe, expect, it } from '@jest/globals';
-import { set, reset } from 'mockdate';
 
 import { checkIsBlockedDate } from '../check-is-blocked';
 import { createDate } from '../create-date';
 
 describe('check is blocked date', () => {
-    // it('checks day', () => {
-    //     const date = new Date();
-    //     const tzOffset = new Date().getTimezoneOffset() * 60000;
-    //     const dayMs = 86400000;
-    //     const todayDate = new Date(date.getTime() - tzOffset);
-    //     const params = {
-    //         date,
-    //         locale: 'default',
-    //     };
-
-    //     expect(
-    //         todayDate.getDay() + 1 === 5 &&
-    //         new Date(todayDate.getTime() + dayMs * 3).getDay() + 1 === 2 &&
-    //         checkIsBlockedDate(createDate(params), 1),
-    //     ).toBeFalsy();
-    // });
-
-    it('checks previous date', () => {
-        const date = new Date();
-        const dayMs = 86400000;
-        const todayDate = createDate({ date });
-        const previousDate = new Date(todayDate.timestamp - dayMs * 1);
-
-        expect(checkIsBlockedDate(createDate({ date: previousDate }), 1)).toEqual(true);
-    });
-
-    it('checks isBookingDeliveryTime', () => {
+    it('checks days', () => {
         const date = new Date();
         date.setHours(0, 0, 0, 0);
         const tzOffset = new Date().getTimezoneOffset() * 60000;
+        const todayDate = createDate({ date: date, locale: 'default' });
         const dayMs = 86400000;
-        const todayDate = createDate({ date });
-        const bookingDate =
-            todayDate.dayNumberInWeek === 6
-                ? new Date(todayDate.timestamp + tzOffset + dayMs * 3)
-                : todayDate.dayNumberInWeek === 7
-                    ? new Date(todayDate.timestamp + tzOffset + dayMs * 2)
-                    : new Date(todayDate.timestamp + tzOffset + dayMs);
 
-        expect(checkIsBlockedDate(createDate({ date: bookingDate }), 1)).toEqual(false);
-    });
+        if (todayDate.dayNumberInWeek === 1) {
+            expect(checkIsBlockedDate(createDate({ date }), 1)).toBeTruthy();
+            const monday = new Date(todayDate.timestamp + dayMs + tzOffset);
+            expect(checkIsBlockedDate(createDate({ date: monday }), 1)).toBeFalsy();
+            const tuesday = new Date(todayDate.timestamp + dayMs * 2);
+            expect(checkIsBlockedDate(createDate({ date: tuesday }), 1)).toBeTruthy();
+            const saturday = new Date(todayDate.timestamp - dayMs);
+            expect(checkIsBlockedDate(createDate({ date: saturday }), 1)).toBeTruthy();
+            const friday = new Date(todayDate.timestamp + dayMs * 5);
+            expect(checkIsBlockedDate(createDate({ date: friday }), 1)).toBeTruthy();
+        }
 
-    afterEach(() => {
-        reset();
+        if (todayDate.dayNumberInWeek === 2) {
+            expect(checkIsBlockedDate(createDate({ date }), 1)).toBeFalsy();
+            const tuesday = new Date(todayDate.timestamp + dayMs + tzOffset);
+            expect(checkIsBlockedDate(createDate({ date: tuesday }), 1)).toBeFalsy();
+            const sunday = new Date(todayDate.timestamp - dayMs);
+            expect(checkIsBlockedDate(createDate({ date: sunday }), 1)).toBeTruthy();
+            const friday = new Date(todayDate.timestamp + dayMs * 4);
+            expect(checkIsBlockedDate(createDate({ date: friday }), 1)).toBeTruthy();
+            const saturday = new Date(todayDate.timestamp + dayMs * 5);
+            expect(checkIsBlockedDate(createDate({ date: saturday }), 1)).toBeTruthy();
+        }
+
+        if (todayDate.dayNumberInWeek === 3) {
+            expect(checkIsBlockedDate(createDate({ date }), 1)).toBeFalsy();
+            const wednesday = new Date(todayDate.timestamp + dayMs + tzOffset);
+            expect(checkIsBlockedDate(createDate({ date: wednesday }), 1)).toBeFalsy();
+            const monday = new Date(todayDate.timestamp - dayMs);
+            expect(checkIsBlockedDate(createDate({ date: monday }), 1)).toBeTruthy();
+            const friday = new Date(todayDate.timestamp + dayMs * 3);
+            expect(checkIsBlockedDate(createDate({ date: friday }), 1)).toBeTruthy();
+            const saturday = new Date(todayDate.timestamp + dayMs * 4);
+            expect(checkIsBlockedDate(createDate({ date: saturday }), 1)).toBeTruthy();
+            const sunday = new Date(todayDate.timestamp + dayMs * 5);
+            expect(checkIsBlockedDate(createDate({ date: sunday }), 1)).toBeTruthy();
+        }
+
+        if (todayDate.dayNumberInWeek === 4) {
+            expect(checkIsBlockedDate(createDate({ date }), 1)).toBeFalsy();
+            const thursday = new Date(todayDate.timestamp + dayMs + tzOffset);
+            expect(checkIsBlockedDate(createDate({ date: thursday }), 1)).toBeFalsy();
+            const tuesday = new Date(todayDate.timestamp - dayMs);
+            expect(checkIsBlockedDate(createDate({ date: tuesday }), 1)).toBeTruthy();
+            const friday = new Date(todayDate.timestamp + dayMs * 2);
+            expect(checkIsBlockedDate(createDate({ date: friday }), 1)).toBeTruthy();
+            const saturday = new Date(todayDate.timestamp + dayMs * 3);
+            expect(checkIsBlockedDate(createDate({ date: saturday }), 1)).toBeTruthy();
+            const sunday = new Date(todayDate.timestamp + dayMs * 4);
+            expect(checkIsBlockedDate(createDate({ date: sunday }), 1)).toBeTruthy();
+        }
+
+        if (todayDate.dayNumberInWeek === 5) {
+            expect(checkIsBlockedDate(createDate({ date }), 1)).toBeFalsy();
+            const friday = new Date(todayDate.timestamp + dayMs + tzOffset);
+            expect(checkIsBlockedDate(createDate({ date: friday }), 1)).toBeFalsy();
+            const wednesday = new Date(todayDate.timestamp - dayMs);
+            expect(checkIsBlockedDate(createDate({ date: wednesday }), 1)).toBeTruthy();
+            const saturday = new Date(todayDate.timestamp + dayMs * 2);
+            expect(checkIsBlockedDate(createDate({ date: saturday }), 1)).toBeTruthy();
+            const sunday = new Date(todayDate.timestamp + dayMs * 3);
+            expect(checkIsBlockedDate(createDate({ date: sunday }), 1)).toBeTruthy();
+        }
+
+        if (todayDate.dayNumberInWeek === 6) {
+            expect(checkIsBlockedDate(createDate({ date }), 1)).toBeFalsy();
+            const thursday = new Date(todayDate.timestamp - dayMs);
+            expect(checkIsBlockedDate(createDate({ date: thursday }), 1)).toBeTruthy();
+            const saturday = new Date(todayDate.timestamp + dayMs);
+            expect(checkIsBlockedDate(createDate({ date: saturday }), 1)).toBeTruthy();
+            const sunday = new Date(todayDate.timestamp + dayMs * 2);
+            expect(checkIsBlockedDate(createDate({ date: sunday }), 1)).toBeTruthy();
+            const monday = new Date(todayDate.timestamp + dayMs * 3);
+            expect(checkIsBlockedDate(createDate({ date: monday }), 1)).toBeFalsy();
+        }
+
+        if (todayDate.dayNumberInWeek === 7) {
+            expect(checkIsBlockedDate(createDate({ date }), 1)).toBeTruthy();
+            const friday = new Date(todayDate.timestamp - dayMs);
+            expect(checkIsBlockedDate(createDate({ date: friday }), 1)).toBeTruthy();
+            const sunday = new Date(todayDate.timestamp + dayMs);
+            expect(checkIsBlockedDate(createDate({ date: sunday }), 1)).toBeTruthy();
+            const monday = new Date(todayDate.timestamp + dayMs * 2);
+            expect(checkIsBlockedDate(createDate({ date: monday }), 1)).toBeFalsy();
+        }
     });
 });
