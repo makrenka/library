@@ -51,7 +51,7 @@ describe('check is blocked date', () => {
             expect(checkIsBlockedDate(createDate({ date: saturday }), 1)).toBeTruthy();
             const sunday = new Date(todayDate.timestamp + dayMs * 5);
             expect(checkIsBlockedDate(createDate({ date: sunday }), 1)).toBeTruthy();
-        };
+        }
     });
 
     it('checks wednesday', () => {
@@ -67,7 +67,7 @@ describe('check is blocked date', () => {
             expect(checkIsBlockedDate(createDate({ date: saturday }), 1)).toBeTruthy();
             const sunday = new Date(todayDate.timestamp + dayMs * 4);
             expect(checkIsBlockedDate(createDate({ date: sunday }), 1)).toBeTruthy();
-        };
+        }
     });
 
     it('checks thursday', () => {
@@ -81,7 +81,7 @@ describe('check is blocked date', () => {
             expect(checkIsBlockedDate(createDate({ date: saturday }), 1)).toBeTruthy();
             const sunday = new Date(todayDate.timestamp + dayMs * 3);
             expect(checkIsBlockedDate(createDate({ date: sunday }), 1)).toBeTruthy();
-        };
+        }
     });
 
     it('checks friday', () => {
@@ -95,7 +95,7 @@ describe('check is blocked date', () => {
             expect(checkIsBlockedDate(createDate({ date: sunday }), 1)).toBeTruthy();
             const monday = new Date(todayDate.timestamp + dayMs * 3);
             expect(checkIsBlockedDate(createDate({ date: monday }), 1)).toBeFalsy();
-        };
+        }
     });
 
     it('checks saturday', () => {
@@ -107,6 +107,6 @@ describe('check is blocked date', () => {
             expect(checkIsBlockedDate(createDate({ date: sunday }), 1)).toBeTruthy();
             const monday = new Date(todayDate.timestamp + dayMs * 2);
             expect(checkIsBlockedDate(createDate({ date: monday }), 1)).toBeFalsy();
-        };
+        }
     });
 });

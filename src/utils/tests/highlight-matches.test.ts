@@ -13,7 +13,16 @@ describe('highlight matches', () => {
 
     it('searches matches', () => {
         const substr = 'номика';
-
         expect(highlightMatches('хули', 'хулиномика')).toContain(substr);
+    });
+
+    it('searchs many matches', () => {
+        expect(highlightMatches('хули', 'Хулиномика. Хулиганская экономика')).toContain(
+            'ганская экономика',
+        );
+    });
+
+    it('gets more letters', () => {
+        expect(highlightMatches('хулиномика2.0', 'хулиномика')).toBe('хулиномика');
     });
 });

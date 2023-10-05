@@ -3,12 +3,37 @@ import { createMonthDays } from '../create-month-days';
 import { getWeekNumber } from '../get-week-number';
 
 describe('create month days', () => {
-    const date = new Date('2023-02-28');
+    const date = new Date('2023-10-05');
+    date.setHours(0, 0, 0, 0);
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
 
     it('gets days of the month', () => {
-        expect(createMonthDays(monthIndex, year).length).toBe(28);
+        expect(createMonthDays(monthIndex, year).length).toBe(31);
+    });
+
+    it('gets one day', () => {
+        const tzOffset = date.getTimezoneOffset() * 60000;
+        const defaultDateWithOffset = date.getTime() - tzOffset;
+        const dateWithOffset = new Date(defaultDateWithOffset);
+
+        const day = {
+            date: dateWithOffset,
+            day: 'четверг',
+            dayNumber: 5,
+            dayNumberInWeek: 5,
+            dayShort: 'чт',
+            month: 'октябрь',
+            monthIndex: 9,
+            monthNumber: 10,
+            monthShort: 'окт.',
+            timestamp: dateWithOffset.getTime(),
+            week: 40,
+            year: 2023,
+            yearShort: '23',
+        };
+
+        expect(createMonthDays()).toContainEqual(day);
     });
 
     it('gets different days of the month', () => {
