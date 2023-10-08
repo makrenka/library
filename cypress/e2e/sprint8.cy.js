@@ -2231,9 +2231,9 @@ const USER_FULL_DATA = {
     phone: '+375 (33) 535-35-35',
     role: {
         id: 1,
-        name: 'User',
-        description: 'Default role given to authenticated user.',
-        type: 'authenticated',
+        name: 'Admin',
+        description: 'administration application',
+        type: 'admin',
     },
     comments: [
         {
@@ -2304,6 +2304,35 @@ const USER_FULL_DATA = {
     },
 };
 
+const USERS = [
+    {
+        id: 31,
+        username: 'testLogin15',
+        email: 'testemail15@mail.ru',
+        confirmed: true,
+        blocked: false,
+        createdAt: '2023-05-18T16:17:09.781Z',
+        updatedAt: '2023-09-07T09:41:35.464Z',
+        firstName: '1',
+        lastName: '2',
+        phone: '+375 (12) 121-21-21',
+        role: {
+            id: 1,
+            name: 'User',
+            description: 'Default role given to authenticated user.',
+            type: 'authenticated',
+        },
+        avatar: null,
+        delivery: {
+            id: null,
+            handed: null,
+            dateHandedFrom: null,
+            dateHandedTo: null,
+        },
+        historyCount: 0,
+    },
+];
+
 const getFullData = (sprint2) => {
     cy.intercept('GET', /books/, sprint2 ? BOOKS.filter((_, index) => index < 20) : BOOKS).as(
         'books',
@@ -2321,8 +2350,12 @@ describe('Sprint 8', () => {
             cy.session([login, pass], () => {
                 cy.intercept('POST', /local/, USER_AUTH).as('authorize');
                 cy.visit('http://localhost:3000/#/auth');
-                cy.get('[data-test-id=auth-form] input[name=identifier]').should('be.visible').type(login);
-                cy.get('[data-test-id=auth-form] input[name=password]').should('be.visible').type(pass);
+                cy.get('[data-test-id=auth-form] input[name=identifier]')
+                    .should('be.visible')
+                    .type(login);
+                cy.get('[data-test-id=auth-form] input[name=password]')
+                    .should('be.visible')
+                    .type(pass);
                 cy.get('[type=submit]').should('be.exist').click();
                 cy.wait('@authorize');
                 cy.get('[data-test-id=main-page]').should('be.visible');
@@ -2335,12 +2368,17 @@ describe('Sprint 8', () => {
                 cy.viewport(1440, 900);
             });
 
-            it('books-loading', () => {
-                cy.visit('http://localhost:3000');
+            it('books=and-users-loading', () => {
+                cy.visit('http://localhost:3000/#/admin');
                 cy.get('[data-test-id=loader]').should('be.exist');
                 cy.wait(['@books', '@categories', '@me']);
                 cy.get('[data-test-id=card]').eq(137).should('be.exist');
-            })
+                cy.intercept('GET', /users/, USERS).as('users');
+                cy.intercept('GET', /users\/me/, USER_FULL_DATA).as('me');
+                cy.visit('http://localhost:3000/#/admin/users');
+                cy.wait(['@users', '@me']);
+                cy.get('[data-test-id=user-card]').eq(0).should('be.exist');
+            });
         });
     });
 });
