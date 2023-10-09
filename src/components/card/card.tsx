@@ -169,7 +169,7 @@ export const Card = (props: BookType) => {
     );
 
     const renderCardAdminBooks = (
-        <li className={classNameCard('cardAdmin')} data-test-id='card'>
+        <li className={classNameCard('cardAdmin')} data-test-id='card-admin'>
             <Link to={linkPath} onClick={resetSearchValue} className={styles.cardImgLink}>
                 <div className={classNameCard('cardImg')}>
                     <img src={image?.url ? image.url : IconPlugImg} alt={title} />
