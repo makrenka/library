@@ -86,7 +86,11 @@ export const AdminNavigation = ({
                             checked={booked}
                             onChange={handleBookedChecked}
                         />
-                        <label htmlFor='isbooking' className={styles.filtersItemLabel}>
+                        <label
+                            htmlFor='isbooking'
+                            className={styles.filtersItemLabel}
+                            data-test-id='isbooking'
+                        >
                             Забронирована
                         </label>
                     </li>
@@ -98,7 +102,11 @@ export const AdminNavigation = ({
                             checked={deliveried}
                             onChange={handleDeliveriedChecked}
                         />
-                        <label htmlFor='isdelivery' className={styles.filtersItemLabel}>
+                        <label
+                            htmlFor='isdelivery'
+                            className={styles.filtersItemLabel}
+                            data-test-id='isdelivery'
+                        >
                             Выдана
                         </label>
                     </li>
@@ -143,7 +151,11 @@ export const AdminNavigation = ({
                                 checked={bookHolders}
                                 onChange={handleBookHoldersChecked}
                             />
-                            <label htmlFor='bookholders' className={styles.filtersItemLabel}>
+                            <label
+                                htmlFor='bookholders'
+                                className={styles.filtersItemLabel}
+                                data-test-id='bookholders'
+                            >
                                 Держатели книг
                             </label>
                         </li>
@@ -155,7 +167,11 @@ export const AdminNavigation = ({
                                 checked={blockedUsers}
                                 onChange={handleBlockedUsersChecked}
                             />
-                            <label htmlFor='blocked' className={styles.filtersItemLabel}>
+                            <label
+                                htmlFor='blocked'
+                                className={styles.filtersItemLabel}
+                                data-test-id='blocked'
+                            >
                                 Заблокированые
                             </label>
                         </li>

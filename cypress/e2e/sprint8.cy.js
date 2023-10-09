@@ -430,15 +430,15 @@ const USERS = [
     },
     {
         id: 17,
-        username: "Test1",
-        email: "test@gmail.com",
+        username: 'Test1',
+        email: 'test@gmail.com',
         confirmed: true,
         blocked: true,
-        createdAt: "2023-05-09T15:35:00.632Z",
-        updatedAt: "2023-09-07T09:41:56.980Z",
-        firstName: "firstName",
-        lastName: "lastName",
-        phone: "+375 (44) 123-45-67",
+        createdAt: '2023-05-09T15:35:00.632Z',
+        updatedAt: '2023-09-07T09:41:56.980Z',
+        firstName: 'firstName',
+        lastName: 'lastName',
+        phone: '+375 (44) 123-45-67',
         role: {
             id: 1,
             name: 'User',
@@ -456,15 +456,15 @@ const USERS = [
     },
     {
         id: 3,
-        username: "Pred1993",
-        email: "facount779@gmail.com",
+        username: 'Pred1993',
+        email: 'facount779@gmail.com',
         confirmed: true,
         blocked: false,
-        createdAt: "2023-05-05T13:55:44.765Z",
-        updatedAt: "2023-09-07T09:41:35.685Z",
-        firstName: "Артём",
-        lastName: "Ивченко",
-        phone: "+375 (33) 333-33-33",
+        createdAt: '2023-05-05T13:55:44.765Z',
+        updatedAt: '2023-09-07T09:41:35.685Z',
+        firstName: 'Артём',
+        lastName: 'Ивченко',
+        phone: '+375 (33) 333-33-33',
         role: {
             id: 1,
             name: 'User',
@@ -475,8 +475,8 @@ const USERS = [
         delivery: {
             id: 1,
             handed: true,
-            dateHandedFrom: "2022-11-08T13:59:46.130Z",
-            dateHandedTo: "2022-11-10T13:59:46.130Z",
+            dateHandedFrom: '2022-11-08T13:59:46.130Z',
+            dateHandedTo: '2022-11-10T13:59:46.130Z',
         },
         historyCount: 0,
     },
@@ -499,9 +499,7 @@ describe('Sprint 8', () => {
             cy.get('[data-test-id=auth-form] input[name=identifier]')
                 .should('be.visible')
                 .type(login);
-            cy.get('[data-test-id=auth-form] input[name=password]')
-                .should('be.visible')
-                .type(pass);
+            cy.get('[data-test-id=auth-form] input[name=password]').should('be.visible').type(pass);
             cy.get('[type=submit]').should('be.exist').click();
             cy.wait('@authorize');
             cy.get('[data-test-id=main-page]').should('be.visible');
@@ -520,8 +518,11 @@ describe('Sprint 8', () => {
             cy.visit('http://localhost:3000/#/admin/users');
             cy.wait(['@users', '@me']);
             cy.get('[data-test-id=user-card]').eq(0).should('be.exist');
+            cy.get('[data-test-id=bookholders]').click();
+            cy.get('[id=bookholders]').should('have.checked');
+            cy.get('[data-test-id=blocked]').click();
+            cy.get('[id=blocked]').should('have.checked');
         });
-
     });
 
     describe('get book', () => {
