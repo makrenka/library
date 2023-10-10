@@ -222,6 +222,7 @@ export const Card = (props: BookType) => {
                             onClick={(e) =>
                                 handleOpenDeliveryModal(e, userIdReserved === userData?.id)
                             }
+                            dataTestId='delivery-button'
                         >
                             {booking ? DELIVERY.buttonCreate : DELIVERY.buttonUpdate}
                         </Button>
@@ -232,6 +233,7 @@ export const Card = (props: BookType) => {
                             <Button
                                 view='secondary'
                                 onClick={() => dispatch(deliveryDeleteRequest(delivery.id))}
+                                dataTestId='return-button'
                             >
                                 {DELIVERY.buttonReturn}
                             </Button>
@@ -242,6 +244,7 @@ export const Card = (props: BookType) => {
                                 onClick={(e) =>
                                     handleOpenDeliveryModal(e, userIdReserved === userData?.id)
                                 }
+                                dataTestId='delivery-button'
                             >
                                 {booking ? DELIVERY.buttonCreate : DELIVERY.buttonUpdate}
                             </Button>

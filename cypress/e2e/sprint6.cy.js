@@ -175,18 +175,18 @@ const BOOKS_LIST_AFTER_BOOKING = BOOKS_LIST_BASE.map((item, ind) =>
 const BOOKS_LIST_AFTER_EDIT_BOOKING = BOOKS_LIST_BASE.map((item, ind) =>
     ind === 2
         ? {
-              ...BOOKS_LIST_BASE[2],
-              booking: { ...myBooking, dateOrder: '2023-01-20T00:00:00.000Z' },
-          }
+            ...BOOKS_LIST_BASE[2],
+            booking: { ...myBooking, dateOrder: '2023-01-20T00:00:00.000Z' },
+        }
         : item,
 );
 
 const BOOKS_LIST_AFTER_DELETE_BOOKING = BOOKS_LIST_BASE.map((item, ind) =>
     ind === 2
         ? {
-              ...BOOKS_LIST_BASE[2],
-              booking: null,
-          }
+            ...BOOKS_LIST_BASE[2],
+            booking: null,
+        }
         : item,
 );
 
@@ -353,8 +353,8 @@ const checkModalElements = (isEdit = false, isRateModal = false) => {
             isRateModal
                 ? '15-rate-modal'
                 : isEdit
-                ? '13-booking-edit-modal-view'
-                : '2-booking-modal-view',
+                    ? '13-booking-edit-modal-view'
+                    : '2-booking-modal-view',
         );
     cy.get(`[data-test-id=${isRateModal ? 'modal-rate-book' : 'booking-modal'}]`)
         .as('modal')
@@ -367,8 +367,8 @@ const checkModalElements = (isEdit = false, isRateModal = false) => {
             isRateModal
                 ? 'оцените книгу'
                 : isEdit
-                ? 'Изменение даты бронирования'
-                : 'выбор даты бронирования',
+                    ? 'Изменение даты бронирования'
+                    : 'выбор даты бронирования',
             {
                 matchCase: false,
             },
@@ -465,8 +465,8 @@ const checkBookingRequest = (isSuccess, isEdit, doScreenshot = true) => {
                     ? 'edit-success'
                     : 'edit-error'
                 : isSuccess
-                ? '12-booking-success'
-                : '11-booking-error',
+                    ? '12-booking-success'
+                    : '11-booking-error',
         );
     }
 

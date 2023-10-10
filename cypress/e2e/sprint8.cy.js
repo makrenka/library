@@ -488,6 +488,24 @@ const getData = () => {
     cy.intercept('GET', /users\/me/, USER_FULL_DATA).as('me');
 };
 
+const filterData = (testId, expectancy) => {
+    cy.get(`[data-test-id=${testId}]`).click();
+    cy.get(`[id=${testId}]`).should(`${expectancy}`);
+};
+
+const checkDeliveryCardButton = (
+    bookName = '',
+    testId = '',
+    btnText = '',
+    colorText = 'rgb(255, 255, 255)',
+) => {
+    cy.contains('[data-test-id=card-admin]', bookName)
+        .find(`[data-test-id=${testId}]`)
+        .should('be.enabled')
+        .contains(btnText, { matchCase: false })
+        .and('have.css', 'color', colorText);
+};
+
 describe('Sprint 8', () => {
     const login = 'Wally13';
     const pass = 'GarrusWally13';
@@ -514,14 +532,31 @@ describe('Sprint 8', () => {
             cy.get('[data-test-id=loader]').should('be.exist');
             cy.wait(['@books', '@categories', '@me']);
             cy.get('[data-test-id=card-admin]').eq(0).should('be.exist');
+            checkDeliveryCardButton(
+                'Продажник на всю голову: Крутые стратегии профессионала',
+                'delivery-button',
+                'ВЫДАТЬ',
+                'rgb(255, 255, 255)'
+            );
+            checkDeliveryCardButton(
+                'Корпоративная культура Toyota: Уроки для других компаний',
+                'delivery-button',
+                'ПРОДЛИТЬ',
+                'rgb(255, 255, 255)'
+            );
+            checkDeliveryCardButton(
+                'Корпоративная культура Toyota: Уроки для других компаний',
+                'return-button',
+                'ОТМЕТКА О ВОЗВРАТЕ',
+                'rgb(54, 54, 54)'
+            );
+            filterData('isbooking', 'not.have.checked');
             cy.intercept('GET', /users/, USERS).as('users');
             cy.visit('http://localhost:3000/#/admin/users');
             cy.wait(['@users', '@me']);
             cy.get('[data-test-id=user-card]').eq(0).should('be.exist');
-            cy.get('[data-test-id=bookholders]').click();
-            cy.get('[id=bookholders]').should('have.checked');
-            cy.get('[data-test-id=blocked]').click();
-            cy.get('[id=blocked]').should('have.checked');
+            filterData('bookholders', 'have.checked');
+            filterData('blocked', 'have.checked');
         });
     });
 
