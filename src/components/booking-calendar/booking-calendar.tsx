@@ -234,6 +234,7 @@ export const BookingCalendar = () => {
         <Modal
             onClose={closeHandler}
             title={isDeliveryEdit ? DELIVERY.titleUpdate : DELIVERY.titleCreate}
+            dataTestId='delivery-modal'
         >
             <div className={styles.calendarWrapper} data-test-id='calendar'>
                 <div className={styles.calendarHeader}>
@@ -311,6 +312,7 @@ export const BookingCalendar = () => {
                         }
                         view='primary'
                         isDisabled={!deliveryDateTo || isLoading}
+                        dataTestId='delivery-button'
                     >
                         {DELIVERY.buttonUpdate}
                     </Button>
@@ -319,6 +321,7 @@ export const BookingCalendar = () => {
                         view='secondary'
                         onClick={closeHandler}
                         isDisabled={isLoading}
+                        dataTestId='delivery-cansel-button'
                     >
                         {DELIVERY.buttonCancel}
                     </Button>
@@ -329,6 +332,7 @@ export const BookingCalendar = () => {
                     onClick={createDelivery}
                     view='primary'
                     isDisabled={!deliveryDateTo || isLoading}
+                    dataTestId='delivery-button'
                 >
                     {DELIVERY.buttonCreate}
                 </Button>

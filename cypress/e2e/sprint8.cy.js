@@ -482,6 +482,30 @@ const USERS = [
     },
 ];
 
+const dayDisabledColor = 'rgb(167, 167, 167)';
+const dayColor = 'rgb(54, 54, 54)';
+const todayColor = 'rgb(248, 54, 0)';
+const transparent = 'rgba(0, 0, 0, 0)';
+const weekendBg = 'rgb(254, 235, 234)';
+const dayActive = 'rgb(255, 255, 255)';
+const successColor = 'rgb(235, 249, 241)';
+const orangeGradient =
+    'linear-gradient(231.58deg, rgb(248, 54, 0) -53.35%, rgb(249, 212, 35) 297.76%)';
+
+const authorize = () => {
+    const login = 'Wally13';
+    const pass = 'GarrusWally13';
+    cy.session([login, pass], () => {
+        cy.intercept('POST', /local/, USER_AUTH).as('authorize');
+        cy.visit('http://localhost:3000/#/auth');
+        cy.get('[data-test-id=auth-form] input[name=identifier]').should('be.visible').type(login);
+        cy.get('[data-test-id=auth-form] input[name=password]').should('be.visible').type(pass);
+        cy.get('[type=submit]').should('be.exist').click();
+        cy.wait('@authorize');
+        cy.get('[data-test-id=main-page]').should('be.visible');
+    });
+};
+
 const getData = () => {
     cy.intercept('GET', /books/, BOOKS).as('books');
     cy.intercept('GET', /categories/, CATEGORIES).as('categories');
@@ -492,6 +516,9 @@ const filterData = (testId, expectancy) => {
     cy.get(`[data-test-id=${testId}]`).click();
     cy.get(`[id=${testId}]`).should(`${expectancy}`);
 };
+
+const setDate = (year, month, day) =>
+    cy.clock().invoke('setSystemTime', new Date(year, month, day));
 
 const checkDeliveryCardButton = (
     bookName = '',
@@ -506,22 +533,67 @@ const checkDeliveryCardButton = (
         .and('have.css', 'color', colorText);
 };
 
-describe('Sprint 8', () => {
-    const login = 'Wally13';
-    const pass = 'GarrusWally13';
+const openDeliveryModal = (isEdit = false) =>
+    cy
+        .contains(
+            '[data-test-id=card-admin]',
+            isEdit
+                ? 'Корпоративная культура Toyota: Уроки для других компаний'
+                : 'Продажник на всю голову: Крутые стратегии профессионала',
+            { matchCase: false },
+        )
+        .find('[data-test-id=delivery-button]')
+        .click();
 
-    beforeEach(() => {
-        cy.session([login, pass], () => {
-            cy.intercept('POST', /local/, USER_AUTH).as('authorize');
-            cy.visit('http://localhost:3000/#/auth');
-            cy.get('[data-test-id=auth-form] input[name=identifier]')
-                .should('be.visible')
-                .type(login);
-            cy.get('[data-test-id=auth-form] input[name=password]').should('be.visible').type(pass);
-            cy.get('[type=submit]').should('be.exist').click();
-            cy.wait('@authorize');
-            cy.get('[data-test-id=main-page]').should('be.visible');
+const checkModalElements = (isEdit = false) => {
+    cy.get('[data-test-id=modal-outer]')
+        .as('outer')
+        .screenshot(isEdit ? 'delivery-edit-modal-view' : 'delivery-modal-view');
+    cy.get(`[data-test-id=delivery-modal]`).as('modal').should('exist');
+    cy.get('@modal').find('[data-test-id=modal-close-button]').as('close');
+    cy.get('@modal')
+        .find('[data-test-id=modal-title]')
+        .as('title')
+        .contains(isEdit ? 'Дата продления' : 'Дата возврата', {
+            matchCase: false,
         });
+
+    cy.get('@modal').find('[data-test-id=calendar]');
+    if (isEdit) {
+        cy.get('@modal').find('[data-test-id=delivery-button]').should('be.enabled');
+        cy.get('@modal').find('[data-test-id=booking-cancel-button]').should('be.enabled');
+    } else {
+        cy.get('@modal').find('[data-test-id=delivery-button]').should('be.disabled');
+    }
+
+    cy.get('@close').click();
+    cy.get('@outer').should('not.exist');
+    cy.viewport(1440, 900);
+    openDeliveryModal(isEdit);
+    cy.get('@outer').click('topLeft');
+    cy.get('@outer').should('not.exist');
+};
+
+const checkCalendarDayColor = (dayNum, expectColor, expectBackground, isGradient) => {
+    cy.get('[data-test-id=delivery-modal]')
+        .find('[data-test-id=day-button]')
+        .contains(dayNum)
+        .as('day')
+        .should('have.css', 'color')
+        .and('eq', expectColor);
+    if (expectBackground) {
+        cy.get('@day')
+            .should('have.css', isGradient ? 'background-image' : 'background-color')
+            .and('eq', expectBackground);
+    }
+};
+
+const closeModal = () =>
+    cy.get('[data-test-id=modal-outer]').find('[data-test-id=modal-close-button]').click();
+
+describe('Sprint 8', () => {
+    beforeEach(() => {
+        authorize();
         getData();
         cy.viewport(1440, 900);
     });
@@ -536,27 +608,86 @@ describe('Sprint 8', () => {
                 'Продажник на всю голову: Крутые стратегии профессионала',
                 'delivery-button',
                 'ВЫДАТЬ',
-                'rgb(255, 255, 255)'
+                'rgb(255, 255, 255)',
             );
             checkDeliveryCardButton(
                 'Корпоративная культура Toyota: Уроки для других компаний',
                 'delivery-button',
                 'ПРОДЛИТЬ',
-                'rgb(255, 255, 255)'
+                'rgb(255, 255, 255)',
             );
             checkDeliveryCardButton(
                 'Корпоративная культура Toyota: Уроки для других компаний',
                 'return-button',
                 'ОТМЕТКА О ВОЗВРАТЕ',
-                'rgb(54, 54, 54)'
+                'rgb(54, 54, 54)',
             );
-            filterData('isbooking', 'not.have.checked');
             cy.intercept('GET', /users/, USERS).as('users');
             cy.visit('http://localhost:3000/#/admin/users');
             cy.wait(['@users', '@me']);
             cy.get('[data-test-id=user-card]').eq(0).should('be.exist');
             filterData('bookholders', 'have.checked');
             filterData('blocked', 'have.checked');
+        });
+    });
+
+    describe('delivery modal', () => {
+        beforeEach(() => {
+            const testDate = new Date(2023, 9, 10).getTime();
+            cy.clock(testDate);
+            authorize();
+            setDate(2023, 9, 10);
+        });
+
+        it('check delivery modal elements', () => {
+            cy.visit('http://localhost:3000/#/admin');
+            openDeliveryModal();
+            checkModalElements();
+        });
+
+        it('check calendar days', () => {
+            checkCalendarDayColor('9', dayDisabledColor, transparent);
+            checkCalendarDayColor('10', todayColor, transparent);
+            checkCalendarDayColor('11', dayColor, transparent);
+            checkCalendarDayColor('24', dayColor, transparent);
+            checkCalendarDayColor('25', dayDisabledColor, transparent);
+            checkCalendarDayColor('14', dayDisabledColor, weekendBg);
+            checkCalendarDayColor('15', dayDisabledColor, weekendBg);
+        });
+
+        it('check calendar days (on friday)', () => {
+            closeModal();
+            setDate(2023, 9, 13);
+            cy.visit('http://localhost:3000/#/admin');
+            openDeliveryModal();
+            checkCalendarDayColor('13', todayColor, transparent);
+            checkCalendarDayColor('14', dayDisabledColor, weekendBg);
+            checkCalendarDayColor('15', dayDisabledColor, weekendBg);
+            checkCalendarDayColor('27', dayColor, transparent);
+            cy.get('[data-test-id=calendar]').screenshot('13-today-is-friday', { padding: 10 });
+        });
+
+        it('check calendar days (on saturday)', () => {
+            closeModal();
+            setDate(2023, 9, 14);
+            openDeliveryModal();
+            checkCalendarDayColor('13', dayDisabledColor, transparent);
+            checkCalendarDayColor('14', todayColor, weekendBg);
+            checkCalendarDayColor('27', dayColor, transparent);
+            checkCalendarDayColor('28', dayDisabledColor, weekendBg);
+            cy.get('[data-test-id=calendar]').screenshot('14-today-is-saturday', { padding: 10 });
+        });
+
+        it('check calendar days (on sunday)', () => {
+            closeModal();
+            setDate(2023, 9, 15);
+            openDeliveryModal();
+            checkCalendarDayColor('13', dayDisabledColor, transparent);
+            checkCalendarDayColor('14', dayDisabledColor, weekendBg);
+            checkCalendarDayColor('15', todayColor, weekendBg);
+            checkCalendarDayColor('27', dayColor, transparent);
+            checkCalendarDayColor('28', dayDisabledColor, weekendBg);
+            cy.get('[data-test-id=calendar]').screenshot('9-today-is-sunday', { padding: 10 });
         });
     });
 
