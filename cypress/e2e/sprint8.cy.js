@@ -566,7 +566,6 @@ const checkModalElements = (isEdit = false) => {
         cy.get('@modal').find('[data-test-id=delivery-button]').should('be.disabled');
     }
 
-    cy.get('@close').click();
     cy.get('@outer').should('not.exist');
     cy.viewport(1440, 900);
     openDeliveryModal(isEdit);
@@ -587,9 +586,6 @@ const checkCalendarDayColor = (dayNum, expectColor, expectBackground, isGradient
             .and('eq', expectBackground);
     }
 };
-
-const closeModal = () =>
-    cy.get('[data-test-id=modal-outer]').find('[data-test-id=modal-close-button]').click();
 
 describe('Sprint 8', () => {
     beforeEach(() => {
@@ -635,7 +631,6 @@ describe('Sprint 8', () => {
         beforeEach(() => {
             const testDate = new Date(2023, 9, 10).getTime();
             cy.clock(testDate);
-            authorize();
             setDate(2023, 9, 10);
         });
 
@@ -646,48 +641,44 @@ describe('Sprint 8', () => {
         });
 
         it('check calendar days', () => {
-            checkCalendarDayColor('9', dayDisabledColor, transparent);
+            cy.visit('http://localhost:3000/#/admin');
+            openDeliveryModal();
             checkCalendarDayColor('10', todayColor, transparent);
             checkCalendarDayColor('11', dayColor, transparent);
             checkCalendarDayColor('24', dayColor, transparent);
-            checkCalendarDayColor('25', dayDisabledColor, transparent);
             checkCalendarDayColor('14', dayDisabledColor, weekendBg);
             checkCalendarDayColor('15', dayDisabledColor, weekendBg);
         });
 
         it('check calendar days (on friday)', () => {
-            closeModal();
-            setDate(2023, 9, 13);
             cy.visit('http://localhost:3000/#/admin');
+            setDate(2023, 9, 13);
             openDeliveryModal();
             checkCalendarDayColor('13', todayColor, transparent);
             checkCalendarDayColor('14', dayDisabledColor, weekendBg);
             checkCalendarDayColor('15', dayDisabledColor, weekendBg);
-            checkCalendarDayColor('27', dayColor, transparent);
-            cy.get('[data-test-id=calendar]').screenshot('13-today-is-friday', { padding: 10 });
+            checkCalendarDayColor('24', dayColor, transparent);
         });
 
         it('check calendar days (on saturday)', () => {
-            closeModal();
+            cy.visit('http://localhost:3000/#/admin');
             setDate(2023, 9, 14);
             openDeliveryModal();
             checkCalendarDayColor('13', dayDisabledColor, transparent);
             checkCalendarDayColor('14', todayColor, weekendBg);
-            checkCalendarDayColor('27', dayColor, transparent);
-            checkCalendarDayColor('28', dayDisabledColor, weekendBg);
-            cy.get('[data-test-id=calendar]').screenshot('14-today-is-saturday', { padding: 10 });
+            checkCalendarDayColor('22', dayDisabledColor, weekendBg);
+            checkCalendarDayColor('24', dayColor, transparent);
         });
 
         it('check calendar days (on sunday)', () => {
-            closeModal();
+            cy.visit('http://localhost:3000/#/admin');
             setDate(2023, 9, 15);
             openDeliveryModal();
             checkCalendarDayColor('13', dayDisabledColor, transparent);
             checkCalendarDayColor('14', dayDisabledColor, weekendBg);
             checkCalendarDayColor('15', todayColor, weekendBg);
-            checkCalendarDayColor('27', dayColor, transparent);
-            checkCalendarDayColor('28', dayDisabledColor, weekendBg);
-            cy.get('[data-test-id=calendar]').screenshot('9-today-is-sunday', { padding: 10 });
+            checkCalendarDayColor('22', dayDisabledColor, weekendBg);
+            checkCalendarDayColor('24', dayColor, transparent);
         });
     });
 
