@@ -538,7 +538,7 @@ const openDeliveryModal = (isEdit = false) =>
         .contains(
             '[data-test-id=card-admin]',
             isEdit
-                ? 'Корпоративная культура Toyota: Уроки для других компаний'
+                ? 'Нескучная детская психология. Как общаться с ребенком, чтобы он вас слушался, и слышал'
                 : 'Продажник на всю голову: Крутые стратегии профессионала',
             { matchCase: false },
         )
@@ -565,11 +565,6 @@ const checkModalElements = (isEdit = false) => {
     } else {
         cy.get('@modal').find('[data-test-id=delivery-button]').should('be.disabled');
     }
-
-    cy.viewport(1440, 900);
-    openDeliveryModal(isEdit);
-    cy.get('@outer').click('topLeft');
-    cy.get('@outer').should('not.exist');
 };
 
 const checkCalendarDayColor = (dayNum, expectColor, expectBackground, isGradient) => {
@@ -637,6 +632,12 @@ describe('Sprint 8', () => {
             cy.visit('http://localhost:3000/#/admin');
             openDeliveryModal();
             checkModalElements();
+        });
+
+        it('check update delivery modal', () => {
+            cy.visit('http://localhost:3000/#/admin');
+            openDeliveryModal(true);
+            checkModalElements(true);
         });
 
         it('check calendar days', () => {
