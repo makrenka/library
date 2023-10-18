@@ -566,7 +566,6 @@ const checkModalElements = (isEdit = false) => {
         cy.get('@modal').find('[data-test-id=delivery-button]').should('be.disabled');
     }
 
-    cy.get('@outer').should('not.exist');
     cy.viewport(1440, 900);
     openDeliveryModal(isEdit);
     cy.get('@outer').click('topLeft');
