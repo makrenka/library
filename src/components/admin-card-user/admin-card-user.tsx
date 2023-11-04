@@ -53,69 +53,73 @@ export const AdminCardUser = ({
     };
 
     return (
-        <li className={classNames(styles.card, blocked && styles.cardBlocked)} key={id}>
-            <Link to={`${ROUTES.adminUsers}/${id}`} className={styles.cardImg}>
-                <img src={avatar ? avatar : IconPlugImg} alt={username} />
-            </Link>
-            <Link to={`${ROUTES.adminUsers}/${id}`} className={styles.userNameBlock}>
-                <p className={styles.cardUserName}>{handleHighlight(`${lastName} ${firstName}`)}</p>
-            </Link>
-            <div className={styles.cardDescription}>
-                <p className={styles.cardDescriptionText}>
-                    Логин: <span>{username}</span>
-                </p>
-            </div>
-            <div className={styles.cardDescriptionCounterWrapper}>
-                <div className={styles.cardDescriptionCounter}>
-                    <img src={IconBook} alt='icon book' className={styles.counterImg} />
-                    <p className={styles.counterText}>
-                        <span>{handed == null ? '0' : '1'}</span> книг
-                        <span>{handed == null ? '' : 'а'}</span>
+        <Link to={`${ROUTES.adminUsers}/${id}`}>
+            <li className={classNames(styles.card, blocked && styles.cardBlocked)}>
+                <div className={styles.cardImg}>
+                    <img src={avatar ? avatar : IconPlugImg} alt={username} />
+                </div>
+                <div className={styles.userNameBlock}>
+                    <p className={styles.cardUserName}>
+                        {handleHighlight(`${lastName} ${firstName}`)}
                     </p>
                 </div>
-                <p className={styles.cardDescriptionText}>
-                    Дата регистрации:{' '}
-                    <span>{createdAt.slice(0, 10).split('-').reverse().join('-')}</span>
-                </p>
-                <p className={styles.cardDescriptionText}>
-                    Номер телефона: <span>{phone.slice(0, 19)}</span>
-                </p>
-            </div>
-            {blocked ? (
-                <div className={styles.cardButton}>
-                    <Button view='primary' onClick={unblockUser}>
-                        {BUTTON_TEXT.UNBLOCK}
-                    </Button>
+                <div className={styles.cardDescription}>
+                    <p className={styles.cardDescriptionText}>
+                        Логин: <span>{username}</span>
+                    </p>
                 </div>
-            ) : (
-                <div className={styles.cardButton}>
-                    <Button view='secondary' onClick={blockUser}>
-                        {BUTTON_TEXT.BLOCK}
-                    </Button>
+                <div className={styles.cardDescriptionCounterWrapper}>
+                    <div className={styles.cardDescriptionCounter}>
+                        <img src={IconBook} alt='icon book' className={styles.counterImg} />
+                        <p className={styles.counterText}>
+                            <span>{handed == null ? '0' : '1'}</span> книг
+                            <span>{handed == null ? '' : 'а'}</span>
+                        </p>
+                    </div>
+                    <p className={styles.cardDescriptionText}>
+                        Дата регистрации:{' '}
+                        <span>{createdAt.slice(0, 10).split('-').reverse().join('-')}</span>
+                    </p>
+                    <p className={styles.cardDescriptionText}>
+                        Номер телефона: <span>{handleHighlight(`${phone.slice(0, 19)}`)}</span>
+                    </p>
                 </div>
-            )}
-            <div
-                className={classNames(
-                    styles.returnSign,
-                    dateHandedTo && lateBookReturn && styles.returnSignRed,
-                    dateHandedTo && !lateBookReturn && styles.returnSignGreen,
+                {blocked ? (
+                    <div className={styles.cardButton}>
+                        <Button view='primary' onClick={unblockUser}>
+                            {BUTTON_TEXT.UNBLOCK}
+                        </Button>
+                    </div>
+                ) : (
+                    <div className={styles.cardButton}>
+                        <Button view='secondary' onClick={blockUser}>
+                            {BUTTON_TEXT.BLOCK}
+                        </Button>
+                    </div>
                 )}
-            >
-                <img
-                    src={lateBookReturn ? IconWarning : IconCalendar}
-                    alt='icon return sign'
-                    className={styles.returnSignImg}
-                />
-                <p className={styles.dateHandedTo}>
-                    {dateHandedTo &&
-                        (dateHandedTo as string)
-                            .slice(0, 10)
-                            .split('-')
-                            .reverse()
-                            .join('.')
-                            .slice(0, 5)}
-                </p>
-            </div>
-        </li>
+                <div
+                    className={classNames(
+                        styles.returnSign,
+                        dateHandedTo && lateBookReturn && styles.returnSignRed,
+                        dateHandedTo && !lateBookReturn && styles.returnSignGreen,
+                    )}
+                >
+                    <img
+                        src={lateBookReturn ? IconWarning : IconCalendar}
+                        alt='icon return sign'
+                        className={styles.returnSignImg}
+                    />
+                    <p className={styles.dateHandedTo}>
+                        {dateHandedTo &&
+                            (dateHandedTo as string)
+                                .slice(0, 10)
+                                .split('-')
+                                .reverse()
+                                .join('.')
+                                .slice(0, 5)}
+                    </p>
+                </div>
+            </li>
+        </Link>
     );
 };

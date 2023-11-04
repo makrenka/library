@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`highlight matches searches matches 1`] = `
+[
+  "номика",
+  <span
+    data-test-id="highlight-matches"
+    style={
+      {
+        "color": "#FF5253",
+      }
+    }
+  >
+    хули
+  </span>,
+]
+`;

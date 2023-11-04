@@ -28,7 +28,7 @@ export const validateForDigit = (fieldValue: string) =>
     fieldValue?.split('').some((el) => REGEXP.digit.test(el));
 
 export const validateForLatinLetters = (fieldValue: string) =>
-    fieldValue?.split('').some((el) => REGEXP.latinLetters.test(el));
+    fieldValue?.split('').every((el) => REGEXP.latinLetters.test(el));
 
 export const isCorrectPassword = (password: string) => {
     let requirementCounter = 0;
