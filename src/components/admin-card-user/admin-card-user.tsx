@@ -54,7 +54,10 @@ export const AdminCardUser = ({
 
     return (
         <Link to={`${ROUTES.adminUsers}/${id}`}>
-            <li className={classNames(styles.card, blocked && styles.cardBlocked)}>
+            <li
+                className={classNames(styles.card, blocked && styles.cardBlocked)}
+                data-test-id='user-card'
+            >
                 <div className={styles.cardImg}>
                     <img src={avatar ? avatar : IconPlugImg} alt={username} />
                 </div>

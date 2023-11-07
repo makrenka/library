@@ -169,7 +169,7 @@ export const Card = (props: BookType) => {
     );
 
     const renderCardAdminBooks = (
-        <li className={classNameCard('cardAdmin')} data-test-id='card'>
+        <li className={classNameCard('cardAdmin')} data-test-id='card-admin'>
             <Link to={linkPath} onClick={resetSearchValue} className={styles.cardImgLink}>
                 <div className={classNameCard('cardImg')}>
                     <img src={image?.url ? image.url : IconPlugImg} alt={title} />
@@ -199,14 +199,14 @@ export const Card = (props: BookType) => {
                         {booking
                             ? booking?.dateOrder.slice(0, 10).split('-').reverse().join('.')
                             : `${delivery?.dateHandedFrom
-                                .slice(0, 10)
-                                .split('-')
-                                .reverse()
-                                .join('.')}-${delivery?.dateHandedTo
-                                    .slice(0, 10)
-                                    .split('-')
-                                    .reverse()
-                                    .join('.')}`}
+                                  .slice(0, 10)
+                                  .split('-')
+                                  .reverse()
+                                  .join('.')}-${delivery?.dateHandedTo
+                                  .slice(0, 10)
+                                  .split('-')
+                                  .reverse()
+                                  .join('.')}`}
                     </span>
                 </p>
                 <p className={styles.cardDateStatus}>
@@ -222,6 +222,7 @@ export const Card = (props: BookType) => {
                             onClick={(e) =>
                                 handleOpenDeliveryModal(e, userIdReserved === userDataBooking?.id)
                             }
+                            dataTestId='delivery-button'
                         >
                             {booking ? DELIVERY.buttonCreate : DELIVERY.buttonUpdate}
                         </Button>
@@ -232,6 +233,7 @@ export const Card = (props: BookType) => {
                             <Button
                                 view='secondary'
                                 onClick={() => dispatch(deliveryDeleteRequest(delivery.id))}
+                                dataTestId='return-button'
                             >
                                 {DELIVERY.buttonReturn}
                             </Button>
@@ -242,6 +244,7 @@ export const Card = (props: BookType) => {
                                 onClick={(e) =>
                                     handleOpenDeliveryModal(e, userIdReserved === delivery?.recipientId)
                                 }
+                                dataTestId='delivery-button'
                             >
                                 {booking ? DELIVERY.buttonCreate : DELIVERY.buttonUpdate}
                             </Button>

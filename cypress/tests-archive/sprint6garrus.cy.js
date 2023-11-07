@@ -582,7 +582,7 @@ const selectStarsRate = (starNumSelect, doScreenshot) => {
 };
 
 describe('booking and book rate', () => {
-    beforeEach(()=> {
+    beforeEach(() => {
         authorize();
     });
     describe('booking buttons view', () => {

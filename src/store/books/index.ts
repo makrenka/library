@@ -89,7 +89,7 @@ export const initialState: BooksType = {
         isSuccess: false,
         isError: false,
         data: null,
-    }
+    },
 };
 
 export const booksSlice = createSlice({
@@ -124,7 +124,10 @@ export const booksSlice = createSlice({
         bookListRequestSortingAlphabetAsc: (state, action: PayloadAction<number>) => {
             state.bookList.isLoading = true;
         },
-        bookListRequestSortingAlphabetAscSuccess: (state, action: PayloadAction<BookListItem[]>) => {
+        bookListRequestSortingAlphabetAscSuccess: (
+            state,
+            action: PayloadAction<BookListItem[]>,
+        ) => {
             state.bookList.isLoading = false;
             state.bookList.isError = false;
             state.bookList.isSuccess = true;
@@ -135,7 +138,10 @@ export const booksSlice = createSlice({
         bookListRequestSortingAlphabetDesc: (state, action: PayloadAction<number>) => {
             state.bookList.isLoading = true;
         },
-        bookListRequestSortingAlphabetDescSuccess: (state, action: PayloadAction<BookListItem[]>) => {
+        bookListRequestSortingAlphabetDescSuccess: (
+            state,
+            action: PayloadAction<BookListItem[]>,
+        ) => {
             state.bookList.isLoading = false;
             state.bookList.isError = false;
             state.bookList.isSuccess = true;
